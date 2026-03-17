@@ -91,9 +91,8 @@ const wordReveal: Variants = {
 // ═══════════════════════════════════════════════════════════════════════
 
 const HEADLINE_LINES: { words: { text: string; decorated?: boolean }[] }[] = [
-  { words: [{ text: "Where " }, { text: "Ideas" }] },
-  { words: [{ text: "Become " }, { text: "Intelligent", decorated: true }] },
-  { words: [{ text: "Products." }] },
+  { words: [{ text: "Where " }, { text: "Ideas " }, { text: "Become" }] },
+  { words: [{ text: "Intelligent", decorated: true }, { text: " Products." }] },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -174,216 +173,192 @@ export default function Hero() {
         />
       </div>
 
-      {/* ── Blueprint grid ───────────────────────────────────────── */}
-      <div
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundSize: "48px 48px",
-          backgroundImage:
-            "linear-gradient(to right, rgba(27, 42, 74, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.03) 1px, transparent 1px)",
-          maskImage:
-            "radial-gradient(ellipse 85% 75% at 50% 40%, black 30%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 85% 75% at 50% 40%, black 30%, transparent 100%)",
-        }}
-      />
-
       {/* ────────────────────────────────────────────────────────────
-          CONTENT — Asymmetric split layout
+          CONTENT — Centered layout
       ──────────────────────────────────────────────────────────── */}
       <motion.div
         ref={contentRef}
-        className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-12 py-12 sm:py-16 lg:py-28"
+        className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32 flex flex-col items-center text-center group"
         style={{ y: contentY }}
         variants={staggerContainer}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        {/* ── ASYMMETRIC GRID: left col has badge+headline, right col has body+cta at bottom ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-16 items-stretch min-h-0 lg:min-h-[520px]">
+        {/* ── Circular Blueprint grid surrounding content ── */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[120vw] h-[120vw] max-w-[1400px] max-h-[1400px] pointer-events-none z-[-1] transition-opacity duration-700 opacity-40 group-hover:opacity-100">
+          <div
+            className="absolute inset-0 transition-transform duration-1000 group-hover:scale-[1.05]"
+            style={{
+              backgroundSize: "64px 64px",
+              backgroundImage:
+                "linear-gradient(to right, rgba(27, 42, 74, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.08) 1px, transparent 1px)",
+              maskImage:
+                "radial-gradient(circle at center, black 10%, transparent 65%)",
+              WebkitMaskImage:
+                "radial-gradient(circle at center, black 10%, transparent 65%)",
+            }}
+          />
+        </div>
 
-          {/* LEFT — Badge stacked above headline */}
-          <div className="lg:col-span-7 flex flex-col justify-start mb-10 lg:mb-0">
+        {/* 1. BADGE */}
+        <motion.div
+          variants={fadeSlideUp}
+          className="mb-8 inline-flex items-center gap-2.5 
+                     rounded-full bg-evren-peach-light/60 border border-evren-peach/20 
+                     px-5 py-2"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
+          </span>
+          <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
+            The universe is always expanding. So are we.
+          </span>
+        </motion.div>
 
-            {/* 1. BADGE */}
-            <motion.div
-              variants={fadeSlideUp}
-              className="mb-8 self-start inline-flex items-center gap-2.5 
-                         rounded-full bg-evren-peach-light/60 border border-evren-peach/20 
-                         px-5 py-2"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
-              </span>
-              <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
-                The universe is always expanding. So are we.
-              </span>
-            </motion.div>
-
-            {/* 2. HEADLINE — below the badge */}
-            <motion.h1
-              className="font-heading font-extrabold text-evren-navy 
-                         text-4xl md:text-5xl lg:text-6xl leading-[1.06] -tracking-tight"
-              variants={{
-                hidden: {},
-                visible: {
-                  transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-                },
-              }}
-            >
-              {HEADLINE_LINES.map((line, lineIdx) => (
-                <span key={lineIdx} className="block">
-                  {line.words.map((word) =>
-                    word.decorated ? (
-                      <motion.span
-                        key={word.text}
-                        className="relative inline-block"
-                        variants={wordReveal}
-                      >
-                        <span className="relative z-10">{word.text}</span>
-                        {/* Wavy underline — peach */}
-                        <svg
-                          className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[14px]"
-                          viewBox="0 0 120 12"
-                          fill="none"
-                          preserveAspectRatio="none"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M0 6 Q 10 0, 20 6 T 40 6 T 60 6 T 80 6 T 100 6 T 120 6"
-                            stroke="#F4A89A"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            fill="none"
-                            opacity="0.7"
-                          />
-                        </svg>
-                      </motion.span>
-                    ) : (
-                      <motion.span
-                        key={word.text}
-                        className="inline-block whitespace-pre"
-                        variants={wordReveal}
-                      >
-                        {word.text}
-                      </motion.span>
-                    )
-                  )}
-                </span>
-              ))}
-              <span className="sr-only">
-                Where Ideas Become Intelligent Products.
-              </span>
-            </motion.h1>
-
-            {/* 3. TRUST METRICS — below the headline */}
-            <motion.div
-              ref={metricsRef}
-              variants={fadeSlideUp}
-              className="mt-12 pt-6 flex items-center gap-0 w-full overflow-x-auto sm:overflow-visible whitespace-nowrap no-scrollbar pb-2 sm:pb-0"
-            >
-              {TRUST_METRICS.map((metric, i) => (
-                <div key={metric.label} className="flex items-center">
-                  {i > 0 && (
-                    <div className="flex flex-col items-center gap-1.5 mx-4 sm:mx-8">
-                      <span className="block w-1 h-1 rounded-full bg-evren-peach/50" />
-                      <span className="block w-1 h-1 rounded-full bg-evren-peach/30" />
-                      <span className="block w-1 h-1 rounded-full bg-evren-peach/50" />
-                    </div>
-                  )}
-                  <div className="min-w-[80px]">
-                    <div className="text-2xl md:text-3xl font-heading font-bold text-evren-navy leading-none">
-                      <AnimatedCounter
-                        target={metric.value}
-                        suffix={metric.suffix}
-                        trigger={metricsInView}
-                        duration={1800}
-                      />
-                    </div>
-                    <p
-                      className="mt-2 text-[11px] md:text-xs font-body text-evren-medium-gray uppercase"
-                      style={{ letterSpacing: "0.12em" }}
+        {/* 2. HEADLINE */}
+        <motion.h1
+          className="font-heading font-extrabold text-evren-navy 
+                     text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] -tracking-tight max-w-4xl"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+            },
+          }}
+        >
+          {HEADLINE_LINES.map((line, lineIdx) => (
+            <span key={lineIdx} className="block">
+              {line.words.map((word) =>
+                word.decorated ? (
+                  <motion.span
+                    key={word.text}
+                    className="relative inline-block"
+                    variants={wordReveal}
+                  >
+                    <span className="relative z-10">{word.text}</span>
+                    {/* Wavy underline — peach */}
+                    <svg
+                      className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[14px]"
+                      viewBox="0 0 120 12"
+                      fill="none"
+                      preserveAspectRatio="none"
+                      aria-hidden="true"
                     >
-                      {metric.label}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+                      <path
+                        d="M0 6 Q 10 0, 20 6 T 40 6 T 60 6 T 80 6 T 100 6 T 120 6"
+                        stroke="#F4A89A"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        fill="none"
+                        opacity="0.7"
+                      />
+                    </svg>
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key={word.text}
+                    className="inline-block whitespace-pre"
+                    variants={wordReveal}
+                  >
+                    {word.text}
+                  </motion.span>
+                )
+              )}
+            </span>
+          ))}
+          <span className="sr-only">
+            Where Ideas Become Intelligent Products.
+          </span>
+        </motion.h1>
 
-          {/* RIGHT — Body text + CTA, pushed to the very bottom */}
-          <div className="lg:col-span-5 flex flex-col justify-end gap-5 pt-8 sm:pt-12 lg:pt-24 lg:translate-y-8 pb-4 lg:pb-8">
+        {/* 3. SUBTEXT */}
+        <motion.div variants={fadeSlideUp} className="mt-8 space-y-4 max-w-2xl mx-auto">
+          <p
+            className="font-body text-evren-charcoal text-base md:text-lg lg:text-xl leading-relaxed"
+            style={{ lineHeight: 1.6 }}
+          >
+            We build AI-powered digital products that grow with your vision.
+            From first spark to global scale, we are your partner in turning
+            ideas into products the world actually needs.
+          </p>
+        </motion.div>
 
-            {/* Sub-headline paragraphs */}
-            <motion.div variants={fadeSlideUp} className="space-y-4">
-              <p
-                className="font-body text-evren-charcoal text-base md:text-lg leading-relaxed"
-                style={{ lineHeight: 1.7 }}
-              >
-                We build AI-powered digital products that grow with your vision.
-                From first spark to global scale, we are your partner in turning
-                ideas into products the world actually needs.
-              </p>
-              <p
-                className="font-body text-evren-medium-gray text-sm md:text-base leading-relaxed"
-                style={{ lineHeight: 1.7 }}
-              >
-                50+ products shipped across healthcare, fintech, and enterprise.
-                Every engagement is a long-term partnership — not just a project.
-              </p>
-            </motion.div>
+        {/* 4. CTA BUTTONS */}
+        <motion.div variants={fadeSlideUp} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+          <motion.a
+            href="/connect"
+            id="hero-cta-primary"
+            aria-label="Book a free consultation with Evren AI"
+            className="inline-flex items-center justify-center gap-2 
+                       rounded-full bg-evren-peach text-evren-navy font-heading font-semibold 
+                       px-8 py-4 text-sm w-full sm:w-auto will-change-transform 
+                       transition-all duration-200"
+            whileHover={{
+              scale: 1.04,
+              boxShadow: "0 16px 40px -8px rgba(244, 168, 154, 0.4)",
+            }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+          >
+            Book a Free Consultation
+            <ArrowUpRight
+              size={16}
+              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+            />
+          </motion.a>
 
-            {/* CTA row */}
-            <motion.div variants={fadeSlideUp} className="flex flex-col gap-3">
-              {/* CTA Pair */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                {/* Primary */}
-                <motion.a
-                  href="/connect"
-                  id="hero-cta-primary"
-                  aria-label="Book a free consultation with Evren AI"
-                  className="group inline-flex items-center justify-center gap-2 
-                             rounded-full bg-evren-peach text-evren-navy font-heading font-semibold 
-                             px-7 py-3.5 text-sm will-change-transform 
-                             transition-all duration-200"
-                  whileHover={{
-                    scale: 1.04,
-                    boxShadow: "0 16px 40px -8px rgba(244, 168, 154, 0.4)",
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                >
-                  Book a Free Consultation
-                  <ArrowUpRight
-                    size={15}
-                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+          <motion.a
+            href="/approach"
+            id="hero-cta-secondary"
+            aria-label="See our approach"
+            className="inline-flex items-center justify-center gap-2 
+                       rounded-full border-2 border-evren-navy-light text-evren-navy 
+                       font-heading font-semibold px-8 py-4 text-sm w-full sm:w-auto
+                       will-change-transform transition-all duration-200
+                       hover:bg-evren-navy-light hover:text-white"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+          >
+            See Our Approach
+          </motion.a>
+        </motion.div>
+
+        {/* 5. TRUST METRICS */}
+        <motion.div
+          ref={metricsRef}
+          variants={fadeSlideUp}
+          className="mt-16 pt-10 border-t border-evren-navy/10 flex flex-wrap justify-center items-center gap-8 sm:gap-16 w-full max-w-3xl"
+        >
+          {TRUST_METRICS.map((metric, i) => (
+            <div key={metric.label} className="flex items-center">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-heading font-extrabold text-evren-navy leading-none mb-2">
+                  <AnimatedCounter
+                    target={metric.value}
+                    suffix={metric.suffix}
+                    trigger={metricsInView}
+                    duration={1800}
                   />
-                </motion.a>
-
-                {/* Secondary */}
-                <motion.a
-                  href="/approach"
-                  id="hero-cta-secondary"
-                  aria-label="See our approach"
-                  className="group inline-flex items-center justify-center gap-2 
-                             rounded-full border-2 border-evren-navy-light text-evren-navy 
-                             font-heading font-semibold px-7 py-3.5 text-sm 
-                             will-change-transform transition-all duration-200
-                             hover:bg-evren-navy-light hover:text-white"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                </div>
+                <p
+                  className="text-[11px] md:text-xs font-body text-evren-medium-gray uppercase"
+                  style={{ letterSpacing: "0.12em" }}
                 >
-                  See Our Approach
-                </motion.a>
+                  {metric.label}
+                </p>
               </div>
-            </motion.div>
-          </div>{/* end right column */}
-        </div>{/* end grid */}
-
-        {/* Removed TRUST METRICS from here, moved to left column */}
+              {i < TRUST_METRICS.length - 1 && (
+                <div className="hidden sm:flex flex-col items-center gap-1.5 ml-16">
+                  <span className="block w-1 h-1 rounded-full bg-evren-peach/50" />
+                  <span className="block w-1 h-1 rounded-full bg-evren-peach/30" />
+                  <span className="block w-1 h-1 rounded-full bg-evren-peach/50" />
+                </div>
+              )}
+            </div>
+          ))}
+        </motion.div>
       </motion.div>
 
       {/* ── Bottom fade gradient ──────────────────────────────────── */}

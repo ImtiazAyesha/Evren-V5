@@ -127,6 +127,22 @@ export default function ClientTrust() {
       className="relative bg-evren-warm-white py-16 sm:py-24 md:py-36 overflow-hidden"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        {/* ── Section Header ─────────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12 sm:mb-16"
+        >
+          <span className="text-sm uppercase tracking-widest text-evren-peach font-bold mb-4 block">
+            Client Trust
+          </span>
+          <h2 className="text-3xl md:text-5xl lg:text-[2.75rem] text-evren-navy font-heading font-bold tracking-tight">
+            Loved by Visionary Leaders.
+          </h2>
+        </motion.div>
+
         {/* ═══════════════════════════════════════════════════════════════
             CONTAINERIZED TESTIMONIAL CARD
         ═══════════════════════════════════════════════════════════════ */}

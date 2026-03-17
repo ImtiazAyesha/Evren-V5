@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 // ═══════════════════════════════════════════════════════════════════════
 //  CONSTANTS
@@ -47,7 +48,7 @@ const mobileLinkVariants: Variants = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════
-//  NAVBAR COMPONENT
+//  NAVBAR COMPONENT — Glassmorphic floating pill
 // ═══════════════════════════════════════════════════════════════════════
 
 export default function Navbar() {
@@ -74,84 +75,78 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Fixed Navbar ────────────────────────────────────────────── */}
+      {/* ── Fixed Glassmorphic Navbar ──────────────────────────────── */}
       <header
         id="global-navbar"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-evren-warm-white/80 backdrop-blur-xl border-b border-evren-light-gray/60 shadow-warm"
-            : "bg-evren-warm-white/40 backdrop-blur-md border-b border-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
       >
-        <div className="mx-auto max-w-7xl flex items-center justify-between px-6 lg:px-8 py-4">
-          {/* ── Logo ── */}
-          <a
-            href="#"
-            id="navbar-logo"
-            className="relative z-50 group flex items-center"
+        {/* Outer wrapper — adds top padding when scrolled to float the pill */}
+        <div
+          className={`mx-auto max-w-7xl px-4 lg:px-6 transition-all duration-500 ${
+            scrolled ? "pt-3" : "pt-3"
+          }`}
+        >
+          {/* Inner glass pill — always glassmorphic */}
+          <div
+            className={`flex items-center justify-between px-6 lg:px-8 rounded-full border transition-all duration-500
+              backdrop-blur-2xl bg-white/50 border-evren-light-gray/30 ${
+              scrolled
+                ? "py-2.5 shadow-[0_8px_32px_-8px_rgba(27,42,74,0.10),0_0_0_1px_rgba(244,168,154,0.08)] bg-white/65"
+                : "py-3.5 shadow-[0_4px_20px_-6px_rgba(27,42,74,0.05)]"
+            }`}
           >
-            <span className="font-heading text-2xl font-bold tracking-tight text-evren-navy transition-opacity duration-200 group-hover:opacity-80">
-              Evren AI
-            </span>
-          </a>
-
-          {/* ── Desktop Navigation (Center) ── */}
-          <nav
-            id="desktop-nav"
-            className="hidden md:flex items-center space-x-8 absolute left-1/2 -translate-x-1/2"
-          >
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                id={`nav-link-${link.label.toLowerCase()}`}
-                className="group relative font-body text-sm font-medium text-evren-charcoal 
-                           hover:text-evren-navy transition-colors duration-300 py-2"
-              >
-                {link.label}
-                {/* Animated underline on hover */}
-                <span
-                  className="absolute bottom-0 left-0 h-[2px] w-0 bg-evren-peach rounded-full 
-                             transition-all duration-300 ease-out group-hover:w-full"
-                />
-              </a>
-            ))}
-          </nav>
-
-          {/* ── Desktop CTA (Right) ── */}
-          <div className="hidden md:flex items-center">
-            <motion.a
-              href="/connect"
-              id="navbar-cta"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 12px 32px -8px rgba(244, 168, 154, 0.35)",
-              }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="inline-flex items-center justify-center gap-2 rounded-full 
-                         bg-evren-peach text-evren-navy px-6 py-2.5 
-                         font-heading text-sm font-semibold shadow-warm 
-                         transition-colors duration-300"
+            {/* ── Logo ── */}
+            <a
+              href="#"
+              id="navbar-logo"
+              className="relative z-50 group flex items-center"
             >
-              Let&apos;s Talk
-              <ArrowRight
-                size={14}
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              />
-            </motion.a>
-          </div>
+              <span className="font-heading text-2xl font-bold tracking-tight text-evren-navy transition-opacity duration-200 group-hover:opacity-80">
+                Evren AI
+              </span>
+            </a>
 
-          {/* ── Mobile Hamburger ── */}
-          <button
-            id="mobile-menu-toggle"
-            className="md:hidden relative z-50 p-2 text-evren-navy transition-colors 
-                       hover:text-evren-navy-light rounded-full"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle mobile menu"
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+            {/* ── Desktop Navigation & CTA (Right) ── */}
+            <div className="hidden md:flex items-center gap-4 lg:gap-8">
+              <nav id="desktop-nav" className="flex items-center">
+                {/* Nav links pill — subtle inner container */}
+                <div className="flex items-center gap-1 bg-evren-warm-gray/40 rounded-full px-1.5 py-1">
+                  {NAV_LINKS.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      id={`nav-link-${link.label.toLowerCase()}`}
+                      className="relative font-body text-sm font-medium text-evren-charcoal 
+                                 hover:text-evren-navy transition-all duration-300 
+                                 px-4 py-2 rounded-full hover:bg-evren-peach-light/40"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </nav>
+
+              <ArrowButton
+                href="/connect"
+                id="navbar-cta"
+                variant="primary"
+                size="sm"
+              >
+                Let&apos;s Talk
+              </ArrowButton>
+            </div>
+
+            {/* ── Mobile Hamburger ── */}
+            <button
+              id="mobile-menu-toggle"
+              className="md:hidden relative z-50 p-2 text-evren-navy transition-colors 
+                         hover:text-evren-navy-light rounded-full"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -164,7 +159,7 @@ export default function Navbar() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed inset-0 z-40 bg-evren-warm-white flex flex-col"
+            className="fixed inset-0 z-40 bg-evren-warm-white/95 backdrop-blur-xl flex flex-col"
           >
             {/* Content — centered links */}
             <div className="flex-1 flex flex-col items-center justify-center px-8 pt-[72px]">
@@ -188,18 +183,16 @@ export default function Navbar() {
               </nav>
 
               {/* Mobile CTA */}
-              <motion.a
-                href="/connect"
-                onClick={() => setMobileMenuOpen(false)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45, ease: "easeOut" }}
-                className="mt-10 w-full max-w-sm inline-flex h-14 items-center justify-center 
-                           rounded-full bg-evren-peach text-evren-navy px-8 
-                           font-heading text-base font-semibold shadow-warm"
-              >
-                Let&apos;s Talk
-              </motion.a>
+              <div className="mt-10 w-full max-w-sm">
+                <ArrowButton
+                  href="/connect"
+                  variant="primary"
+                  size="lg"
+                  className="w-full justify-between"
+                >
+                  Let&apos;s Talk
+                </ArrowButton>
+              </div>
             </div>
 
             {/* Decorative bottom gradient */}

@@ -90,8 +90,8 @@
   }
 
   ::selection {
-    background: rgba(129, 216, 208, 0.28);
-    color: #000;
+    background: rgba(244, 168, 154, 0.3);
+    color: #1B2A4A;
   }
 
   /* Custom scrollbar */
@@ -100,16 +100,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #F5F0ED;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #81D8D0;
+    background: #F4A89A;
     border-radius: 99px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #5BBDB5;
+    background: #E8967E;
   }
 
   * {

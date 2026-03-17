@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 // ═══════════════════════════════════════════════════════════════════════
 //  CASE STUDY DATA
@@ -21,24 +21,26 @@ interface CaseStudy {
 
 const CASE_STUDIES: CaseStudy[] = [
   {
-    metric: "40%",
-    metricLabel: "Time Saved via Custom NLP Interface",
-    client: "McLean Reserve",
+    metric: "90%",
+    metricLabel: "Reduction in Report Analysis Time",
+    client:
+      "Revolutionizing Healthcare Access: An AI-Powered Virtual Consultation Platform",
     description:
-      "Unified 15 fragmented legacy systems into a single intelligent command center using natural language querying.",
-    tags: ["Healthcare", "Enterprise AI"],
-    image: "/images/case-study-mclean.jpg",
-    href: "/case-studies/mclean-reserve",
+      "Global telehealth innovator iSeedoc partnered with Evren AI to architect an end-to-end, HIPAA-compliant telehealth platform that automates workflows, streamlines consultations, and leverages AI to deliver intelligent, accessible, and secure healthcare.",
+    tags: ["Healthcare"],
+    image: "/case studies/case 1.webp",
+    href: "/case-studies/iseedoc-telehealth",
   },
   {
-    metric: "100%",
-    metricLabel: "Audit Readiness Achieved",
-    client: "Stratton Financial",
+    metric: "$M+",
+    metricLabel: "Cyber Risk Mitigated",
+    client:
+      "Mitigating Multi-Million Dollar Cyber Risk with Proactive AI Threat Detection",
     description:
-      "Architected a predictive compliance engine that automates regulatory reporting and flags discrepancies before they surface.",
-    tags: ["FinTech", "Regulatory AI"],
-    image: "/images/case-study-stratton.jpg",
-    href: "/case-studies/stratton-financial",
+      "For a high-growth fintech, we deployed a real-time LLM-based detection engine that analyzes and neutralizes sophisticated phishing attacks before they breach enterprise security.",
+    tags: ["Cybersecurity"],
+    image: "/case studies/case 2.webp",
+    href: "/case-studies/cybersecurity-threat-detection",
   },
 ];
 
@@ -103,7 +105,7 @@ function CaseStudyCard({
           </div>
 
           {/* Client / Project Title */}
-          <h3 className="text-2xl font-heading font-bold text-evren-navy">
+          <h3 className="text-xl sm:text-2xl font-heading font-bold text-evren-navy">
             {study.client}
           </h3>
 
@@ -125,9 +127,9 @@ export default function FeaturedWorkSection() {
   return (
     <section
       id="featured-work"
-      className="relative w-full py-24 md:py-32 bg-evren-warm-white overflow-hidden"
+      className="relative w-full py-16 sm:py-24 md:py-32 bg-evren-warm-white overflow-hidden"
     >
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Section Header ─── */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -147,13 +149,13 @@ export default function FeaturedWorkSection() {
           </div>
 
           {/* Right — CTA */}
-          <Link
+          <ArrowButton
             href="/work"
-            className="text-evren-navy font-bold flex items-center gap-2 hover:text-evren-peach transition-colors group shrink-0"
+            variant="ghost"
+            size="sm"
           >
             View All Work
-            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
+          </ArrowButton>
         </motion.div>
 
         {/* ── Case Study Grid ─── */}

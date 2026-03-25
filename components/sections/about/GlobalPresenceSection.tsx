@@ -5,10 +5,6 @@ import { motion, useInView, type Variants } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { createMap } from "svg-dotted-map";
 
-// ═══════════════════════════════════════════════════════════════════════
-//  MOTION VARIANTS
-// ═══════════════════════════════════════════════════════════════════════
-
 const SPRING = { type: "spring" as const, stiffness: 100, damping: 20 };
 
 const staggerContainer: Variants = {
@@ -29,9 +25,8 @@ const fadeSlideUp: Variants = {
 const offices = [
   {
     id: "us-hq",
-    label: "United States",
-    sublabel: "Headquarters",
-    address: "Houston, Texas",
+    label: "US",
+    address: "4407 Enchanted Spring Court, Sugar Land, TX 77479, United States",
     timezone: "CST (UTC-6)",
     flag: "🇺🇸",
     lat: 29.7604,
@@ -39,9 +34,8 @@ const offices = [
   },
   {
     id: "dubai",
-    label: "Dubai",
-    sublabel: "MENA Office",
-    address: "Business Bay, Dubai, UAE",
+    label: "UAE",
+    address: "The Meydan Hotel - Meydan Racecourse Al Meydan Road, Nad Al Sheba - Dubai - United Arab Emirates",
     timezone: "GST (UTC+4)",
     flag: "🇦🇪",
     lat: 25.2048,
@@ -160,9 +154,36 @@ export default function GlobalPresenceSection() {
 
             {/* Right — Map */}
             <div className="flex flex-col w-full relative -mt-4 lg:mt-0 lg:min-h-full">
+
+              {/* MOBILE ONLY FALLBACK - Replacing Map with List */}
+              <div className="flex lg:hidden flex-col gap-6 mt-8 w-full z-20 relative px-2">
+                {offices.map((office, idx) => (
+                  <motion.div
+                    variants={fadeSlideUp}
+                    key={`mobile-office-${idx}`}
+                    className="flex flex-row items-center gap-4 sm:gap-6 bg-evren-navy-light/10 border border-evren-navy-light/20 p-4 sm:p-5 rounded-3xl"
+                  >
+                    {/* Compact Icon */}
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-evren-peach/5 border border-evren-peach/20 flex items-center justify-center shrink-0">
+                      <MapPin size={24} className="text-evren-peach" strokeWidth={1.5} />
+                    </div>
+
+                    <div className="flex flex-col gap-1 flex-1 min-w-0">
+                      <h3 className="text-base sm:text-lg font-bold font-heading text-white tracking-wider uppercase leading-tight break-words">
+                        {office.label}
+                      </h3>
+                      <div className="flex flex-col gap-1 text-[13px] font-body text-white/80 mt-0.5">
+                        <p className="leading-[1.55] break-words">{office.address}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* DESKTOP SVG MAP (hidden on mobile) */}
               <motion.div
                 variants={fadeSlideUp}
-                className="relative w-full lg:absolute lg:w-auto left-0 lg:-top-16 lg:-bottom-16 lg:-right-16 lg:-left-8 h-[250px] lg:h-auto flex lg:items-center lg:justify-end pointer-events-none"
+                className="hidden lg:flex relative w-full lg:absolute lg:w-auto left-0 lg:-top-16 lg:-bottom-16 lg:-right-16 lg:-left-8 h-[250px] lg:h-auto items-center lg:justify-end pointer-events-none"
               >
                 <svg
                   viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
@@ -188,7 +209,7 @@ export default function GlobalPresenceSection() {
                     const pillX = -(pillWidth / 2);
 
                     return (
-                      <g key={`marker-${i}`}>
+                      <g key={`marker-${i}`} className="group cursor-pointer transform-gpu pointer-events-auto">
                         {/* Ground dot */}
                         <circle
                           cx={marker.x}
@@ -201,6 +222,7 @@ export default function GlobalPresenceSection() {
                         {/* Prominent Map Pin */}
                         <g
                           transform={`translate(${marker.x - 18}, ${marker.y - 36})`}
+                          className="transition-transform duration-300 ease-out group-hover:-translate-y-2"
                           style={{ filter: "drop-shadow(0px 8px 12px rgba(0,0,0,0.4))" }}
                         >
                           <svg
@@ -215,7 +237,10 @@ export default function GlobalPresenceSection() {
                         </g>
 
                         {/* Floating pill label */}
-                        <g transform={`translate(${marker.x}, ${marker.y - 54})`}>
+                        <g
+                          transform={`translate(${marker.x}, ${marker.y - 54})`}
+                          className="transition-transform duration-300 ease-out group-hover:-translate-y-2 group-hover:scale-[1.05]"
+                        >
                           <rect
                             x={pillX}
                             y="-13"
@@ -225,6 +250,7 @@ export default function GlobalPresenceSection() {
                             fill="#142240"
                             stroke="rgba(244,168,154,0.4)"
                             strokeWidth="1.5"
+                            className="transition-colors duration-300 group-hover:fill-evren-peach"
                             style={{ filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.5))" }}
                           />
                           <text
@@ -233,11 +259,45 @@ export default function GlobalPresenceSection() {
                             fontWeight="bold"
                             textAnchor="middle"
                             alignmentBaseline="middle"
-                            className="font-heading tracking-widest uppercase"
+                            className="font-heading tracking-widest uppercase transition-colors duration-300 group-hover:fill-evren-navy"
                           >
                             {labelText}
                           </text>
                         </g>
+
+                        {/* Rich Hover Info Box */}
+                        <foreignObject
+                          x={marker.x - 125}
+                          y={marker.y + 16}
+                          width="250"
+                          height="180"
+                          className="opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out pointer-events-none translate-y-4 group-hover:translate-y-0"
+                          style={{ overflow: "visible" }}
+                        >
+                          <div className="flex flex-col bg-white rounded-2xl shadow-[0_24px_60px_rgba(20,34,64,0.3)] p-5 border border-evren-peach/40 w-full relative">
+                            {/* Triangle pointer */}
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[14px] border-transparent border-b-evren-peach/40">
+                              <div className="absolute top-[2px] -left-[10px] w-0 h-0 border-l-[10px] border-r-[10px] border-b-[12px] border-transparent border-b-white" />
+                            </div>
+
+                            <div className="flex items-center justify-between mb-3 border-b border-evren-light-gray pb-3">
+                              <h4 className="font-heading font-extrabold text-evren-navy text-[15px] leading-tight pr-2">
+                                {offices[i].label}
+                              </h4>
+                            </div>
+
+                            <div className="space-y-3 font-body text-[13px] text-evren-charcoal/80">
+                              <p className="flex items-start gap-2.5 leading-[1.6]">
+                                <MapPin size={16} className="mt-0.5 text-evren-peach flex-shrink-0" />
+                                <span>{offices[i].address}</span>
+                              </p>
+                              <p className="flex items-center justify-between gap-2 text-evren-medium-gray pt-2.5 border-t border-evren-light-gray/50">
+                                <span className="font-bold text-[11px] uppercase tracking-wider text-evren-navy/50">Timezone</span>
+                                <span className="text-evren-peach font-mono font-bold text-xs">{offices[i].timezone}</span>
+                              </p>
+                            </div>
+                          </div>
+                        </foreignObject>
                       </g>
                     );
                   })}

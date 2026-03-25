@@ -126,7 +126,7 @@ function StepListItem({
 
       {/* Icon */}
       <motion.div
-        className={`relative flex-shrink-0 w-10 h-10 lg:w-14 lg:h-14 rounded-lg lg:rounded-2xl flex items-center justify-center
+        className={`relative flex-shrink-0 w-10 h-10 lg:w-14 lg:h-14 rounded-full flex items-center justify-center
                     transition-all duration-300
                     ${isActive ? "bg-evren-peach shadow-[0_4px_12px_rgba(244,168,154,0.3)]" : "bg-white border border-evren-navy/5"}`}
         animate={isActive ? { scale: 1.05 } : { scale: 1 }}

@@ -146,8 +146,40 @@ export default function LeadershipSection() {
               </motion.p>
             </motion.div>
 
-            {/* Signature Area */}
-            <motion.div variants={fadeSlideUp} className="mt-12 pt-8 border-t border-evren-charcoal/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            {/* Signature Area (Desktop Only) */}
+            <div className="hidden lg:flex w-full mt-auto">
+              <motion.div variants={fadeSlideUp} className="w-full mt-12 pt-8 border-t border-evren-charcoal/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                <div>
+                  <h3 className="font-heading font-extrabold text-evren-navy text-2xl tracking-tight mb-1">
+                    TARIQ MEHMOOD
+                  </h3>
+                  <p className="font-heading font-semibold text-evren-peach text-sm uppercase tracking-widest">
+                    CEO & Founder
+                  </p>
+                </div>
+                
+                <a
+                  href="https://www.linkedin.com/in/tariq-mehmood-a5b78b5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Connect with Tariq Mehmood on LinkedIn"
+                  className="inline-flex items-center gap-2.5 
+                             rounded-full bg-white border border-evren-peach/20 px-6 py-3
+                             text-evren-navy text-xs font-heading font-semibold tracking-wide
+                             transition-all duration-300 ease-out
+                             hover:bg-evren-warm-white hover:border-evren-peach/50 hover:shadow-lg hover:shadow-evren-peach/10
+                             hover:-translate-y-0.5 w-fit"
+                >
+                  <Linkedin size={16} className="text-evren-navy" />
+                  <span>Connect on LinkedIn</span>
+                </a>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* ── Mobile Signature Area (After Portrait) ────────────────── */}
+          <div className="flex lg:hidden col-span-1 order-3 w-full">
+            <motion.div variants={fadeSlideUp} className="w-full pt-8 border-t border-evren-charcoal/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div>
                 <h3 className="font-heading font-extrabold text-evren-navy text-2xl tracking-tight mb-1">
                   TARIQ MEHMOOD

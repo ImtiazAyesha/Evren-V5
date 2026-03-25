@@ -1,244 +1,394 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView, type Variants } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
+import { Handshake, Brain, BookOpen, Rocket, Heart, ArrowRight } from "lucide-react";
 
-// ─── MOTION ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+//  MOTION VARIANTS
+// ═══════════════════════════════════════════════════════════════════════
+
 const SPRING = { type: "spring" as const, stiffness: 100, damping: 20 };
 
-const stagger: Variants = {
+const staggerContainer: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 };
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { ...SPRING } },
+const fadeSlideUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { ...SPRING, duration: 0.6 } },
 };
 
-// ─── CUSTOM LINE-ART ICONS (Navy stroke, Peach blob background) ─────
+// ─── GLOBAL COLOR TOKENS ─────────────────────────────────────────────
+// Active card:   dark navy bg, cream media, peach title, white desc, peach arrow
+// Inactive card: peach bg, cream media, dark title, dark desc, white arrow + dark icon
+const ACTIVE = {
+  bg: "#1B2A4A",
+  titleColor: "#F4A89A",
+  descColor: "rgba(255,255,255,0.72)",
+  arrowBg: "#F4A89A",
+  arrowIcon: "#1B2A4A",
+};
+const INACTIVE = {
+  bg: "#F4A89A",
+  titleColor: "#1B2A4A",
+  descColor: "rgba(27,42,74,0.72)",
+  arrowBg: "rgba(255,255,255,0.9)",
+  arrowIcon: "#1B2A4A",
+};
 
-interface ValueIconProps {
-  className?: string;
-}
-
-function PartnershipIcon({ className }: ValueIconProps) {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden="true">
-      {/* Peach blob */}
-      <ellipse cx="24" cy="24" rx="20" ry="19" fill="#FDE8E4" />
-      {/* Handshake line art */}
-      <path
-        d="M14 26l4-4 3 1.5 4-3.5 5 2 4-4"
-        stroke="#1B2A4A"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M12 22h4l3 2 4-3 5 2 4-3h4"
-        stroke="#1B2A4A"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="18" cy="18" r="2.5" stroke="#1B2A4A" strokeWidth="1.4" fill="none" />
-      <circle cx="30" cy="18" r="2.5" stroke="#1B2A4A" strokeWidth="1.4" fill="none" />
-    </svg>
-  );
-}
-
-function IntelligentIcon({ className }: ValueIconProps) {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden="true">
-      <ellipse cx="24" cy="24" rx="20" ry="19" fill="#FDE8E4" />
-      {/* Brain / neural nodes */}
-      <circle cx="24" cy="16" r="2" stroke="#1B2A4A" strokeWidth="1.4" fill="none" />
-      <circle cx="17" cy="24" r="2" stroke="#1B2A4A" strokeWidth="1.4" fill="none" />
-      <circle cx="31" cy="24" r="2" stroke="#1B2A4A" strokeWidth="1.4" fill="none" />
-      <circle cx="20" cy="32" r="2" stroke="#1B2A4A" strokeWidth="1.4" fill="none" />
-      <circle cx="28" cy="32" r="2" stroke="#1B2A4A" strokeWidth="1.4" fill="none" />
-      <path
-        d="M24 18v0 M22.5 17l-3.7 5.3 M25.5 17l3.7 5.3 M18.8 25.5l1.8 4.8 M29.2 25.5l-1.8 4.8 M22 32h4"
-        stroke="#1B2A4A"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function KnowledgeIcon({ className }: ValueIconProps) {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden="true">
-      <ellipse cx="24" cy="24" rx="20" ry="19" fill="#FDE8E4" />
-      {/* Book / transfer */}
-      <rect x="14" y="16" width="20" height="16" rx="2" stroke="#1B2A4A" strokeWidth="1.5" fill="none" />
-      <path d="M24 16v16" stroke="#1B2A4A" strokeWidth="1.3" />
-      <path d="M14 20h10M24 20h10" stroke="#1B2A4A" strokeWidth="1.3" strokeLinecap="round" />
-      <path
-        d="M19 25l2 2 2-2M27 27l2-2 2 2"
-        stroke="#1B2A4A"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ExpandingIcon({ className }: ValueIconProps) {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden="true">
-      <ellipse cx="24" cy="24" rx="20" ry="19" fill="#FDE8E4" />
-      {/* Expanding arrows */}
-      <path
-        d="M24 14v20M14 24h20"
-        stroke="#1B2A4A"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M20 18l4-4 4 4M28 20l4 4-4 4M20 28l-4-4 4-4M28 30l-4 4-4-4"
-        stroke="#1B2A4A"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function HumanCenteredIcon({ className }: ValueIconProps) {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden="true">
-      <ellipse cx="24" cy="24" rx="20" ry="19" fill="#FDE8E4" />
-      {/* Person + heart craft */}
-      <circle cx="24" cy="17" r="3.5" stroke="#1B2A4A" strokeWidth="1.5" fill="none" />
-      <path
-        d="M17 33c0-3.866 3.134-7 7-7s7 3.134 7 7"
-        stroke="#1B2A4A"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M24 28l-1.2-1.1C21.1 25.4 20 24.4 20 23.2c0-1 .8-1.8 1.8-1.8.6 0 1.1.3 1.4.7.3-.4.9-.7 1.4-.7 1 0 1.8.8 1.8 1.8 0 1.2-1.1 2.2-2.8 3.7L24 28Z"
-        stroke="#1B2A4A"
-        strokeWidth="1"
-        fill="none"
-      />
-    </svg>
-  );
-}
-
-// ─── VALUES DATA ────────────────────────────────────────────────────
+// ─── VALUES DATA ─────────────────────────────────────────────────────
 const values = [
   {
     title: "Partnership First",
     description:
       "We don't build for clients. We build with them. Every engagement begins and ends with shared ownership.",
-    icon: PartnershipIcon,
+    icon: Handshake,
+    video: "/Illustrations/Partnership.mp4",
   },
   {
     title: "Intelligent by Design",
     description:
       "AI isn't bolted on—it's woven into the architecture from day one. Every system we ship thinks before it acts.",
-    icon: IntelligentIcon,
+    icon: Brain,
+    video: "/Illustrations/Intelligence.mp4",
   },
   {
     title: "Knowledge Transfer",
     description:
       "We leave your team smarter than we found it. Documentation, training, and empowerment are non-negotiable deliverables.",
-    icon: KnowledgeIcon,
+    icon: BookOpen,
+    video: "/Illustrations/Knowledge.mp4",
   },
   {
     title: "Always Expanding",
     description:
       "Complacency is the enemy. We invest relentlessly in new tools, frameworks, and methodologies so our partners never fall behind.",
-    icon: ExpandingIcon,
+    icon: Rocket,
+    video: "/Illustrations/Expanding.mp4",
   },
   {
     title: "Human-Centered Craft",
     description:
       "Great technology disappears into the experience. We obsess over the details that make complex systems feel effortless.",
-    icon: HumanCenteredIcon,
+    icon: Heart,
+    video: "/Illustrations/Human Crafted.mp4",
   },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════
-//  CORE VALUES — 5 values with line-art icons, clean scroll reveal
+//  CORE VALUES — Split left-panel + coverflow carousel
 // ═══════════════════════════════════════════════════════════════════════
 
 export default function CoreValuesSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+
+  const [current, setCurrent] = useState(0);
+  // One ref slot per card (null for non-video cards)
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([null, null, null, null, null]);
+
+  const goTo = (idx: number) => setCurrent((idx + values.length) % values.length);
+
+  // Play active card's video; pause all others
+  useEffect(() => {
+    videoRefs.current.forEach((video, idx) => {
+      if (!video) return;
+      if (idx === current) {
+        video.currentTime = 0;
+        video.play().catch(() => { });
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }, [current]);
+
+  const active = values[current];
+  const ActiveIcon = active.icon;
 
   return (
     <section
+      ref={sectionRef}
       id="core-values"
-      className="relative w-full bg-evren-warm-white py-24 lg:py-32 overflow-hidden"
+      className="relative w-full overflow-hidden bg-evren-warm-white py-16 lg:py-24"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      {/* ── Background orb ──────────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+          style={{
+            background: "radial-gradient(circle, rgba(244,168,154,0.07) 0%, transparent 60%)",
+            filter: "blur(60px)",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
-          ref={sectionRef}
-          variants={stagger}
+          variants={staggerContainer}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
+          className="flex flex-col items-center gap-0"
         >
-          {/* ── Header ────────────────────────────────────────────── */}
-          <div className="text-center mb-14 lg:mb-18">
+          {/* ══ HEADER — centered ═══════════════════════════════ */}
+          <div className="text-center mb-10 flex flex-col items-center gap-5">
+            {/* Badge */}
             <motion.div
-              variants={fadeUp}
-              className="inline-flex items-center gap-2 rounded-full bg-evren-peach-light px-4 py-2 mb-5"
+              variants={fadeSlideUp}
+              className="inline-flex items-center gap-2.5 rounded-full
+                         bg-evren-peach-light/60 border border-evren-peach/20 px-5 py-2"
             >
-              <span className="text-[12px] font-heading font-semibold text-evren-navy tracking-widest uppercase">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
+              </span>
+              <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
                 What We Stand For
               </span>
             </motion.div>
 
-            <motion.h2
-              variants={fadeUp}
-              className="font-heading font-extrabold text-evren-navy text-3xl sm:text-4xl lg:text-5xl leading-[1.1] -tracking-tight mb-5"
-            >
-              Five principles.<br className="hidden md:block" /> Zero compromise.
-            </motion.h2>
-
-            <motion.p
-              variants={fadeUp}
-              className="font-body text-evren-medium-gray text-lg max-w-xl mx-auto leading-relaxed"
-            >
-              These aren&rsquo;t aspirational posters—they&rsquo;re the operating
-              system behind every decision we make.
-            </motion.p>
-          </div>
-
-          {/* ── 5-column grid (3/2 on smaller) ────────────────────── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-5">
-            {values.map((value, i) => {
-              const Icon = value.icon;
-              return (
-                <motion.div
-                  key={value.title}
-                  variants={fadeUp}
-                  className="flex flex-col items-center text-center bg-evren-warm-gray rounded-studio p-6 lg:p-7
-                             transition-all duration-300 hover:shadow-warm"
+            {/* Dynamic headline */}
+            <motion.div variants={fadeSlideUp} className="pb-3">
+              <AnimatePresence mode="wait">
+                <motion.h2
+                  key={current}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="font-heading font-extrabold text-evren-navy
+                             text-4xl sm:text-5xl lg:text-6xl
+                             leading-[1.05] -tracking-tight"
                 >
-                  {/* Icon with peach blob bg */}
-                  <div className="w-16 h-16 mb-5">
-                    <Icon className="w-full h-full" />
-                  </div>
+                  {active.title.split(" ").map((word, wi, arr) =>
+                    wi === arr.length - 1 ? (
+                      <span key={wi} className="relative inline-block">
+                        {word}
+                        <svg
+                          className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[8px] md:h-[12px]"
+                          viewBox="0 0 120 12"
+                          fill="none"
+                          preserveAspectRatio="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M0 6 Q 10 0, 20 6 T 40 6 T 60 6 T 80 6 T 100 6 T 120 6"
+                            stroke="#F4A89A"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            fill="none"
+                            opacity="0.6"
+                          />
+                        </svg>
+                      </span>
+                    ) : (
+                      <span key={wi}>{word} </span>
+                    )
+                  )}
+                </motion.h2>
+              </AnimatePresence>
+            </motion.div>
 
-                  <h3 className="font-heading font-bold text-evren-navy text-base lg:text-lg mb-2 -tracking-tight">
-                    {value.title}
-                  </h3>
+            {/* Dynamic description */}
+            <motion.div variants={fadeSlideUp} className="overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={current}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.25, delay: 0.05 }}
+                  className="font-body text-evren-charcoal/60 text-base md:text-lg leading-relaxed max-w-xl mx-auto"
+                  style={{ lineHeight: 1.7 }}
+                >
+                  {active.description}
+                </motion.p>
+              </AnimatePresence>
+            </motion.div>
 
-                  <p className="font-body text-evren-medium-gray text-sm leading-relaxed">
-                    {value.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+
           </div>
+
+          {/* ══════════════════════════════════════════════════════
+              RIGHT — Coverflow carousel
+          ══════════════════════════════════════════════════════ */}
+          <motion.div variants={fadeSlideUp}>
+            <div
+              className="relative flex items-center justify-center"
+              style={{ height: "420px" }}
+            >
+              {values.map((value, i) => {
+                const Icon = value.icon;
+                const offset = i - current;
+                // Wrap offset to range [-2, 2]
+                const wrapped =
+                  offset > values.length / 2
+                    ? offset - values.length
+                    : offset < -values.length / 2
+                      ? offset + values.length
+                      : offset;
+
+                const isActive = wrapped === 0;
+                const isVisible = Math.abs(wrapped) <= 2;
+
+                if (!isVisible) return null;
+
+                // Position & style based on distance from center
+                const xOffset = wrapped * 155;
+                const scale = isActive ? 1 : 1 - Math.abs(wrapped) * 0.1;
+                const opacity = isActive ? 1 : 1 - Math.abs(wrapped) * 0.3;
+                const zIndex = 10 - Math.abs(wrapped);
+                // Outermost cards (±2) mirror the active navy scheme; ±1 use peach
+                const colors = isActive || Math.abs(wrapped) === 2 ? ACTIVE : INACTIVE;
+
+                return (
+                  <motion.div
+                    key={value.title}
+                    className="absolute cursor-pointer"
+                    style={{ zIndex }}
+                    animate={{
+                      x: xOffset,
+                      scale,
+                      opacity,
+                    }}
+                    transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                    onClick={() => goTo(i)}
+                  >
+                    {isActive ? (
+                      /* ── Active: full expanded card ── */
+                      <div
+                        className="rounded-3xl overflow-hidden"
+                        style={{
+                          width: "240px",
+                          background: ACTIVE.bg,
+                          boxShadow: "0 32px 80px -12px rgba(0,0,0,0.3)",
+                        }}
+                      >
+                        {/* Media */}
+                        {value.video ? (
+                          <div className="mx-4 mt-4 rounded-2xl overflow-hidden">
+                            <video
+                              ref={(el) => { videoRefs.current[i] = el; }}
+                              src={value.video}
+                              loop
+                              muted
+                              playsInline
+                              className="w-full object-cover"
+                              style={{ display: "block", aspectRatio: "4/3" }}
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className="mx-4 mt-4 rounded-2xl flex items-center justify-center"
+                            style={{ background: "#F5F0EB", aspectRatio: "4/3" }}
+                          >
+                            <Icon size={64} strokeWidth={1.1} color="#1B2A4A" />
+                          </div>
+                        )}
+
+                        {/* Text + arrow */}
+                        <div className="px-5 pt-4 pb-5">
+                          <h3
+                            className="font-heading font-bold text-lg leading-tight mb-2"
+                            style={{ color: ACTIVE.titleColor }}
+                          >
+                            {value.title}
+                          </h3>
+                          <p
+                            className="font-body text-[12px] mb-4"
+                            style={{ color: ACTIVE.descColor, lineHeight: 1.6 }}
+                          >
+                            {value.description}
+                          </p>
+                          {/* Arrow button */}
+                          <div className="flex justify-end">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); goTo(current + 1); }}
+                              className="w-9 h-9 rounded-full flex items-center justify-center transition-opacity duration-200 hover:opacity-80"
+                              style={{ background: ACTIVE.arrowBg }}
+                              aria-label="Next principle"
+                            >
+                              <ArrowRight size={15} color={ACTIVE.arrowIcon} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* ── Inactive: real card, scaled+faded by parent ── */
+                      <div
+                        className="rounded-3xl overflow-hidden"
+                        style={{
+                          width: "200px",
+                          background: colors.bg,
+                          boxShadow: "0 10px 30px -8px rgba(0,0,0,0.18)",
+                        }}
+                      >
+                        {/* Media — video cards show actual video first-frame; icon cards show icon */}
+                        {value.video ? (
+                          <div className="mx-3 mt-3 rounded-2xl overflow-hidden">
+                            <video
+                              ref={(el) => { videoRefs.current[i] = el; }}
+                              src={value.video}
+                              muted
+                              playsInline
+                              preload="metadata"
+                              className="w-full object-cover"
+                              style={{ display: "block", aspectRatio: "4/3" }}
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className="mx-3 mt-3 rounded-2xl flex items-center justify-center"
+                            style={{ background: "#F5F0EB", aspectRatio: "4/3" }}
+                          >
+                            <Icon size={48} strokeWidth={1.2} color="#1B2A4A" />
+                          </div>
+                        )}
+
+                        {/* Text */}
+                        <div className="px-4 pt-3 pb-5">
+                          <h3
+                            className="font-heading font-bold text-base leading-tight mb-1.5"
+                            style={{ color: colors.titleColor }}
+                          >
+                            {value.title}
+                          </h3>
+                          <p
+                            className="font-body text-[11px]"
+                            style={{ color: colors.descColor, lineHeight: 1.55 }}
+                          >
+                            {value.description}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* Dot pagination — below carousel */}
+          <motion.div variants={fadeSlideUp} className="flex items-center justify-center gap-2.5 mt-8">
+            {values.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`Go to principle ${i + 1}`}
+              >
+                <span
+                  className="block rounded-full transition-all duration-300"
+                  style={{
+                    width: i === current ? "32px" : "8px",
+                    height: "8px",
+                    background: i === current ? "#F4A89A" : "rgba(27,42,74,0.18)",
+                  }}
+                />
+              </button>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </section>

@@ -49,7 +49,7 @@ export default function Footer() {
   return (
     <footer>
       {/* ─── Part A: Immersive Asymmetric CTA ─── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 -mb-28">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-28">
         <motion.div
           ref={ctaRef}
           initial={{ scale: 0.94, opacity: 0, y: 40 }}
@@ -102,9 +102,9 @@ export default function Footer() {
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="inline-flex items-center gap-2 mb-8 self-start"
               >
-                <span className="flex items-center gap-2 rounded-full bg-white/[0.08] border border-white/[0.1] px-4 py-1.5">
-                  <Sparkles size={13} className="text-evren-peach" />
-                  <span className="text-[11px] font-heading font-semibold text-white/70 uppercase tracking-wider">
+                <span className="flex items-center gap-2 sm:gap-3 rounded-full bg-white/[0.08] border border-white/[0.1] px-3.5 py-1.5 sm:px-4">
+                  <Sparkles size={13} className="text-evren-peach shrink-0" />
+                  <span className="text-[9.5px] sm:text-[11px] font-heading font-semibold text-white/70 uppercase tracking-wider text-left leading-tight">
                     Ready to build something extraordinary?
                   </span>
                 </span>
@@ -124,8 +124,35 @@ export default function Footer() {
                   Let&apos;s{" "}
                   <span className="relative inline-block">
                     <span className="relative z-10">talk.</span>
-                    {/* Peach underline accent */}
-                    <span className="absolute bottom-1 left-0 right-0 h-3 bg-evren-peach/30 rounded-full -z-0" />
+                    {/* Curly underline effect */}
+                    <svg
+                      className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[14px] text-evren-peach pointer-events-none z-0"
+                      viewBox="0 0 200 12"
+                      preserveAspectRatio="none"
+                      aria-hidden="true"
+                    >
+                      <motion.g
+                        initial={{ opacity: 0 }}
+                        animate={ctaInView ? { opacity: 1 } : {}}
+                        transition={{ delay: 0.8, duration: 0.8 }}
+                      >
+                        <animateTransform 
+                          attributeName="transform" 
+                          type="translate" 
+                          from="-64 0" 
+                          to="0 0" 
+                          dur="3s" 
+                          repeatCount="indefinite" 
+                        />
+                        <path
+                          d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"
+                          stroke="currentColor"
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          fill="none"
+                        />
+                      </motion.g>
+                    </svg>
                   </span>
                 </span>
               </motion.h2>
@@ -137,19 +164,19 @@ export default function Footer() {
                 className="text-base md:text-lg text-white/50 font-body max-w-lg mt-6 leading-relaxed"
               >
                 Partner with the studio that embeds intelligence from day one.
-                Stop experimenting — start scaling.
+                Stop experimenting start scaling.
               </motion.p>
             </div>
 
             {/* Right column — Action zone */}
             <div className="lg:col-span-5 flex flex-col justify-center items-start lg:items-center p-6 sm:p-10 md:p-14 lg:p-16 lg:border-l border-white/[0.06]">
               {/* Primary CTA — large, unmissable */}
-              <div className="w-full max-w-sm space-y-5">
+              <div className="w-full max-w-sm space-y-4 sm:space-y-5">
                 <ArrowButton
                   href="/connect"
-                  variant="dark"
+                  variant="primary"
                   size="lg"
-                  className="w-full justify-between text-lg"
+                  className="w-full justify-between text-[14px] sm:text-base whitespace-nowrap"
                 >
                   Book a Free Consultation
                 </ArrowButton>
@@ -162,49 +189,17 @@ export default function Footer() {
                   transition={{ delay: 0.6, duration: 0.5 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group flex items-center justify-between gap-4 w-full border border-white/[0.12] text-white/80 hover:text-white hover:border-white/25 font-heading font-semibold text-base px-8 py-4 rounded-2xl cursor-pointer transition-all duration-300"
+                  className="group flex items-center justify-between gap-3 sm:gap-4 w-full border border-white/[0.12] text-white/80 hover:text-white hover:border-white/25 font-heading font-semibold text-[13px] sm:text-base px-5 sm:px-8 py-3.5 sm:py-4 rounded-full cursor-pointer transition-all duration-300"
                 >
-                  <span className="flex items-center gap-3">
-                    <Mail size={16} className="text-evren-peach/70" />
+                  <span className="flex items-center gap-2 sm:gap-3 whitespace-nowrap">
+                    <Mail size={16} className="text-evren-peach/70 shrink-0" />
                     hello@evrenai.com
                   </span>
                   <ArrowUpRight
                     size={16}
-                    className="text-white/40 group-hover:text-white/70 transition-colors"
+                    className="text-white/40 group-hover:text-white/70 transition-colors shrink-0"
                   />
                 </motion.a>
-
-                {/* Micro social proof */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={ctaInView ? { opacity: 1 } : {}}
-                  transition={{ delay: 0.7, duration: 0.5 }}
-                  className="flex items-center gap-3 pt-2"
-                >
-                  {/* Stacked avatars */}
-                  <div className="flex -space-x-2.5">
-                    {["MR", "SK", "OR"].map((initials, idx) => (
-                      <div
-                        key={initials}
-                        className="w-8 h-8 rounded-full border-2 border-evren-navy flex items-center justify-center text-[9px] font-heading font-bold text-white/70"
-                        style={{
-                          background: [
-                            "rgba(244, 168, 154, 0.3)",
-                            "rgba(212, 165, 116, 0.3)",
-                            "rgba(232, 150, 126, 0.3)",
-                          ][idx],
-                          zIndex: 3 - idx,
-                        }}
-                      >
-                        {initials}
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-[12px] text-white/40 font-body leading-tight">
-                    Trusted by <span className="text-white/60 font-semibold">50+ teams</span>{" "}
-                    worldwide
-                  </p>
-                </motion.div>
               </div>
             </div>
           </div>
@@ -212,9 +207,9 @@ export default function Footer() {
       </div>
 
       {/* ─── Part B: Main Footer ─── */}
-      <div className="bg-evren-warm-white pt-36 sm:pt-44 pb-12 px-4 sm:px-6">
+      <div className="bg-evren-warm-white border-t border-evren-navy/10 pt-16 sm:pt-24 pb-6 sm:pb-8 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 md:gap-8 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 md:gap-8 mb-10 sm:mb-12">
             {/* Col 1 — Brand */}
             <div className="md:col-span-2">
               <h3 className="text-3xl md:text-4xl font-bold font-heading text-evren-navy mb-3">
@@ -304,7 +299,7 @@ export default function Footer() {
           </div>
 
           {/* ─── Bottom Bar: Copyright + Legal ─── */}
-          <div className="h-px bg-evren-medium-gray/15 mb-8" />
+          <div className="h-px bg-evren-medium-gray/15 mb-4 sm:mb-6" />
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-evren-medium-gray/70 font-body">
               &copy; 2026 Evren AI. All rights reserved.

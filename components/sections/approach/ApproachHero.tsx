@@ -8,24 +8,60 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════════════════
-//  MOTION
+//  MOTION VARIANTS
 // ═══════════════════════════════════════════════════════════════════════
 
-const stagger: Variants = {
+const SPRING = { type: "spring" as const, stiffness: 100, damping: 20 };
+
+const staggerContainer: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.06 },
+  },
 };
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
+const fadeSlideUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 90, damping: 18, duration: 0.7 },
+    transition: { ...SPRING, duration: 0.6 },
   },
 };
+
+const wordReveal: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 120, damping: 20 },
+  },
+};
+
+
+
+// ═══════════════════════════════════════════════════════════════════════
+//  HEADLINE — Word-by-word reveal (matching Hero.tsx & AboutHero)
+// ═══════════════════════════════════════════════════════════════════════
+
+const HEADLINE_LINES: {
+  words: { text: string; decorated?: boolean; secondary?: boolean }[];
+}[] = [
+  {
+    words: [{ text: "Built to Scale. " }],
+  },
+  {
+    words: [
+      { text: "Designed to ", secondary: true },
+      { text: "Think.", decorated: true, secondary: true },
+    ],
+  },
+];
+
+
 
 // ═══════════════════════════════════════════════════════════════════════
 //  APPROACH HERO
@@ -34,7 +70,8 @@ const fadeUp: Variants = {
 export default function ApproachHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(contentRef, { once: true, margin: "-80px" });
+
+  const isInView = useInView(contentRef, { once: true, margin: "-60px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -42,124 +79,215 @@ export default function ApproachHero() {
   });
 
   const contentY = useTransform(scrollYProgress, [0, 0.5], [0, 30]);
-  const orbY1 = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const orbY2 = useTransform(scrollYProgress, [0, 1], [-20, 35]);
 
   return (
     <section
       ref={sectionRef}
       id="approach-hero"
-      aria-label="Approach Hero"
+      aria-label="Our Approach"
       className="relative w-full overflow-hidden bg-evren-warm-white"
       style={{ minHeight: "600px" }}
     >
-      {/* ── Decorative orbs ──────────────────────────────────────── */}
-      <motion.div
-        className="absolute top-[-10%] right-[-8%] w-[550px] h-[550px] rounded-full pointer-events-none z-0"
-        style={{
-          y: orbY1,
-          background:
-            "radial-gradient(circle, rgba(244, 168, 154, 0.12) 0%, transparent 70%)",
-          filter: "blur(100px)",
-        }}
-      />
-      <motion.div
-        className="absolute bottom-[-12%] left-[-6%] w-[500px] h-[500px] rounded-full pointer-events-none z-0"
-        style={{
-          y: orbY2,
-          background:
-            "radial-gradient(circle, rgba(27, 42, 74, 0.06) 0%, transparent 70%)",
-          filter: "blur(100px)",
-        }}
-      />
-
-      {/* ── Subtle blueprint grid ────────────────────────────────── */}
-      <div
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundSize: "48px 48px",
-          backgroundImage:
-            "linear-gradient(to right, rgba(27, 42, 74, 0.025) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.025) 1px, transparent 1px)",
-          maskImage:
-            "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 100%)",
-        }}
-      />
-
-      {/* ── Content ──────────────────────────────────────────────── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-28 lg:py-40">
-        <div className="flex items-center justify-center">
-          <motion.div
-            ref={contentRef}
-            className="w-full max-w-4xl flex flex-col items-center text-center"
-            style={{ y: contentY }}
-            variants={stagger}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-          >
-            {/* Eyebrow */}
-            <motion.p
-              variants={fadeUp}
-              className="text-sm uppercase tracking-[0.25em] text-evren-peach font-bold font-heading mb-6"
-            >
-              Our Approach
-            </motion.p>
-
-            {/* H1 */}
-            <motion.h1
-              variants={fadeUp}
-              className="font-heading font-extrabold text-evren-navy
-                         text-5xl md:text-6xl lg:text-[72px] leading-[1.08] -tracking-tight mb-8"
-            >
-              Built to Scale.{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10">Designed to Think.</span>
-                {/* Wavy line decoration */}
-                <svg
-                  className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[14px]"
-                  viewBox="0 0 200 12"
-                  fill="none"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M0 6 Q 16 0, 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 200 6"
-                    stroke="#F4A89A"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    fill="none"
-                    opacity="0.7"
-                  />
-                </svg>
-              </span>
-            </motion.h1>
-
-            {/* Sub-headline — 2 lines */}
-            <motion.p
-              variants={fadeUp}
-              className="font-body text-evren-charcoal text-lg md:text-xl
-                         leading-relaxed max-w-2xl mx-auto mb-12"
-              style={{ lineHeight: 1.65 }}
-            >
-              We bridge the gap between high-level innovation and hardened,
-              scalable production code. Every system we architect is built to
-              evolve—infusing enterprise-grade AI into the core of your product,
-              not bolted on as an afterthought.
-            </motion.p>
-
-            {/* Decorative divider */}
-            <motion.div
-              variants={fadeUp}
-              className="flex items-center gap-4"
-            >
-              <span className="block w-12 h-px bg-evren-peach/50" />
-              <span className="block w-2 h-2 rounded-full bg-evren-peach" />
-              <span className="block w-12 h-px bg-evren-peach/50" />
-            </motion.div>
-          </motion.div>
-        </div>
+      {/* ── Animated gradient mesh blobs (4-blob system) ──────────── */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Peach blob — top-left */}
+        <div
+          className="absolute -top-[10%] -left-[8%] w-[700px] h-[700px] rounded-full mesh-blob"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(244, 168, 154, 0.22) 0%, rgba(244, 168, 154, 0.07) 40%, transparent 70%)",
+            filter: "blur(40px)",
+          }}
+        />
+        {/* Rose blob — center-right */}
+        <div
+          className="absolute top-[0%] -right-[5%] w-[600px] h-[600px] rounded-full mesh-blob-2"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(232, 150, 126, 0.18) 0%, rgba(232, 150, 126, 0.05) 45%, transparent 70%)",
+            filter: "blur(35px)",
+          }}
+        />
+        {/* Gold blob — bottom-center */}
+        <div
+          className="absolute -bottom-[8%] left-[15%] w-[650px] h-[650px] rounded-full mesh-blob"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(212, 165, 116, 0.16) 0%, rgba(212, 165, 116, 0.04) 40%, transparent 70%)",
+            filter: "blur(45px)",
+            animationDelay: "-6s",
+          }}
+        />
+        {/* Navy tint blob — top-right */}
+        <div
+          className="absolute top-[25%] right-[10%] w-[500px] h-[500px] rounded-full mesh-blob-2"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(27, 42, 74, 0.05) 0%, rgba(27, 42, 74, 0.01) 50%, transparent 70%)",
+            filter: "blur(30px)",
+            animationDelay: "-10s",
+          }}
+        />
       </div>
+
+      {/* ────────────────────────────────────────────────────────────
+          CONTENT — Centered layout (matching Hero.tsx)
+      ──────────────────────────────────────────────────────────── */}
+      <motion.div
+        ref={contentRef}
+        className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32 flex flex-col items-center text-center group"
+        style={{ y: contentY }}
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      >
+        {/* ── Circular Blueprint grid surrounding content ── */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[120vw] h-[120vw] max-w-[1400px] max-h-[1400px] pointer-events-none z-[-1] transition-opacity duration-700 opacity-60 group-hover:opacity-90">
+          <div
+            className="absolute inset-0 transition-transform duration-1000 group-hover:scale-[1.03]"
+            style={{
+              backgroundSize: "40px 40px",
+              backgroundImage:
+                "linear-gradient(to right, rgba(27, 42, 74, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.18) 1px, transparent 1px)",
+              maskImage:
+                "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
+              WebkitMaskImage:
+                "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
+            }}
+          />
+        </div>
+
+        {/* 1. BADGE — with live pulse (matching Hero & AboutHero) */}
+        <motion.div
+          variants={fadeSlideUp}
+          className="mb-8 inline-flex items-center gap-2.5
+                     rounded-full bg-evren-peach-light/60 border border-evren-peach/20
+                     px-5 py-2"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
+          </span>
+          <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
+            The Methodology
+          </span>
+        </motion.div>
+
+        {/* 2. HEADLINE — word-by-word stagger reveal */}
+        <motion.h1
+          className="font-heading font-extrabold text-evren-navy
+                     text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] -tracking-tight max-w-4xl"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+            },
+          }}
+        >
+          {HEADLINE_LINES.map((line, lineIdx) => (
+            <span key={lineIdx} className="block">
+              {line.words.map((word) =>
+                word.decorated ? (
+                  <motion.span
+                    key={word.text}
+                    className={`relative inline-block ${word.secondary ? 'text-evren-medium-gray' : ''}`}
+                    variants={wordReveal}
+                  >
+                    <span className="relative z-10">{word.text}</span>
+                    {/* Animated wavy underline — peach */}
+                    <svg
+                      className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[14px]"
+                      viewBox="0 0 200 12"
+                      fill="none"
+                      preserveAspectRatio="none"
+                      aria-hidden="true"
+                    >
+                      <g>
+                        <animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="3s" repeatCount="indefinite" />
+                        <path
+                          d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"
+                          stroke="#F4A89A"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          fill="none"
+                          opacity="0.7"
+                        />
+                      </g>
+                    </svg>
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key={word.text}
+                    className={`inline-block whitespace-pre ${word.secondary ? 'text-evren-medium-gray' : ''}`}
+                    variants={wordReveal}
+                  >
+                    {word.text}
+                  </motion.span>
+                )
+              )}
+            </span>
+          ))}
+          <span className="sr-only">
+            Built to Scale. Designed to Think.
+          </span>
+        </motion.h1>
+
+        {/* 3. BODY COPY — outcome narrative */}
+        <motion.div variants={fadeSlideUp} className="mt-8 max-w-2xl mx-auto">
+          <p
+            className="font-body text-evren-charcoal text-base md:text-lg lg:text-xl leading-relaxed"
+            style={{ lineHeight: 1.7 }}
+          >
+            From architecture to deployment, intelligence is woven into every
+            layer of our process. We don&rsquo;t retrofit AI — we start with
+            it. The result? Products that think, adapt, and scale from day one.
+          </p>
+        </motion.div>
+
+        {/* 4. CTA BUTTONS */}
+        <motion.div
+          variants={fadeSlideUp}
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
+        >
+          <motion.a
+            href="/connect"
+            id="approach-hero-cta"
+            aria-label="Book a strategy call with Evren AI"
+            className="inline-flex items-center justify-center gap-2
+                       rounded-full bg-evren-peach text-evren-navy font-heading font-semibold
+                       px-8 py-4 text-sm w-full sm:w-auto will-change-transform
+                       transition-all duration-200"
+            whileHover={{
+              scale: 1.04,
+              boxShadow: "0 16px 40px -8px rgba(244, 168, 154, 0.4)",
+            }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+          >
+            Book a Strategy Call
+            <ArrowUpRight
+              size={16}
+              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+            />
+          </motion.a>
+
+          <motion.a
+            href="/work"
+            id="approach-hero-cta-secondary"
+            aria-label="See our work"
+            className="inline-flex items-center justify-center gap-2
+                       rounded-full border-2 border-evren-navy-light text-evren-navy
+                       font-heading font-semibold px-8 py-4 text-sm w-full sm:w-auto
+                       will-change-transform transition-all duration-200
+                       hover:bg-evren-navy-light hover:text-white"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+          >
+            See Our Work
+          </motion.a>
+        </motion.div>
+      </motion.div>
 
       {/* ── Bottom fade gradient ─────────────────────────────────── */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-evren-warm-white to-transparent z-[5] pointer-events-none" />

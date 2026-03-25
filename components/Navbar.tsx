@@ -75,78 +75,66 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Fixed Glassmorphic Navbar ──────────────────────────────── */}
+      {/* ── Fixed Full-Width Navbar ──────────────────────────────── */}
       <header
         id="global-navbar"
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-      >
-        {/* Outer wrapper — adds top padding when scrolled to float the pill */}
-        <div
-          className={`mx-auto max-w-7xl px-4 lg:px-6 transition-all duration-500 ${
-            scrolled ? "pt-3" : "pt-3"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled
+          ? "py-4 bg-white/85 backdrop-blur-2xl border-evren-light-gray/30 shadow-[0_10px_40px_-10px_rgba(27,42,74,0.15)]"
+          : "py-6 bg-transparent border-transparent"
           }`}
-        >
-          {/* Inner glass pill — always glassmorphic */}
-          <div
-            className={`flex items-center justify-between px-6 lg:px-8 rounded-full border transition-all duration-500
-              backdrop-blur-2xl bg-white/50 border-evren-light-gray/30 ${
-              scrolled
-                ? "py-2.5 shadow-[0_8px_32px_-8px_rgba(27,42,74,0.10),0_0_0_1px_rgba(244,168,154,0.08)] bg-white/65"
-                : "py-3.5 shadow-[0_4px_20px_-6px_rgba(27,42,74,0.05)]"
-            }`}
+      >
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 lg:px-8">
+          {/* ── Logo ── */}
+          <a
+            href="/"
+            id="navbar-logo"
+            className="relative z-50 group flex items-center"
           >
-            {/* ── Logo ── */}
-            <a
-              href="#"
-              id="navbar-logo"
-              className="relative z-50 group flex items-center"
-            >
-              <span className="font-heading text-2xl font-bold tracking-tight text-evren-navy transition-opacity duration-200 group-hover:opacity-80">
-                Evren AI
-              </span>
-            </a>
+            <span className="font-heading text-2xl font-bold tracking-tight text-evren-navy transition-opacity duration-200 group-hover:opacity-80">
+              Evren AI
+            </span>
+          </a>
 
-            {/* ── Desktop Navigation & CTA (Right) ── */}
-            <div className="hidden md:flex items-center gap-4 lg:gap-8">
-              <nav id="desktop-nav" className="flex items-center">
-                {/* Nav links pill — subtle inner container */}
-                <div className="flex items-center gap-1 bg-evren-warm-gray/40 rounded-full px-1.5 py-1">
-                  {NAV_LINKS.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      id={`nav-link-${link.label.toLowerCase()}`}
-                      className="relative font-body text-sm font-medium text-evren-charcoal 
+          {/* ── Desktop Navigation & CTA (Right) ── */}
+          <div className="hidden md:flex items-center gap-4 lg:gap-8">
+            <nav id="desktop-nav" className="flex items-center">
+              {/* Nav links pill — subtle inner container */}
+              <div className="flex items-center gap-1 bg-evren-warm-gray/40 rounded-full px-1.5 py-1">
+                {NAV_LINKS.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    id={`nav-link-${link.label.toLowerCase()}`}
+                    className="relative font-body text-sm font-medium text-evren-charcoal 
                                  hover:text-evren-navy transition-all duration-300 
-                                 px-4 py-2 rounded-full hover:bg-evren-peach-light/40"
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </nav>
+                                 px-4 py-2 rounded-full hover:bg-evren-peach-light"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </nav>
 
-              <ArrowButton
-                href="/connect"
-                id="navbar-cta"
-                variant="primary"
-                size="sm"
-              >
-                Let&apos;s Talk
-              </ArrowButton>
-            </div>
-
-            {/* ── Mobile Hamburger ── */}
-            <button
-              id="mobile-menu-toggle"
-              className="md:hidden relative z-50 p-2 text-evren-navy transition-colors 
-                         hover:text-evren-navy-light rounded-full"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle mobile menu"
+            <ArrowButton
+              href="/connect"
+              id="navbar-cta"
+              variant="primary"
+              size="sm"
             >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              Let&apos;s Talk
+            </ArrowButton>
           </div>
+
+          {/* ── Mobile Hamburger ── */}
+          <button
+            id="mobile-menu-toggle"
+            className="md:hidden relative z-50 p-2 text-evren-navy transition-colors 
+                         hover:text-evren-navy-light rounded-full"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </header>
 

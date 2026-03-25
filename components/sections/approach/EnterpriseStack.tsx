@@ -2,125 +2,136 @@
 
 import { useRef } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
+import { Monitor, Server, Cloud, Brain } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════════════════
 //  MOTION
 // ═══════════════════════════════════════════════════════════════════════
 
-const fadeUp = (delay = 0): Variants => ({
-  hidden: { opacity: 0, y: 36 },
+const SPRING = { type: "spring" as const, stiffness: 100, damping: 20 };
+
+const staggerContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.14, delayChildren: 0.06 },
+  },
+};
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
+    transition: { ...SPRING, duration: 0.6 },
+  },
+};
+
+const cardPop = (delay = 0): Variants => ({
+  hidden: { opacity: 0, y: 24, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
     transition: {
       type: "spring",
       stiffness: 80,
-      damping: 16,
+      damping: 18,
       delay,
     },
   },
 });
 
-const slideIn = (
-  direction: "left" | "right" | "up",
-  delay = 0
-): Variants => ({
-  hidden: {
-    opacity: 0,
-    x: direction === "left" ? -40 : direction === "right" ? 40 : 0,
-    y: direction === "up" ? 30 : 0,
-  },
+const drawLine: Variants = {
+  hidden: { pathLength: 0, opacity: 0 },
   visible: {
+    pathLength: 1,
     opacity: 1,
-    x: 0,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 70,
-      damping: 16,
-      delay,
-    },
+    transition: { duration: 1.2, ease: "easeInOut", delay: 0.5 },
   },
-});
-
-const lineGrow = (delay = 0): Variants => ({
-  hidden: { scaleX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
-      delay,
-    },
-  },
-});
-
-const lineGrowY = (delay = 0): Variants => ({
-  hidden: { scaleY: 0 },
-  visible: {
-    scaleY: 1,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
-      delay,
-    },
-  },
-});
+};
 
 // ═══════════════════════════════════════════════════════════════════════
 //  STACK LAYER DATA
 // ═══════════════════════════════════════════════════════════════════════
 
-const LAYERS = [
+interface Layer {
+  id: string;
+  category: string;
+  label: string;
+  sublabel: string;
+  technologies: string[];
+  borderColor: string;
+  bgColor: string;
+  iconBg: string;
+  iconColor: string;
+  dotColor: string;
+  icon: typeof Monitor;
+  animDelay: number;
+  dark?: boolean;
+}
+
+const LAYERS: Layer[] = [
   {
     id: "frontend",
+    category: "LAYER 01",
     label: "Client Frontend",
     sublabel: "Next.js / React Native / Flutter",
     technologies: ["TypeScript", "Tailwind", "WebSocket"],
-    color: "bg-evren-peach-light",
-    borderColor: "border-evren-peach/30",
-    accentColor: "bg-evren-peach",
+    borderColor: "border-evren-peach/40",
+    bgColor: "bg-white",
+    iconBg: "bg-evren-peach-light",
+    iconColor: "text-evren-peach",
     dotColor: "bg-evren-peach",
+    icon: Monitor,
     animDelay: 0,
   },
   {
     id: "backend",
+    category: "LAYER 02",
     label: "Backend APIs",
     sublabel: "Node.js / Python / Go Microservices",
     technologies: ["REST", "GraphQL", "gRPC"],
-    color: "bg-white",
-    borderColor: "border-evren-light-gray",
-    accentColor: "bg-evren-navy/10",
-    dotColor: "bg-evren-navy/40",
-    animDelay: 0.15,
+    borderColor: "border-blue-200",
+    bgColor: "bg-white",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-500",
+    dotColor: "bg-blue-400",
+    icon: Server,
+    animDelay: 0.12,
   },
   {
     id: "cloud",
+    category: "LAYER 03",
     label: "Cloud Infrastructure",
     sublabel: "AWS / GCP / Azure",
     technologies: ["K8s", "Terraform", "CI/CD"],
-    color: "bg-evren-navy/[0.03]",
-    borderColor: "border-evren-navy/10",
-    accentColor: "bg-evren-navy/10",
-    dotColor: "bg-evren-navy/30",
-    animDelay: 0.3,
+    borderColor: "border-amber-200",
+    bgColor: "bg-white",
+    iconBg: "bg-amber-50",
+    iconColor: "text-amber-500",
+    dotColor: "bg-amber-400",
+    icon: Cloud,
+    animDelay: 0.24,
   },
   {
     id: "ai",
+    category: "LAYER 04",
     label: "LLM / Vector DB",
     sublabel: "OpenAI / Anthropic / Pinecone / Weaviate",
     technologies: ["RAG", "Embeddings", "Fine-Tuning"],
-    color: "bg-evren-navy",
-    borderColor: "border-evren-navy",
-    accentColor: "bg-evren-peach",
+    borderColor: "border-evren-navy/30",
+    bgColor: "bg-evren-navy",
+    iconBg: "bg-white/10",
+    iconColor: "text-evren-peach",
     dotColor: "bg-evren-peach",
-    animDelay: 0.45,
+    icon: Brain,
+    animDelay: 0.36,
     dark: true,
   },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════
-//  ENTERPRISE STACK SECTION
+//  ENTERPRISE STACK — Centered Header + Zigzag Flow Diagram
 // ═══════════════════════════════════════════════════════════════════════
 
 export default function EnterpriseStack() {
@@ -145,282 +156,278 @@ export default function EnterpriseStack() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        {/* ── Section Header ───────────────────────────────────── */}
+        {/* ═══════════════════════════════════════════════════════════
+            CENTERED HEADER
+        ═══════════════════════════════════════════════════════════ */}
         <motion.div
-          className="text-center mb-16 lg:mb-20"
-          variants={fadeUp(0)}
+          className="text-center max-w-2xl mx-auto mb-16 lg:mb-20"
+          variants={staggerContainer}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          animate={isInView ? "visible" : "hidden"}
         >
-          <p className="text-sm uppercase tracking-[0.25em] text-evren-peach font-bold font-heading mb-4">
+          {/* Eyebrow */}
+          <motion.p
+            variants={fadeUp}
+            className="text-sm uppercase tracking-[0.25em] text-evren-peach font-bold font-heading mb-4"
+          >
             Technical Proof
-          </p>
-          <h2 className="text-3xl md:text-5xl text-evren-navy font-heading font-bold mb-6 leading-tight max-w-3xl mx-auto">
-            The Enterprise Stack
-          </h2>
-          <p className="max-w-2xl mx-auto text-lg text-evren-charcoal font-body leading-relaxed">
+          </motion.p>
+
+          {/* H2 */}
+          <motion.h2
+            variants={fadeUp}
+            className="text-3xl md:text-4xl lg:text-[2.5rem] xl:text-5xl text-evren-navy font-heading font-bold mb-6 leading-tight"
+          >
+            The <span className="relative inline-block">
+              <span className="relative z-10">Enterprise</span>
+              <svg className="absolute -bottom-1 lg:-bottom-2 left-0 w-full h-[10px] md:h-[14px]" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                <g>
+                  <animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="3s" repeatCount="indefinite" />
+                  <path d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6" stroke="#F4A89A" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.7" />
+                </g>
+              </svg>
+            </span> Stack
+          </motion.h2>
+
+          {/* Body */}
+          <motion.p
+            variants={fadeUp}
+            className="text-base lg:text-lg text-evren-charcoal font-body leading-relaxed mb-8"
+          >
             Clean, architectural, and secure. A transparent view into the
             production-grade infrastructure powering every Evren-built product.
-          </p>
+          </motion.p>
+
+          {/* Decorative divider */}
+          <motion.div
+            variants={fadeUp}
+            className="w-16 h-[3px] rounded-full mx-auto mb-8"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(244, 168, 154, 0.7), rgba(232, 150, 126, 0.3))",
+            }}
+          />
+
+          {/* Compliance badges */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-wrap justify-center gap-x-5 gap-y-3"
+          >
+            {[
+              "SOC 2 Type II",
+              "HIPAA Compliant",
+              "GDPR Ready",
+              "ISO 27001",
+            ].map((badge) => (
+              <div key={badge} className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-evren-peach" />
+                <span
+                  className="text-xs font-semibold text-evren-navy/60 uppercase tracking-wider"
+                  style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
+                >
+                  {badge}
+                </span>
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
 
         {/* ═══════════════════════════════════════════════════════════
-            STACK DIAGRAM — Desktop: Horizontal Flow
-            Mobile: Vertical Stack
-           ═══════════════════════════════════════════════════════════ */}
-
-        {/* ── Desktop Diagram ──────────────────────────────────── */}
-        <div className="hidden lg:block">
-          <div className="relative">
-            {/* Horizontal connector line behind cards */}
-            <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-0 px-12">
-              <motion.div
-                className="h-px bg-gradient-to-r from-evren-peach via-evren-navy/20 to-evren-navy origin-left"
-                variants={lineGrow(0.3)}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-            </div>
-
-            {/* Layer cards in a row */}
-            <div className="relative z-10 grid grid-cols-4 gap-6">
-              {LAYERS.map((layer, idx) => (
-                <motion.div
-                  key={layer.id}
-                  className="flex flex-col"
-                  variants={slideIn("up", layer.animDelay + 0.2)}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                >
-                  {/* Card */}
-                  <div
-                    className={`relative rounded-studio p-6 border ${layer.borderColor} ${layer.color}
-                                transition-all duration-300 hover:-translate-y-1 hover:shadow-warm group`}
-                  >
-                    {/* Status dot */}
-                    <div className="flex items-center gap-2 mb-4">
-                      <div
-                        className={`w-2 h-2 rounded-full ${layer.dotColor}`}
-                      />
-                      <span
-                        className={`text-[10px] font-mono uppercase tracking-[0.2em] ${layer.dark
-                            ? "text-white/50"
-                            : "text-evren-medium-gray"
-                          }`}
-                        style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                      >
-                        Layer {String(idx + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-
-                    {/* Label */}
-                    <h3
-                      className={`text-lg font-heading font-bold mb-1 ${layer.dark ? "text-white" : "text-evren-navy"
-                        }`}
-                      style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                    >
-                      {layer.label}
-                    </h3>
-                    <p
-                      className={`text-xs mb-4 ${layer.dark
-                          ? "text-white/60"
-                          : "text-evren-medium-gray"
-                        }`}
-                      style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                    >
-                      {layer.sublabel}
-                    </p>
-
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {layer.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${layer.dark
-                              ? "bg-white/10 text-white/80"
-                              : "bg-evren-navy/5 text-evren-navy/70"
-                            }`}
-                          style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Hover accent */}
-                    <div
-                      className={`absolute bottom-0 left-4 right-4 h-0.5 rounded-t-full ${layer.accentColor}
-                                  scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`}
-                    />
-                  </div>
-
-                  {/* Arrow connector between cards */}
-                  {idx < LAYERS.length - 1 && (
-                    <div className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20">
-                      {/* This is handled by the horizontal line + visual flow */}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Flow direction arrows overlaid on the line */}
-            <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-[5] px-12 flex justify-between">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="relative"
-                  style={{
-                    left: `${(i + 1) * 25 - 2}%`,
-                    position: "absolute",
-                  }}
-                  variants={slideIn("left", 0.6 + i * 0.15)}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                >
-                  <div className="w-6 h-6 rounded-full bg-evren-warm-white border border-evren-navy/15 flex items-center justify-center -translate-x-1/2 -translate-y-1/2 shadow-sm">
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 10 10"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M2 5H8M8 5L5.5 2.5M8 5L5.5 7.5"
-                        stroke="#1B2A4A"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Mobile Diagram (Vertical Stack) ──────────────────── */}
-        <div className="lg:hidden">
-          <div className="relative">
-            {/* Vertical connector line */}
-            <div className="absolute top-0 bottom-0 left-8 z-0 w-px">
-              <motion.div
-                className="w-full h-full bg-gradient-to-b from-evren-peach via-evren-navy/20 to-evren-navy origin-top"
-                variants={lineGrowY(0.3)}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-              />
-            </div>
-
-            {/* Layer cards stacked */}
-            <div className="relative z-10 flex flex-col gap-6">
-              {LAYERS.map((layer, idx) => (
-                <motion.div
-                  key={layer.id}
-                  className="flex items-start gap-4"
-                  variants={slideIn("right", layer.animDelay + 0.2)}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                >
-                  {/* Node on the line */}
-                  <div className="flex flex-col items-center shrink-0 mt-5">
-                    <div
-                      className={`w-4 h-4 rounded-full border-2 ${layer.dark
-                          ? "bg-evren-navy border-evren-peach"
-                          : "bg-white border-evren-peach"
-                        } z-10`}
-                    />
-                    {idx < LAYERS.length - 1 && (
-                      <div className="w-px h-6 bg-transparent" />
-                    )}
-                  </div>
-
-                  {/* Card */}
-                  <div
-                    className={`flex-1 rounded-studio p-5 border ${layer.borderColor} ${layer.color}`}
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <div
-                        className={`w-2 h-2 rounded-full ${layer.dotColor}`}
-                      />
-                      <span
-                        className={`text-[10px] uppercase tracking-[0.2em] ${layer.dark
-                            ? "text-white/50"
-                            : "text-evren-medium-gray"
-                          }`}
-                        style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                      >
-                        Layer {String(idx + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-
-                    <h3
-                      className={`text-base font-bold mb-1 ${layer.dark ? "text-white" : "text-evren-navy"
-                        }`}
-                      style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                    >
-                      {layer.label}
-                    </h3>
-                    <p
-                      className={`text-xs mb-3 ${layer.dark
-                          ? "text-white/60"
-                          : "text-evren-medium-gray"
-                        }`}
-                      style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                    >
-                      {layer.sublabel}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5">
-                      {layer.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${layer.dark
-                              ? "bg-white/10 text-white/80"
-                              : "bg-evren-navy/5 text-evren-navy/70"
-                            }`}
-                          style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Security & Compliance footer ─────────────────────── */}
+            ZIGZAG FLOW DIAGRAM — Full Width
+        ═══════════════════════════════════════════════════════════ */}
         <motion.div
-          className="mt-16 flex flex-wrap items-center justify-center gap-6 md:gap-10"
-          variants={fadeUp(0.6)}
+          className="relative"
+          variants={staggerContainer}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          animate={isInView ? "visible" : "hidden"}
         >
-          {[
-            "SOC 2 Type II",
-            "HIPAA Compliant",
-            "GDPR Ready",
-            "ISO 27001",
-          ].map((badge) => (
-            <div key={badge} className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-evren-peach" />
-              <span
-                className="text-xs font-semibold text-evren-navy/60 uppercase tracking-wider"
-                style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-              >
-                {badge}
-              </span>
-            </div>
-          ))}
+          {/* ── Mobile: Stacked Cards ──────────────────────────── */}
+          <div className="relative md:hidden flex flex-col gap-5">
+            {LAYERS.map((layer) => {
+              const LayerIcon = layer.icon;
+              return (
+                <motion.div key={layer.id} variants={cardPop(layer.animDelay)}>
+                  <FlowCard layer={layer} LayerIcon={LayerIcon} />
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* ── Desktop: Zigzag Absolute Layout ───────────────── */}
+          <div className="hidden md:block relative" style={{ paddingBottom: "40%" }}>
+
+            {/* ── SVG Dashed Connector Lines ──────────────────── */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox="0 0 1000 400"
+              fill="none"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              {/* Connector 1: Card 0 (top-left) ──→ Card 1 (bottom-center-left) */}
+              <motion.path
+                d="M 220 120 C 240 120, 240 260, 260 260"
+                stroke="rgba(27, 42, 74, 0.15)"
+                strokeWidth="2"
+                strokeDasharray="10 8"
+                fill="none"
+                variants={drawLine}
+              />
+
+              {/* Connector 2: Card 1 (bottom-center-left) ──→ Card 2 (top-center-right) */}
+              <motion.path
+                d="M 480 260 C 500 260, 500 120, 520 120"
+                stroke="rgba(27, 42, 74, 0.15)"
+                strokeWidth="2"
+                strokeDasharray="10 8"
+                fill="none"
+                variants={drawLine}
+              />
+
+              {/* Connector 3: Card 2 (top-center-right) ──→ Card 3 (bottom-right) */}
+              <motion.path
+                d="M 740 120 C 760 120, 760 260, 780 260"
+                stroke="rgba(27, 42, 74, 0.15)"
+                strokeWidth="2"
+                strokeDasharray="10 8"
+                fill="none"
+                variants={drawLine}
+              />
+            </svg>
+
+            {/* ── Card 0 — Top Left ──────────────────────────── */}
+            <motion.div
+              variants={cardPop(LAYERS[0].animDelay)}
+              className="absolute z-10"
+              style={{ top: "0%", left: "0%", width: "22%" }}
+            >
+              <FlowCard layer={LAYERS[0]} LayerIcon={LAYERS[0].icon} />
+            </motion.div>
+
+            {/* ── Card 1 — Center Left (dropped down) ───────── */}
+            <motion.div
+              variants={cardPop(LAYERS[1].animDelay)}
+              className="absolute z-10"
+              style={{ top: "35%", left: "26%", width: "22%" }}
+            >
+              <FlowCard layer={LAYERS[1]} LayerIcon={LAYERS[1].icon} />
+            </motion.div>
+
+            {/* ── Card 2 — Center Right ──────────────────────── */}
+            <motion.div
+              variants={cardPop(LAYERS[2].animDelay)}
+              className="absolute z-10"
+              style={{ top: "0%", left: "52%", width: "22%" }}
+            >
+              <FlowCard layer={LAYERS[2]} LayerIcon={LAYERS[2].icon} />
+            </motion.div>
+
+            {/* ── Card 3 — Bottom Right (dropped down) ──────── */}
+            <motion.div
+              variants={cardPop(LAYERS[3].animDelay)}
+              className="absolute z-10"
+              style={{ top: "35%", left: "78%", width: "22%" }}
+            >
+              <FlowCard layer={LAYERS[3]} LayerIcon={LAYERS[3].icon} />
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  FLOW CARD COMPONENT
+// ═══════════════════════════════════════════════════════════════════════
+
+function FlowCard({
+  layer,
+  LayerIcon,
+}: {
+  layer: Layer;
+  LayerIcon: typeof Monitor;
+}) {
+  return (
+    <div
+      className={`group relative rounded-2xl p-5 lg:p-6 border-2 border-dashed ${layer.borderColor} ${layer.bgColor}
+                  transition-all duration-300 hover:-translate-y-1
+                  hover:shadow-[0_12px_36px_-8px_rgba(0,0,0,0.08)] hover:border-solid`}
+    >
+      {/* Icon + Category */}
+      <div className="flex items-center gap-3 mb-4">
+        <div
+          className={`w-10 h-10 rounded-xl ${layer.iconBg} flex items-center justify-center`}
+        >
+          <LayerIcon
+            size={18}
+            strokeWidth={1.5}
+            className={layer.iconColor}
+          />
+        </div>
+        <span
+          className={`text-[10px] font-mono uppercase tracking-[0.2em] ${
+            layer.dark ? "text-white/50" : "text-evren-medium-gray"
+          }`}
+          style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
+        >
+          {layer.category}
+        </span>
+      </div>
+
+      {/* Label */}
+      <h3
+        className={`text-lg font-heading font-bold mb-1 ${
+          layer.dark ? "text-white" : "text-evren-navy"
+        }`}
+        style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
+      >
+        {layer.label}
+      </h3>
+      <p
+        className={`text-xs mb-4 ${
+          layer.dark ? "text-white/60" : "text-evren-medium-gray"
+        }`}
+        style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
+      >
+        {layer.sublabel}
+      </p>
+
+      {/* Connection status */}
+      {/* <div className="flex items-center gap-1.5 mb-3">
+        <span
+          className={`text-xs font-semibold ${
+            layer.dark ? "text-evren-peach" : "text-evren-navy/50"
+          }`}
+        >
+          →
+        </span>
+        <span
+          className={`text-[10px] font-semibold uppercase tracking-wider ${
+            layer.dark ? "text-evren-peach" : "text-evren-navy/40"
+          }`}
+          style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
+        >
+          CONNECTED
+        </span>
+      </div> */}
+
+      {/* Tech tags */}
+      <div className="flex flex-wrap gap-1.5">
+        {layer.technologies.map((tech) => (
+          <span
+            key={tech}
+            className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${
+              layer.dark
+                ? "bg-white/10 text-white/80"
+                : "bg-evren-navy/5 text-evren-navy/70"
+            }`}
+            style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }

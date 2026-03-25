@@ -8,7 +8,8 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Layers, Star, Globe } from "lucide-react";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 // ═══════════════════════════════════════════════════════════════════════
 //  ANIMATED COUNTER — ease-out cubic from 0 → target
@@ -90,8 +91,8 @@ const wordReveal: Variants = {
 //  HEADLINE — Manual word-by-word so we can style "Intelligent"
 // ═══════════════════════════════════════════════════════════════════════
 
-const HEADLINE_LINES: { words: { text: string; decorated?: boolean }[] }[] = [
-  { words: [{ text: "Where " }, { text: "Ideas " }, { text: "Become" }] },
+const HEADLINE_LINES: { words: { text: string; decorated?: boolean; secondary?: boolean; light?: boolean }[] }[] = [
+  { words: [{ text: "Where ", secondary: true, light: true }, { text: "Ideas ", secondary: true, light: true }, { text: "Become", secondary: true, light: true }] },
   { words: [{ text: "Intelligent", decorated: true }, { text: " Products." }] },
 ];
 
@@ -100,9 +101,9 @@ const HEADLINE_LINES: { words: { text: string; decorated?: boolean }[] }[] = [
 // ═══════════════════════════════════════════════════════════════════════
 
 const TRUST_METRICS = [
-  { value: 50, suffix: "+", label: "Products Shipped" },
-  { value: 98, suffix: "%", label: "Client Satisfaction" },
-  { value: 3, suffix: "", label: "Global Offices" },
+  { value: 50, suffix: "+", label: "Products Shipped", icon: Layers },
+  { value: 98, suffix: "%", label: "Client Satisfaction", icon: Star },
+  { value: 3, suffix: "", label: "Global Offices", icon: Globe },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -111,8 +112,26 @@ const TRUST_METRICS = [
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const metricsRef = useRef<HTMLDivElement>(null);
+
+  const [mousePos, setMousePos] = useState({ gridX: 0, gridY: 0, opacity: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!sectionRef.current || !gridRef.current) return;
+
+    // Glowing mask position relative to the grid itself
+    const gridRect = gridRef.current.getBoundingClientRect();
+    const gridX = e.clientX - gridRect.left;
+    const gridY = e.clientY - gridRect.top;
+
+    setMousePos({ gridX, gridY, opacity: 1 });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos((prev) => ({ ...prev, opacity: 0 }));
+  };
 
   const isInView = useInView(contentRef, { once: true, margin: "-60px" });
   const metricsInView = useInView(metricsRef, { once: true, margin: "-40px" });
@@ -128,14 +147,15 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full overflow-hidden bg-evren-warm-white"
-      style={{ minHeight: "600px" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative w-full overflow-hidden bg-evren-warm-white min-h-[100svh] md:min-h-[600px] flex flex-col justify-center"
     >
       {/* ── Animated gradient mesh blobs ──────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Peach blob — top-left */}
         <div
-          className="absolute -top-[10%] -left-[8%] w-[700px] h-[700px] rounded-full mesh-blob"
+          className="absolute -top-[5%] -left-[10%] w-[400px] h-[400px] md:w-[700px] md:h-[700px] rounded-full mesh-blob opacity-80 md:opacity-100"
           style={{
             background:
               "radial-gradient(circle, rgba(244, 168, 154, 0.22) 0%, rgba(244, 168, 154, 0.07) 40%, transparent 70%)",
@@ -144,7 +164,7 @@ export default function Hero() {
         />
         {/* Rose blob — center-right */}
         <div
-          className="absolute top-[0%] -right-[5%] w-[600px] h-[600px] rounded-full mesh-blob-2"
+          className="absolute top-[10%] -right-[15%] w-[350px] h-[350px] md:w-[600px] md:h-[600px] rounded-full mesh-blob-2 opacity-80 md:opacity-100"
           style={{
             background:
               "radial-gradient(circle, rgba(232, 150, 126, 0.18) 0%, rgba(232, 150, 126, 0.05) 45%, transparent 70%)",
@@ -153,7 +173,7 @@ export default function Hero() {
         />
         {/* Gold blob — bottom-center */}
         <div
-          className="absolute -bottom-[8%] left-[15%] w-[650px] h-[650px] rounded-full mesh-blob"
+          className="absolute -bottom-[5%] left-[5%] w-[400px] h-[400px] md:w-[650px] md:h-[650px] rounded-full mesh-blob opacity-80 md:opacity-100"
           style={{
             background:
               "radial-gradient(circle, rgba(212, 165, 116, 0.16) 0%, rgba(212, 165, 116, 0.04) 40%, transparent 70%)",
@@ -163,7 +183,7 @@ export default function Hero() {
         />
         {/* Navy tint blob — top-right */}
         <div
-          className="absolute top-[25%] right-[10%] w-[500px] h-[500px] rounded-full mesh-blob-2"
+          className="absolute top-[25%] right-[5%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full mesh-blob-2 opacity-80 md:opacity-100"
           style={{
             background:
               "radial-gradient(circle, rgba(27, 42, 74, 0.05) 0%, rgba(27, 42, 74, 0.01) 50%, transparent 70%)",
@@ -178,48 +198,59 @@ export default function Hero() {
       ──────────────────────────────────────────────────────────── */}
       <motion.div
         ref={contentRef}
-        className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32 flex flex-col items-center text-center group"
+        className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-12 pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-10 sm:pb-16 lg:pb-20 flex flex-col items-center text-center group/hero"
         style={{ y: contentY }}
         variants={staggerContainer}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        {/* ── Circular Blueprint grid surrounding content ── */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[120vw] h-[120vw] max-w-[1400px] max-h-[1400px] pointer-events-none z-[-1] transition-opacity duration-700 opacity-40 group-hover:opacity-100">
-          <div
-            className="absolute inset-0 transition-transform duration-1000 group-hover:scale-[1.05]"
-            style={{
-              backgroundSize: "64px 64px",
-              backgroundImage:
-                "linear-gradient(to right, rgba(27, 42, 74, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.08) 1px, transparent 1px)",
-              maskImage:
-                "radial-gradient(circle at center, black 10%, transparent 65%)",
-              WebkitMaskImage:
-                "radial-gradient(circle at center, black 10%, transparent 65%)",
-            }}
-          />
+        {/* ── Circular Blueprint Interactive Grid ── */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[200vh] h-[200vh] md:w-[120vw] md:h-[120vw] max-w-none md:max-w-[1400px] md:max-h-[1400px] pointer-events-none z-[-1]"
+        >
+          <div ref={gridRef} className="absolute inset-0">
+            {/* 1. Base Navy Grid */}
+            <div
+              className="absolute inset-0 transition-opacity duration-700 opacity-30 group-hover/hero:opacity-50"
+              style={{
+                backgroundSize: "40px 40px",
+                backgroundImage:
+                  "linear-gradient(to right, rgba(27, 42, 74, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.18) 1px, transparent 1px)",
+                maskImage:
+                  "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
+                WebkitMaskImage:
+                  "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
+              }}
+            />
+
+            {/* 2. Peach Glowing Hover Grid */}
+            <div
+              className="absolute inset-0 transition-opacity duration-300"
+              style={{
+                opacity: mousePos.opacity,
+                backgroundSize: "40px 40px",
+                backgroundImage:
+                  "linear-gradient(to right, rgba(244, 168, 154, 0.9) 1px, transparent 1px), linear-gradient(to bottom, rgba(244, 168, 154, 0.9) 1px, transparent 1px)",
+                maskImage: `radial-gradient(circle 200px at ${mousePos.gridX}px ${mousePos.gridY}px, black, transparent)`,
+                WebkitMaskImage: `radial-gradient(circle 200px at ${mousePos.gridX}px ${mousePos.gridY}px, black, transparent)`,
+              }}
+            />
+          </div>
         </div>
 
-        {/* 1. BADGE */}
+        {/* 1. BADGE (Text Only) */}
         <motion.div
           variants={fadeSlideUp}
-          className="mb-8 inline-flex items-center gap-2.5 
-                     rounded-full bg-evren-peach-light/60 border border-evren-peach/20 
-                     px-5 py-2"
+          className="mb-4 px-4 sm:px-0"
         >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
-          </span>
-          <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
+          <span className="block text-[10px] sm:text-[11px] font-heading font-bold text-evren-navy/50 tracking-[0.1em] sm:tracking-[0.25em] uppercase text-center">
             The universe is always expanding. So are we.
           </span>
         </motion.div>
 
         {/* 2. HEADLINE */}
         <motion.h1
-          className="font-heading font-extrabold text-evren-navy 
-                     text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] -tracking-tight max-w-4xl"
+          className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] max-w-4xl px-2 sm:px-0"
           variants={{
             hidden: {},
             visible: {
@@ -229,42 +260,48 @@ export default function Hero() {
         >
           {HEADLINE_LINES.map((line, lineIdx) => (
             <span key={lineIdx} className="block">
-              {line.words.map((word) =>
-                word.decorated ? (
+              {line.words.map((word) => {
+                const textStyle = word.light
+                  ? "font-light text-evren-medium-gray/90 tracking-normal"
+                  : "font-extrabold text-evren-navy tracking-tight";
+                return word.decorated ? (
                   <motion.span
                     key={word.text}
-                    className="relative inline-block"
+                    className={`relative inline-block ${textStyle}`}
                     variants={wordReveal}
                   >
                     <span className="relative z-10">{word.text}</span>
-                    {/* Wavy underline — peach */}
+                    {/* Animated wavy underline — peach */}
                     <svg
                       className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[14px]"
-                      viewBox="0 0 120 12"
+                      viewBox="0 0 200 12"
                       fill="none"
                       preserveAspectRatio="none"
                       aria-hidden="true"
                     >
-                      <path
-                        d="M0 6 Q 10 0, 20 6 T 40 6 T 60 6 T 80 6 T 100 6 T 120 6"
-                        stroke="#F4A89A"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        fill="none"
-                        opacity="0.7"
-                      />
+                      <g>
+                        <animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="3s" repeatCount="indefinite" />
+                        <path
+                          d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"
+                          stroke="#F4A89A"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          fill="none"
+                          opacity="0.7"
+                        />
+                      </g>
                     </svg>
                   </motion.span>
                 ) : (
                   <motion.span
                     key={word.text}
-                    className="inline-block whitespace-pre"
+                    className={`inline-block whitespace-pre ${textStyle}`}
                     variants={wordReveal}
                   >
                     {word.text}
                   </motion.span>
-                )
-              )}
+                );
+              })}
             </span>
           ))}
           <span className="sr-only">
@@ -273,9 +310,9 @@ export default function Hero() {
         </motion.h1>
 
         {/* 3. SUBTEXT */}
-        <motion.div variants={fadeSlideUp} className="mt-8 space-y-4 max-w-2xl mx-auto">
+        <motion.div variants={fadeSlideUp} className="mt-6 sm:mt-8 space-y-4 max-w-[90%] sm:max-w-xl mx-auto px-2 sm:px-0">
           <p
-            className="font-body text-evren-charcoal text-base md:text-lg lg:text-xl leading-relaxed"
+            className="font-body text-evren-charcoal text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-balance"
             style={{ lineHeight: 1.6 }}
           >
             We build AI-powered digital products that grow with your vision.
@@ -285,56 +322,40 @@ export default function Hero() {
         </motion.div>
 
         {/* 4. CTA BUTTONS */}
-        <motion.div variants={fadeSlideUp} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-          <motion.a
+        <motion.div variants={fadeSlideUp} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto px-4 sm:px-0">
+          <ArrowButton
             href="/connect"
             id="hero-cta-primary"
-            aria-label="Book a free consultation with Evren AI"
-            className="inline-flex items-center justify-center gap-2 
-                       rounded-full bg-evren-peach text-evren-navy font-heading font-semibold 
-                       px-8 py-4 text-sm w-full sm:w-auto will-change-transform 
-                       transition-all duration-200"
-            whileHover={{
-              scale: 1.04,
-              boxShadow: "0 16px 40px -8px rgba(244, 168, 154, 0.4)",
-            }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            ariaLabel="Book a free consultation with Evren AI"
+            variant="primary"
+            size="lg"
+            className="w-full sm:w-auto justify-between sm:justify-center text-[14px] sm:text-base whitespace-nowrap"
           >
             Book a Free Consultation
-            <ArrowUpRight
-              size={16}
-              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
-            />
-          </motion.a>
+          </ArrowButton>
 
-          <motion.a
+          <ArrowButton
             href="/approach"
             id="hero-cta-secondary"
-            aria-label="See our approach"
-            className="inline-flex items-center justify-center gap-2 
-                       rounded-full border-2 border-evren-navy-light text-evren-navy 
-                       font-heading font-semibold px-8 py-4 text-sm w-full sm:w-auto
-                       will-change-transform transition-all duration-200
-                       hover:bg-evren-navy-light hover:text-white"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            ariaLabel="See our approach"
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto justify-between sm:justify-center text-[14px] sm:text-base whitespace-nowrap"
           >
             See Our Approach
-          </motion.a>
+          </ArrowButton>
         </motion.div>
 
         {/* 5. TRUST METRICS */}
         <motion.div
           ref={metricsRef}
           variants={fadeSlideUp}
-          className="mt-16 pt-10 border-t border-evren-navy/10 flex flex-wrap justify-center items-center gap-8 sm:gap-16 w-full max-w-3xl"
+          className="mt-16 pt-4 flex flex-wrap justify-center items-center gap-8 sm:gap-16 w-full max-w-3xl"
         >
           {TRUST_METRICS.map((metric, i) => (
             <div key={metric.label} className="flex items-center">
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-heading font-extrabold text-evren-navy leading-none mb-2">
+              <div className="text-center flex flex-col items-center">
+                <div className="text-3xl md:text-4xl font-heading font-extrabold text-evren-navy leading-none mb-3">
                   <AnimatedCounter
                     target={metric.value}
                     suffix={metric.suffix}
@@ -342,20 +363,14 @@ export default function Hero() {
                     duration={1800}
                   />
                 </div>
-                <p
-                  className="text-[11px] md:text-xs font-body text-evren-medium-gray uppercase"
+                <div
+                  className="flex items-center justify-center gap-1.5 text-[11px] md:text-xs font-body text-evren-medium-gray uppercase"
                   style={{ letterSpacing: "0.12em" }}
                 >
-                  {metric.label}
-                </p>
-              </div>
-              {i < TRUST_METRICS.length - 1 && (
-                <div className="hidden sm:flex flex-col items-center gap-1.5 ml-16">
-                  <span className="block w-1 h-1 rounded-full bg-evren-peach/50" />
-                  <span className="block w-1 h-1 rounded-full bg-evren-peach/30" />
-                  <span className="block w-1 h-1 rounded-full bg-evren-peach/50" />
+                  <metric.icon size={14} className="text-evren-peach/90" strokeWidth={2.5} />
+                  <span>{metric.label}</span>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </motion.div>

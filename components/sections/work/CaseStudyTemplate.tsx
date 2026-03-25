@@ -9,21 +9,7 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Globe,
-  Link as LinkIcon,
-  Database,
-  Cloud,
-  Code,
-  Zap,
-  Server,
-  Cpu,
-  Box,
-  Search,
-  Shield,
-  Lock,
+import { ArrowRight, CheckCircle2, Globe, Link as LinkIcon, Database, Cloud, Code, Zap, Server, Cpu, Box, Search, Shield, Lock,
 } from "lucide-react";
 import type { CaseStudy } from "@/lib/case-studies-data";
 

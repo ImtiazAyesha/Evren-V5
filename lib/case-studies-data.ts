@@ -1,67 +1,33 @@
 // ═══════════════════════════════════════════════════════════════════════
-//  CENTRALIZED CASE STUDY DATA
-//  All case studies share a single data contract. Dynamic routes
-//  (/work/[slug]) pull from this file.
+//  CASE STUDIES DATA LIBRARY — ALL 7 CASE STUDIES
+//  Single source of truth for all case study pages + work listing cards
 // ═══════════════════════════════════════════════════════════════════════
 
-export type Industry =
-  | "Healthcare"
-  | "Fintech"
-  | "E-Commerce"
-  | "Logistics"
-  | "Construction";
-
-export interface TechStackItem {
-  name: string;
-  icon: string; // Lucide icon name (resolved in UI)
-}
-
-export interface CaseStudyMetric {
-  value: string;
-  label: string;
-  context: string;
-}
-
 export interface CaseStudy {
-  slug: string;
   client: string;
-  industry: Industry;
+  industry: string;
   headline: string;
   subheadline: string;
-  thumbnailImage: string;
-  heroImage: string;
-  hardMetric: string; // The metric shown on hover in gallery (e.g. "340h Saved Monthly")
   timeline: string;
   teamSize: string;
-
-  // Section 1: The Challenge
+  hardMetric: string;
+  heroImage: string;
   challenge: {
     title: string;
     description: string;
     painPoints: string[];
   };
-
-  // Section 2: Our Approach
   approach: {
     title: string;
     description: string;
     steps: { step: string; detail: string }[];
   };
-
-  // Section 3: The Solution
   solution: {
-    description: string;
-    features: { title: string; description: string }[];
     solutionImage: string;
+    features: { title: string; description: string }[];
   };
-
-  // Section 4: The Results
-  results: CaseStudyMetric[];
-
-  // Section 5: Tech Stack
-  techStack: TechStackItem[];
-
-  // Section 6: AI Highlight
+  results: { value: string; label: string; context: string }[];
+  techStack: { name: string; icon: string }[];
   aiHighlight: {
     title: string;
     description: string;
@@ -70,8 +36,6 @@ export interface CaseStudy {
     beforeLabel: string;
     afterLabel: string;
   };
-
-  // Testimonial
   testimonial?: {
     quote: string;
     name: string;
@@ -80,669 +44,853 @@ export interface CaseStudy {
   };
 }
 
+export interface CaseStudyCard {
+  metric: string;
+  metricLabel: string;
+  client: string;
+  description: string;
+  tags: string[];
+  image: string;
+  href: string;
+}
+
 // ═══════════════════════════════════════════════════════════════════════
-//  CASE STUDY ENTRIES
+//  CASE STUDY 1 — iSeedoc Telehealth
 // ═══════════════════════════════════════════════════════════════════════
 
-export const CASE_STUDIES: CaseStudy[] = [
-  {
-    slug: "mclean-reserve",
-    client: "McLean Reserve",
-    industry: "Healthcare",
-    headline: "AI-Native Patient Intelligence Platform",
-    subheadline:
-      "Unified 15 fragmented legacy systems into a single intelligent command center with natural language querying.",
-    thumbnailImage: "/transformation-healthcare.png",
-    heroImage: "/Product 1.png",
-    hardMetric: "340h Saved Monthly",
-    timeline: "6 Months",
-    teamSize: "8 Specialists",
-
-    challenge: {
-      title: "The Challenge",
-      description:
-        "McLean Reserve managed patient data across 15 disconnected legacy systems. Manual chart reviews consumed hundreds of hours weekly, delaying critical clinical decisions. Compliance audits required 6-week scrambles through fragmented records, and predictive capabilities for patient load were non-existent.",
-      painPoints: [
-        "Patient data scattered across 15+ legacy systems with no integration",
-        "Manual chart reviews consuming 48+ hours per clinician weekly",
-        "Compliance audit preparation taking 6 weeks of dedicated effort",
-        "Zero predictive capabilities for patient intake forecasting",
-      ],
-    },
-
-    approach: {
-      title: "Our Approach",
-      description:
-        "We began with a 3-week data topology audit, mapping every data source, its schema, update frequency, and downstream dependencies. This gave us the blueprint to architect a unified data fabric without disrupting live clinical workflows.",
-      steps: [
-        {
-          step: "Data Topology Mapping",
-          detail:
-            "Catalogued 15 legacy systems, 2,400+ data fields, and identified 340+ redundant data paths.",
-        },
-        {
-          step: "Schema Normalization",
-          detail:
-            "Built a FHIR-compliant unified data model that preserved clinical semantics while eliminating redundancy.",
-        },
-        {
-          step: "NLP Layer Engineering",
-          detail:
-            "Trained a custom LLM on anonymized medical terminology for natural language querying of complex records.",
-        },
-        {
-          step: "Predictive Model Integration",
-          detail:
-            "Deployed time-series forecasting for patient intake, enabling proactive resource allocation.",
-        },
-      ],
-    },
-
-    solution: {
-      description:
-        "A HIPAA-compliant intelligence platform that aggregates data in real-time, enabling natural language querying of complex medical records via a high-performance web dashboard.",
-      features: [
-        {
-          title: "Natural Language Querying",
-          description:
-            "Ask complex questions about patient history in plain English. Reduced chart review time by 40%.",
-        },
-        {
-          title: "Real-time Intake Forecasting",
-          description:
-            "Live predictions of ER capacity and staffing needs. Optimized resource allocation during peak hours.",
-        },
-        {
-          title: "Automated Compliance Engine",
-          description:
-            "System automatically flags potential reporting omissions. Achieved 100% audit readiness.",
-        },
-      ],
-      solutionImage: "/Product 1.png",
-    },
-
-    results: [
-      {
-        value: "340h",
-        label: "Hours Saved Monthly",
-        context: "on chart reviews & data reconciliation",
-      },
-      {
-        value: "40%",
-        label: "Time Reduction",
-        context: "in clinical decision delays",
-      },
-      {
-        value: "100%",
-        label: "Audit Readiness",
-        context: "achieved within 3 months of launch",
-      },
-      {
-        value: "15→1",
-        label: "System Consolidation",
-        context: "legacy systems unified into one",
-      },
+export const ISEEDOC_DATA: CaseStudy = {
+  client: "iSeedoc",
+  industry: "Healthcare",
+  headline: "Revolutionizing Healthcare Access: An AI-Powered Virtual Consultation Platform",
+  subheadline:
+    "Global telehealth innovator iSeedoc partnered with Evren AI to architect an end-to-end, HIPAA-compliant platform that automates clinical workflows and delivers intelligent, scalable healthcare.",
+  timeline: "8 Months",
+  teamSize: "6 Specialists",
+  hardMetric: "90% Faster Reports",
+  heroImage: "/case studies/case 1.webp",
+  challenge: {
+    title: "Scaling Quality Care Without Compromising Security",
+    description:
+      "Global telehealth innovator iSeedoc needed to bridge the gap between patient demand and specialist availability. Their core challenge was scaling operations without compromising on the quality of care, data security, or regulatory compliance. They partnered with Evren AI to architect an end-to-end, HIPAA-compliant telehealth platform that automates workflows, streamlines consultations, and leverages AI to deliver intelligent, accessible, and secure healthcare.",
+    painPoints: [
+      "Fortifying patient data security & ensuring HIPAA compliance across all touchpoints",
+      "Automating clinical & administrative workflows including scheduling and report analysis",
+      "Enabling seamless, low-latency patient-doctor communication in real-time",
+      "Building a scalable infrastructure that handles growing provider and patient demand",
     ],
-
-    techStack: [
-      { name: "Next.js", icon: "Globe" },
-      { name: "LangChain", icon: "Link" },
-      { name: "Pinecone", icon: "Database" },
-      { name: "AWS", icon: "Cloud" },
-      { name: "Python", icon: "Code" },
-      { name: "FastAPI", icon: "Zap" },
-      { name: "PostgreSQL", icon: "Server" },
-      { name: "OpenAI", icon: "Cpu" },
-    ],
-
-    aiHighlight: {
-      title: "The AI-Native Difference",
-      description:
-        "Before Evren, clinicians spent 45 minutes per patient manually cross-referencing 3-4 systems to build a complete picture. Our NLP-powered query engine replaced that entire manual bottleneck—clinicians now ask questions in plain English and get instant, source-cited answers from all 15 systems simultaneously.",
-      beforeImage: "/images/before-ui.png",
-      afterImage: "/images/after-ui.png",
-      beforeLabel: "Before: Fragmented Legacy Systems",
-      afterLabel: "After: Evren Intelligence Platform",
-    },
-
-    testimonial: {
-      quote:
-        "Evren AI didn't just rebuild our software; they re-engineered how our hospital operates. The predictive capabilities have fundamentally changed how we allocate our nursing staff during critical periods.",
-      name: "Dr. Sarah Jenkins",
-      title: "Chief Medical Information Officer",
-      company: "McLean Reserve",
-    },
   },
-
-  {
-    slug: "stratton-financial",
-    client: "Stratton Financial",
-    industry: "Fintech",
-    headline: "Predictive Compliance Intelligence Engine",
-    subheadline:
-      "Architected a real-time compliance engine that automates regulatory reporting and flags discrepancies before they surface.",
-    thumbnailImage: "/transformation-legal.png",
-    heroImage: "/Product.png",
-    hardMetric: "100% Audit Readiness",
-    timeline: "4 Months",
-    teamSize: "6 Specialists",
-
-    challenge: {
-      title: "The Challenge",
-      description:
-        "Stratton Financial processed 12,000+ transactions daily across multiple regulatory jurisdictions. Compliance officers spent 60% of their time manually auditing transactions, with a 72-hour lag between transaction and review. Regulatory penalties were averaging $2.4M annually due to delayed flagging.",
-      painPoints: [
-        "72-hour lag between transaction execution and compliance review",
-        "$2.4M in annual regulatory penalties from delayed flagging",
-        "Compliance team spending 60% of time on manual audit processes",
-        "No real-time visibility into cross-jurisdictional regulatory exposure",
-      ],
-    },
-
-    approach: {
-      title: "Our Approach",
-      description:
-        "We conducted a 2-week regulatory audit across all jurisdictions, mapped every compliance touchpoint, and designed an event-driven architecture that processes transactions against regulatory rules in real-time.",
-      steps: [
-        {
-          step: "Regulatory Mapping",
-          detail:
-            "Documented 200+ regulatory rules across 4 jurisdictions and encoded them as executable policies.",
-        },
-        {
-          step: "Event-Driven Architecture",
-          detail:
-            "Built a streaming pipeline that evaluates every transaction against compliance rules in under 100ms.",
-        },
-        {
-          step: "Anomaly Detection AI",
-          detail:
-            "Trained pattern recognition models on 3 years of historical transaction data to flag suspicious patterns.",
-        },
-        {
-          step: "Automated Reporting",
-          detail:
-            "Engineered auto-generated compliance reports that satisfy regulatory requirements without manual intervention.",
-        },
-      ],
-    },
-
-    solution: {
-      description:
-        "A real-time compliance intelligence engine that monitors every transaction, automatically flags potential violations, and generates regulatory reports—reducing the 72-hour review lag to under 100ms.",
-      features: [
-        {
-          title: "Real-time Transaction Monitoring",
-          description:
-            "Every transaction evaluated against 200+ regulatory rules in under 100ms.",
-        },
-        {
-          title: "Predictive Anomaly Detection",
-          description:
-            "ML models trained on historical data to identify suspicious patterns before they escalate.",
-        },
-        {
-          title: "Auto-Generated Reports",
-          description:
-            "Compliance reports generated automatically, satisfying multi-jurisdictional requirements.",
-        },
-      ],
-      solutionImage: "/Product.png",
-    },
-
-    results: [
+  approach: {
+    title: "Engineering a Secure, Intelligent Foundation",
+    description:
+      "We began with a deep audit of iSeedoc's compliance requirements and data flows, then mapped every clinical touchpoint before writing a single line of code.",
+    steps: [
       {
-        value: "100%",
-        label: "Audit Readiness",
-        context: "achieved from day one of deployment",
+        step: "Compliance Architecture",
+        detail:
+          "Mapped all HIPAA data flows, defined role boundaries for Patient / Doctor / Admin, and designed the JWT auth system with auditability baked in from day one.",
       },
       {
-        value: "$2.4M",
-        label: "Penalties Eliminated",
-        context: "annual regulatory fines reduced to zero",
+        step: "AI Pipeline Design",
+        detail:
+          "Prototyped and benchmarked GPT-4 prompting strategies for medical document extraction, validating accuracy against real clinical report formats before committing to the pipeline.",
       },
       {
-        value: "<100ms",
-        label: "Review Latency",
-        context: "down from 72-hour manual review lag",
+        step: "Real-Time Infrastructure",
+        detail:
+          "Architected WebSocket-based communication with auto-reconnect logic and user-specific tracking to guarantee reliable live consultations under variable network conditions.",
       },
       {
-        value: "60%",
-        label: "Team Capacity Freed",
-        context: "compliance staff redirected to strategic work",
+        step: "Async Task Orchestration",
+        detail:
+          "Designed non-blocking background processing for AI report generation, email notifications, and calendar sync — keeping the platform responsive under heavy clinical load.",
       },
     ],
-
-    techStack: [
-      { name: "React", icon: "Globe" },
-      { name: "Python", icon: "Code" },
-      { name: "Apache Kafka", icon: "Zap" },
-      { name: "TensorFlow", icon: "Cpu" },
-      { name: "PostgreSQL", icon: "Server" },
-      { name: "Redis", icon: "Database" },
-      { name: "Docker", icon: "Box" },
-      { name: "AWS", icon: "Cloud" },
-    ],
-
-    aiHighlight: {
-      title: "The AI-Native Difference",
-      description:
-        "Before Evren, compliance officers manually reviewed transaction batches 72 hours after execution—meaning violations were only caught after the damage. Our AI engine evaluates every single transaction in real-time, catching anomalies within 100ms and auto-escalating before regulatory thresholds are breached.",
-      beforeImage: "/images/before-ui.png",
-      afterImage: "/images/after-ui.png",
-      beforeLabel: "Before: 72-Hour Manual Review Lag",
-      afterLabel: "After: Real-time Compliance Engine",
-    },
-
-    testimonial: {
-      quote:
-        "We went from dreading every audit season to having real-time confidence in our compliance posture. The AI flagging has caught patterns our team would have missed entirely.",
-      name: "Michael Torres",
-      title: "VP of Regulatory Compliance",
-      company: "Stratton Financial",
-    },
   },
-
-  {
-    slug: "apex-construction",
-    client: "Apex Construction",
-    industry: "Construction",
-    headline: "AI-Native Safety Portal",
-    subheadline:
-      "Computer-vision powered safety portal that achieved a 40% reduction in on-site incidents across 24 active job sites.",
-    thumbnailImage: "/case-study-hero-mockup.png",
-    heroImage: "/case-study-hero-mockup.png",
-    hardMetric: "40% Incident Reduction",
-    timeline: "5 Months",
-    teamSize: "7 Specialists",
-
-    challenge: {
-      title: "The Challenge",
-      description:
-        "Apex Construction managed 24 active job sites across three states with zero centralized safety oversight. Incident reports lived inside paper binders, Excel sheets, and scattered email threads — creating a data chaos problem that turned every compliance audit into a 6-week scramble.",
-      painPoints: [
-        "24 active job sites with zero centralized safety oversight",
-        "Incident reports in paper binders, Excel, and email threads",
-        "Field supervisors logging incidents hours or days after occurrence",
-        "Emerging risk patterns invisible until after escalation",
-      ],
-    },
-
-    approach: {
-      title: "Our Approach",
-      description:
-        "We deployed IoT sensors and established a real-time data pipeline from field to headquarters, normalizing multi-source safety data instantly.",
-      steps: [
-        {
-          step: "Field Data Infrastructure",
-          detail:
-            "Deployed IoT-connected reporting terminals across all 24 job sites.",
-        },
-        {
-          step: "Real-time Normalization",
-          detail:
-            "Built data pipelines that standardize incident reports from any source within seconds.",
-        },
-        {
-          step: "Computer Vision Integration",
-          detail:
-            "Implemented camera-based hazard detection at high-risk zones for automated alerting.",
-        },
-        {
-          step: "Predictive Risk Modeling",
-          detail:
-            "Trained models on historical incident data to predict and prevent future safety events.",
-        },
-      ],
-    },
-
-    solution: {
-      description:
-        "A centralized safety intelligence portal with real-time monitoring, predictive risk scoring, and automated compliance reporting across all 24 job sites.",
-      features: [
-        {
-          title: "Centralized Safety Dashboard",
-          description:
-            "Single pane of glass for all site safety data, risk scores, and incident tracking.",
-        },
-        {
-          title: "Predictive Risk Alerts",
-          description:
-            "AI-powered risk scoring that flags potential hazards before incidents occur.",
-        },
-        {
-          title: "Automated OSHA Reporting",
-          description:
-            "Compliance reports generated automatically from standardized incident data.",
-        },
-      ],
-      solutionImage: "/case-study-macro-dashboard.png",
-    },
-
-    results: [
+  solution: {
+    solutionImage: "/case studies/case 1.webp",
+    features: [
       {
-        value: "40%",
-        label: "Incident Reduction",
-        context: "across all 24 managed job sites",
+        title: "Secure Role-Based Auth Core",
+        description:
+          "JWT-based authentication engine with role-based access (Patient, Doctor, Admin) ensuring strict data control and auditability across every clinical touchpoint.",
       },
       {
-        value: "24",
-        label: "Sites Unified",
-        context: "into a single safety command center",
+        title: "AI Document Processing",
+        description:
+          "GPT-4 automates medical report analysis, extracting structured insights from diverse file formats and generating polished PDF summaries — saving hours of manual clinical effort.",
       },
       {
-        value: "6wk→2d",
-        label: "Audit Prep Time",
-        context: "reduced from 6 weeks to 2 days",
-      },
-      {
-        value: "94%",
-        label: "Prediction Accuracy",
-        context: "on high-risk zone identification",
+        title: "Real-Time Communication",
+        description:
+          "WebSocket-based chat and notification system with automatic reconnection and user-specific tracking, enabling reliable live consultations between patients and providers.",
       },
     ],
-
-    techStack: [
-      { name: "Next.js", icon: "Globe" },
-      { name: "Python", icon: "Code" },
-      { name: "FastAPI", icon: "Zap" },
-      { name: "TensorFlow", icon: "Cpu" },
-      { name: "AWS", icon: "Cloud" },
-      { name: "PostgreSQL", icon: "Server" },
-      { name: "Redis", icon: "Database" },
-      { name: "Docker", icon: "Box" },
-    ],
-
-    aiHighlight: {
-      title: "The AI-Native Difference",
-      description:
-        "Before Evren, field supervisors logged incidents hours or days after occurrence in paper forms. Our computer-vision system detects hazards in real-time, auto-generates normalized incident reports, and routes predictive alerts to supervisors before incidents materialize—replacing the entire manual safety bottleneck.",
-      beforeImage: "/images/before-ui.png",
-      afterImage: "/images/after-ui.png",
-      beforeLabel: "Before: Paper-Based Incident Reports",
-      afterLabel: "After: Real-time Safety Intelligence",
-    },
-
-    testimonial: {
-      quote:
-        "The predictive alerting has been transformational. We're catching hazards before they become incidents. Our insurance premiums dropped 18% within the first year.",
-      name: "David Chen",
-      title: "VP of Safety Operations",
-      company: "Apex Construction",
-    },
   },
-
-  {
-    slug: "vanguard-logistics",
-    client: "Vanguard Logistics",
-    industry: "Logistics",
-    headline: "Autonomous Supply Chain Orchestrator",
-    subheadline:
-      "AI-driven route optimization and demand forecasting platform that reduced delivery SLAs by 28% across 3 distribution hubs.",
-    thumbnailImage: "/transformation-supply-chain.png",
-    heroImage: "/Product.png",
-    hardMetric: "28% Faster SLAs",
-    timeline: "5 Months",
-    teamSize: "6 Specialists",
-
-    challenge: {
-      title: "The Challenge",
-      description:
-        "Vanguard Logistics operated 3 distribution hubs handling 8,000+ shipments daily. Route planning was done manually by dispatchers using static spreadsheets, leading to suboptimal routing, missed SLAs, and $1.8M in annual fuel waste. Demand forecasting was non-existent.",
-      painPoints: [
-        "Manual route planning via spreadsheets for 8,000+ daily shipments",
-        "$1.8M annual fuel waste from suboptimal routing",
-        "22% of deliveries missing SLA targets consistently",
-        "No demand forecasting capability for inventory positioning",
-      ],
-    },
-
-    approach: {
-      title: "Our Approach",
-      description:
-        "We analyzed 18 months of delivery data to identify routing inefficiencies and demand patterns, then engineered an autonomous orchestration layer that optimizes in real-time.",
-      steps: [
-        {
-          step: "Historical Analysis",
-          detail:
-            "Processed 18 months of delivery data (2.4M records) to map inefficiency patterns.",
-        },
-        {
-          step: "Dynamic Routing Engine",
-          detail:
-            "Built a graph-based optimization algorithm that recalculates routes every 15 minutes.",
-        },
-        {
-          step: "Demand Forecasting",
-          detail:
-            "Trained LSTM models on seasonal, promotional, and weather data for inventory pre-positioning.",
-        },
-        {
-          step: "Dispatcher Dashboard",
-          detail:
-            "Designed an intuitive control center with real-time fleet visualization and override capabilities.",
-        },
-      ],
-    },
-
-    solution: {
-      description:
-        "An autonomous supply chain orchestration platform that dynamically optimizes routes, forecasts demand, and provides real-time fleet visibility across all 3 distribution hubs.",
-      features: [
-        {
-          title: "Dynamic Route Optimization",
-          description:
-            "Graph-based algorithm recalculates optimal routes every 15 minutes for all active drivers.",
-        },
-        {
-          title: "Demand Forecasting Engine",
-          description:
-            "LSTM-powered predictions for inventory positioning based on multi-signal analysis.",
-        },
-        {
-          title: "Real-time Fleet Command",
-          description:
-            "Live fleet visualization with automated dispatch recommendations and manual override.",
-        },
-      ],
-      solutionImage: "/Product.png",
-    },
-
-    results: [
-      {
-        value: "28%",
-        label: "SLA Improvement",
-        context: "delivery targets now consistently met",
-      },
-      {
-        value: "$1.8M",
-        label: "Fuel Savings",
-        context: "annual routing optimization savings",
-      },
-      {
-        value: "3",
-        label: "Hubs Unified",
-        context: "into single orchestration platform",
-      },
-      {
-        value: "15min",
-        label: "Route Refresh",
-        context: "from static daily plans to dynamic updates",
-      },
-    ],
-
-    techStack: [
-      { name: "React", icon: "Globe" },
-      { name: "Node.js", icon: "Server" },
-      { name: "Python", icon: "Code" },
-      { name: "TensorFlow", icon: "Cpu" },
-      { name: "Redis", icon: "Database" },
-      { name: "GraphQL", icon: "Link" },
-      { name: "Docker", icon: "Box" },
-      { name: "GCP", icon: "Cloud" },
-    ],
-
-    aiHighlight: {
-      title: "The AI-Native Difference",
-      description:
-        "Before Evren, dispatchers manually planned routes each morning using static spreadsheets—a 3-hour process that couldn't adapt to real-time changes. Our AI orchestrator continuously recalculates optimal routes every 15 minutes, factoring in traffic, weather, and demand signals—eliminating the manual bottleneck entirely.",
-      beforeImage: "/images/before-ui.png",
-      afterImage: "/images/after-ui.png",
-      beforeLabel: "Before: Static Spreadsheet Routing",
-      afterLabel: "After: Dynamic AI Orchestration",
-    },
-
-    testimonial: {
-      quote:
-        "Our dispatchers went from spending 3 hours planning routes to overseeing an AI that does it in seconds. The fuel savings alone paid for the project in 4 months.",
-      name: "Rachel Kim",
-      title: "Director of Operations",
-      company: "Vanguard Logistics",
-    },
+  results: [
+    { value: "90%", label: "Faster Report Analysis", context: "AI-powered engine transformed multi-hour process into minutes" },
+    { value: "100%", label: "HIPAA Compliant", context: "End-to-end automated, compliant workflow across all touchpoints" },
+    { value: "0", label: "Scheduling Conflicts", context: "Dynamic slot-checking with Google Calendar integration" },
+    { value: "∞", label: "Future-Proof Scale", context: "Ready for EMR/EHR integrations via OAuth2 & comprehensive API" },
+  ],
+  techStack: [
+    { name: "Python", icon: "Code" },
+    { name: "FastAPI", icon: "Zap" },
+    { name: "GPT-4", icon: "Cpu" },
+    { name: "WebSockets", icon: "Globe" },
+    { name: "JWT Auth", icon: "Lock" },
+    { name: "PostgreSQL", icon: "Database" },
+    { name: "Google Calendar", icon: "Globe" },
+    { name: "Cloud Infra", icon: "Cloud" },
+  ],
+  aiHighlight: {
+    title: "From Hours to Minutes: AI-Powered Medical Document Intelligence",
+    description:
+      "GPT-4 reads, interprets, and structures medical reports in seconds — replacing a multi-hour manual review process with a single automated pipeline. The result is faster diagnoses, lower administrative overhead, and a clinical team that can focus on care.",
+    beforeImage: "/case studies/case 1.webp",
+    afterImage: "/case studies/case 1.webp",
+    beforeLabel: "Before: Manual Review",
+    afterLabel: "After: AI-Powered",
   },
+  testimonial: {
+    quote:
+      "Evren AI didn't just build software — they engineered the intelligent backbone of our telehealth platform. The AI-powered document processing alone saved our clinical team hours every day, and the scalable architecture means we're ready for whatever comes next.",
+    name: "CTO",
+    title: "Chief Technology Officer",
+    company: "iSeedoc",
+  },
+};
 
+// ═══════════════════════════════════════════════════════════════════════
+//  CASE STUDY 2 — VerifiedX Cybersecurity
+// ═══════════════════════════════════════════════════════════════════════
+
+export const VERIFIEDX_DATA: CaseStudy = {
+  client: "VerifiedX",
+  industry: "FinTech / Cybersecurity",
+  headline: "Mitigating Multi-Million Dollar Cyber Risk with Proactive AI Threat Detection",
+  subheadline:
+    "For a high-growth FinTech, we deployed a real-time LLM-based detection engine that analyzes and neutralizes sophisticated phishing attacks before they breach enterprise security.",
+  timeline: "6 Months",
+  teamSize: "5 Specialists",
+  hardMetric: "$7.5M+ Losses Prevented",
+  heroImage: "/case studies/case 2.webp",
+  challenge: {
+    title: "Reactive Security Was No Longer Enough",
+    description:
+      "In today's threat landscape, reactive cybersecurity is a recipe for financial and reputational disaster. VerifiedX, a high-growth FinTech platform, required an ironclad defense against sophisticated, AI-driven phishing attacks that traditional filters were missing. They partnered with Evren AI to build a proactive threat neutralization engine leveraging state-of-the-art LLMs to identify and stop attacks before they impact the enterprise.",
+    painPoints: [
+      "Cybercriminals using generative AI to scale personalized phishing attacks, rendering rule-based systems ineffective",
+      "Need for a unified, real-time defense system analyzing links, messages, and content across all digital channels",
+      "Solution had to handle millions of real-time analysis requests on scalable infrastructure without sacrificing performance",
+      "Traditional pattern-matching filters were missing increasingly sophisticated attack vectors",
+    ],
+  },
+  approach: {
+    title: "Designing a Proactive, Contextual Defense",
+    description:
+      "We started by analyzing VerifiedX's threat history and identified the semantic patterns that rule-based systems were missing, then engineered an LLM-first architecture around those gaps.",
+    steps: [
+      {
+        step: "Threat Landscape Analysis",
+        detail:
+          "Catalogued historical attack vectors, identified semantic patterns that evaded rule-based systems, and established accuracy benchmarks to beat before the project was greenlit.",
+      },
+      {
+        step: "LLM Selection & Fine-Tuning",
+        detail:
+          "Evaluated and fine-tuned leading LLMs on curated phishing datasets, iterating on prompt strategies to achieve contextual threat understanding — not just keyword matching.",
+      },
+      {
+        step: "High-Performance Backend",
+        detail:
+          "Built a FastAPI backend capable of handling millions of real-time analysis requests with sub-second response times, pressure-tested against peak FinTech traffic loads.",
+      },
+      {
+        step: "Continuous Learning Loop",
+        detail:
+          "Designed a feedback mechanism that feeds newly identified threats back into the model's training data, ensuring the defense evolves faster than the attack landscape.",
+      },
+    ],
+  },
+  solution: {
+    solutionImage: "/case studies/case 2.webp",
+    features: [
+      {
+        title: "LLM-Powered Contextual Analysis",
+        description:
+          "State-of-the-art LLMs trained on phishing data move beyond pattern-matching to understand deceptive content contextually — catching attacks no rule-based filter can detect.",
+      },
+      {
+        title: "Real-Time High-Performance Backend",
+        description:
+          "A scalable FastAPI backend handles real-time analysis of links, messages, and embedded content across all digital channels without compromising response performance.",
+      },
+      {
+        title: "Self-Evolving Defense Architecture",
+        description:
+          "A containerized, cloud-native solution that continuously ingests new threat data and adapts its models, ensuring defenses always stay ahead of the evolving attack landscape.",
+      },
+    ],
+  },
+  results: [
+    { value: "$7.5M+", label: "Annual Losses Prevented", context: "Proactively neutralized threats preventing direct financial damage" },
+    { value: "99.7%", label: "Detection Accuracy", context: "Near-perfect accuracy detecting and blocking sophisticated threats" },
+    { value: "Real-Time", label: "Cross-Channel Protection", context: "Unified defense across browser, mobile, and messaging channels" },
+    { value: "∞", label: "Scalable Architecture", context: "Containerized solution that adapts as the business grows" },
+  ],
+  techStack: [
+    { name: "Python", icon: "Code" },
+    { name: "FastAPI", icon: "Zap" },
+    { name: "Fine-Tuned LLMs", icon: "Cpu" },
+    { name: "Docker", icon: "Box" },
+    { name: "Cloud-Native", icon: "Cloud" },
+    { name: "Browser Extension", icon: "Globe" },
+    { name: "Mobile SDK", icon: "Shield" },
+    { name: "PostgreSQL", icon: "Database" },
+  ],
+  aiHighlight: {
+    title: "LLMs That Understand Intent, Not Just Patterns",
+    description:
+      "Where rule-based systems read surface-level signals, our LLM engine reads meaning. It interprets semantic intent behind a message or link — detecting social engineering, urgency manipulation, and impersonation tactics that no keyword filter can catch.",
+    beforeImage: "/case studies/case 2.webp",
+    afterImage: "/case studies/case 2.webp",
+    beforeLabel: "Before: Rule-Based Filters",
+    afterLabel: "After: LLM Intelligence",
+  },
+  testimonial: {
+    quote:
+      "Evren AI transformed our security posture from reactive to proactive. Their LLM-powered engine catches threats our previous systems never could have detected. The $7.5M+ in prevented losses speaks for itself — this partnership has been transformational for VerifiedX.",
+    name: "CISO",
+    title: "Chief Information Security Officer",
+    company: "VerifiedX",
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  CASE STUDY 3 — AI Construction Safety
+// ═══════════════════════════════════════════════════════════════════════
+
+export const CONSTRUCTION_SAFETY_DATA: CaseStudy = {
+  client: "National Construction Firm",
+  industry: "Construction & Real Estate",
+  headline: "Slashing On-Site Incidents by 40% with AI-Powered Safety Monitoring",
+  subheadline:
+    "Our edge-deployed computer vision system autonomously monitors for PPE compliance and structural hazards in real-time, providing instant alerts to prevent accidents and ensure OSHA compliance.",
+  timeline: "5 Months",
+  teamSize: "5 Specialists",
+  hardMetric: "40% Fewer Incidents",
+  heroImage: "/case studies/case 3.webp",
+  challenge: {
+    title: "Proactively Eliminate Job Site Risk Before It Becomes Tragedy",
+    description:
+      "For a leading national construction firm, ensuring worker safety and maintaining OSHA compliance across multiple active job sites was a mission-critical yet resource-intensive challenge. Traditional oversight was prone to human error and blind spots. They partnered with Evren AI to deploy a real-time, AI-powered computer vision system that autonomously identifies and flags safety hazards — preventing accidents before they happen.",
+    painPoints: [
+      "Fatal fall risks from workers near unprotected edges going undetected by manual oversight",
+      "PPE non-compliance (missing safety helmets) was impossible to monitor consistently at scale",
+      "Manual supervisors could not cover multiple simultaneous locations, creating dangerous blind spots",
+      "Reactive safety processes meant incidents were addressed after the fact, not prevented proactively",
+    ],
+  },
+  approach: {
+    title: "Deploying an Autonomous Digital Safety Supervisor",
+    description:
+      "We engineered an edge-first architecture to bring AI inference directly onto the job site — eliminating cloud latency and ensuring real-time hazard detection even in remote or low-connectivity environments.",
+    steps: [
+      {
+        step: "Edge AI Deployment",
+        detail:
+          "Deployed NVIDIA Jetson Xavier devices on-site for low-latency, real-time processing without cloud reliance, ensuring instant analysis in remote areas with unreliable connectivity.",
+      },
+      {
+        step: "Custom Model Training",
+        detail:
+          "Developed a highly accurate YOLOv4 model custom-trained on 10,000+ real construction site images, ensuring reliable detection across diverse lighting, weather, and site conditions.",
+      },
+      {
+        step: "Real-Time Alerting System",
+        detail:
+          "Built a configurable alert system that instantly notifies site supervisors with visual evidence upon detecting hazards — compressing the response window from hours to seconds.",
+      },
+      {
+        step: "Multi-Camera Scalable Architecture",
+        detail:
+          "Leveraged NVIDIA DeepStream to process multiple simultaneous video streams, enabling easy expansion across additional job sites and cameras as the client's operations grow.",
+      },
+    ],
+  },
+  solution: {
+    solutionImage: "/case studies/case 3.webp",
+    features: [
+      {
+        title: "Edge-Deployed Computer Vision",
+        description:
+          "NVIDIA Jetson Xavier devices run YOLOv4 inference directly on-site, delivering sub-second hazard detection without cloud dependency — even in areas with limited connectivity.",
+      },
+      {
+        title: "PPE & Hazard Detection",
+        description:
+          "Custom-trained models with 91% accuracy identify unprotected edges, missing helmets, and PPE non-compliance in real-time across all monitored zones simultaneously.",
+      },
+      {
+        title: "Instant Supervisor Alerting",
+        description:
+          "Configurable alert system sends immediate notifications with visual evidence to site supervisors, enabling rapid intervention before a near-miss escalates into an incident.",
+      },
+    ],
+  },
+  results: [
+    { value: "40%", label: "Reduction in Safety Incidents", context: "Reported within first 6 months across all monitored zones" },
+    { value: "91%", label: "Hazard Detection Accuracy", context: "Exceptional accuracy identifying critical unprotected edge fall risks" },
+    { value: "24/7", label: "Proactive Hazard Monitoring", context: "Continuous automated oversight replacing reactive manual processes" },
+    { value: "↓", label: "Reduced Insurance Premiums", context: "Fortified OSHA compliance strengthened regulatory & legal position" },
+  ],
+  techStack: [
+    { name: "YOLOv4", icon: "Search" },
+    { name: "NVIDIA Jetson", icon: "Cpu" },
+    { name: "DeepStream", icon: "Server" },
+    { name: "Python", icon: "Code" },
+    { name: "Computer Vision", icon: "Shield" },
+    { name: "Edge AI", icon: "Zap" },
+    { name: "Alert System", icon: "Globe" },
+    { name: "PostgreSQL", icon: "Database" },
+  ],
+  aiHighlight: {
+    title: "A Tireless Eye in the Sky: From Reactive Oversight to Proactive Prevention",
+    description:
+      "Traditional safety supervision relies on human attention — which is finite, fatigable, and limited to one location at a time. Our edge-deployed AI watches every corner of every site simultaneously, flagging hazards the moment they appear and delivering visual evidence to supervisors in seconds.",
+    beforeImage: "/case studies/case 3.webp",
+    afterImage: "/case studies/case 3.webp",
+    beforeLabel: "Before: Manual Oversight",
+    afterLabel: "After: AI Vision",
+  },
+  testimonial: {
+    quote:
+      "Safety is our number one priority, and Evren AI has given us a powerful new tool to uphold that commitment. Their AI system is our tireless eye in the sky, identifying risks we might have missed. The reduction in incidents and the peace of mind it provides are invaluable to our operations.",
+    name: "Head of Operations",
+    title: "Head of Operations",
+    company: "Major National Construction Firm",
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  CASE STUDY 4 — MarketPulse Financial AI
+// ═══════════════════════════════════════════════════════════════════════
+
+export const MARKETPULSE_DATA: CaseStudy = {
+  client: "MarketPulse Live",
+  industry: "Finance & Investing",
+  headline: "Delivering Actionable Market Alpha with Real-Time Earnings Call Intelligence",
+  subheadline:
+    "We built a microservices-based platform that transcribes, summarizes, and analyzes earnings calls in real-time, giving financial advisors and investors an unfair information edge.",
+  timeline: "7 Months",
+  teamSize: "6 Specialists",
+  hardMetric: "< 90 Seconds to Insight",
+  heroImage: "/case studies/case 4.webp",
+  challenge: {
+    title: "Achieve an Unfair Information Advantage During Earnings Season",
+    description:
+      "In the world of finance, information latency is the difference between profit and loss. A leading financial advisory firm needed to equip its strategists and investors with an immediate edge during volatile earnings season. They partnered with Evren AI to build MarketPulse Live — a real-time analysis platform that ingests, transcribes, and summarizes earnings calls the moment they happen, turning unstructured audio into actionable market intelligence.",
+    painPoints: [
+      "Information latency turned live earnings calls into missed opportunities — insights arrived hours after the market had already moved",
+      "Manual analysis of call transcripts was slow, inconsistent, and unable to detect nuanced shifts in executive tone and sentiment",
+      "The platform needed to handle concurrent data streams from multiple simultaneous calls without degrading under peak market load",
+      "Proprietary trading algorithms required a future-proof, API-first integration surface to consume AI-generated insights",
+    ],
+  },
+  approach: {
+    title: "Engineering a Real-Time Intelligence Engine",
+    description:
+      "We designed a cloud-native, microservices-first architecture from the ground up — built for speed, resilience, and the ability to scale horizontally across concurrent earnings events.",
+    steps: [
+      {
+        step: "Cloud-Native Microservices Architecture",
+        detail:
+          "Designed a fully containerized microservices platform on Google Cloud Run, ensuring scalability and high availability with no single points of failure during peak market hours.",
+      },
+      {
+        step: "Low-Latency Transcription Pipeline",
+        detail:
+          "Integrated OpenAI Whisper for real-time audio-to-text conversion of live earnings streams, processing speech with minimal latency to feed the downstream NLP analysis layer.",
+      },
+      {
+        step: "NLP Sentiment & Summarization Engine",
+        detail:
+          "Deployed custom NLP models to extract key insights, detect sentiment shifts in executive Q&A sessions, and auto-generate structured summaries for immediate analyst consumption.",
+      },
+      {
+        step: "Real-Time Dashboard & API Layer",
+        detail:
+          "Built a Next.js dashboard with WebSocket updates for live sentiment and stock visualizations, plus an API-first design enabling future integration with proprietary trading algorithms.",
+      },
+    ],
+  },
+  solution: {
+    solutionImage: "/case studies/case 4.webp",
+    features: [
+      {
+        title: "Real-Time Transcription & NLP Pipeline",
+        description:
+          "OpenAI Whisper converts live earnings call audio to text in near-real-time, feeding a custom NLP layer that extracts key insights and generates structured summaries within seconds.",
+      },
+      {
+        title: "Executive Sentiment Analysis",
+        description:
+          "Advanced NLP models detect shifts in executive tone and sentiment during Q&A sessions — providing qualitative leading indicators for market reactions beyond raw transcription.",
+      },
+      {
+        title: "Scalable Multi-Call Monitoring",
+        description:
+          "Cloud-native microservices architecture enables simultaneous monitoring of 10+ concurrent earnings calls, giving analysts unprecedented market coverage during peak earnings season.",
+      },
+    ],
+  },
+  results: [
+    { value: "< 90s", label: "Audio to Actionable Insight", context: "Reduced information-to-insight cycle from hours to under 90 seconds" },
+    { value: "10+", label: "Concurrent Calls Monitored", context: "Simultaneous earnings call coverage significantly expanded market reach" },
+    { value: "Real-Time", label: "Sentiment Tracking", context: "Live qualitative indicators during Q&A sessions provided market edge" },
+    { value: "∞", label: "Compounding Advantage", context: "Foundation for future AI-driven forecasting and anomaly detection" },
+  ],
+  techStack: [
+    { name: "Next.js", icon: "Globe" },
+    { name: "OpenAI Whisper", icon: "Cpu" },
+    { name: "Custom NLP", icon: "Search" },
+    { name: "Google Cloud Run", icon: "Cloud" },
+    { name: "Microservices", icon: "Server" },
+    { name: "WebSockets", icon: "Zap" },
+    { name: "Docker", icon: "Box" },
+    { name: "PostgreSQL", icon: "Database" },
+  ],
+  aiHighlight: {
+    title: "From Live Audio to Market Intelligence in Under 90 Seconds",
+    description:
+      "While competitors are still listening to the call replay, our platform has already transcribed, analyzed, and surfaced the critical insights that matter. That information delta — measured in minutes — translates directly into trading alpha during the most volatile windows of earnings season.",
+    beforeImage: "/case studies/case 4.webp",
+    afterImage: "/case studies/case 4.webp",
+    beforeLabel: "Before: Manual Analysis",
+    afterLabel: "After: AI Intelligence",
+  },
+  testimonial: {
+    quote:
+      "In our business, speed is everything. Evren AI delivered a platform that has fundamentally changed how we operate during earnings season. We are no longer reacting to the market, we are anticipating it. Their ability to translate a complex architectural vision into a high-performance, real-world tool has been exceptional.",
+    name: "Chief Investment Officer",
+    title: "Chief Investment Officer",
+    company: "Financial Advisory Firm",
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  CASE STUDY 5 — BillClear Legal Tech
+// ═══════════════════════════════════════════════════════════════════════
+
+export const BILLCLEAR_DATA: CaseStudy = {
+  client: "BillClear AI",
+  industry: "Legal Tech",
+  headline: "Recovering Lost Revenue & Ensuring Billing Compliance for a Top-Tier Law Firm",
+  subheadline:
+    "We developed an AI-powered analyzer that automatically reviews and corrects timekeeper narratives, transforming vague entries into compliant, billable records that withstand client scrutiny.",
+  timeline: "6 Months",
+  teamSize: "4 Specialists",
+  hardMetric: "15% Revenue Recovered",
+  heroImage: "/case studies/case 5.webp",
+  challenge: {
+    title: "Protect Firm Revenue and Client Trust from Silent Billing Leakage",
+    description:
+      "A leading national law firm was facing a significant challenge: revenue leakage caused by vague, non-compliant, or incomplete timekeeper narratives that were being rejected by clients. They partnered with Evren AI to build BillClear AI — a smart platform that uses a legal-specific AI engine to automatically analyze and improve billing narratives, ensuring every minute of work is accurately and compliantly captured.",
+    painPoints: [
+      "Vague and inconsistent billing entries were being written down or rejected by clients, causing direct revenue leakage",
+      "Partners and senior staff were spending valuable billable hours manually reviewing and correcting timesheets",
+      "Lack of billing transparency was eroding client confidence and creating unnecessary disputes",
+      "No systemic way to educate timekeepers on best practices, leading to persistent quality issues across the firm",
+    ],
+  },
+  approach: {
+    title: "Building an Intelligent Billing & Compliance Engine",
+    description:
+      "We collaborated closely with legal billing experts to build an AI ruleset grounded in real-world compliance standards, then wrapped it in a system designed to educate as well as automate.",
+    steps: [
+      {
+        step: "Legal-Specific AI Ruleset",
+        detail:
+          "Collaborated with legal billing experts to create a comprehensive AI ruleset for analyzing narratives against compliance standards — covering vagueness, block billing, and task code alignment.",
+      },
+      {
+        step: "Automated Narrative Analysis Pipeline",
+        detail:
+          "Built a FastAPI-powered backend to process billing entries, flag non-compliant items in real-time, and generate AI-driven rewrite suggestions that preserve the timekeeper's intent.",
+      },
+      {
+        step: "Educational User Interface",
+        detail:
+          "Designed an intuitive web interface where staff can view flagged issues, compare original vs. corrected entries, and absorb best-practice guidance to improve future time entry quality.",
+      },
+      {
+        step: "Secure, Scalable Infrastructure",
+        detail:
+          "Containerized the platform with Docker and PostgreSQL, ensuring data confidentiality, regulatory security, and the scalability to grow alongside the firm's headcount and workload.",
+      },
+    ],
+  },
+  solution: {
+    solutionImage: "/case studies/case 5.webp",
+    features: [
+      {
+        title: "AI-Powered Narrative Analysis",
+        description:
+          "A legal-specific NLP engine automatically reviews every time entry against compliance standards, flagging vague descriptions, block billing, and non-compliant patterns before submission.",
+      },
+      {
+        title: "Intelligent Rewrite Suggestions",
+        description:
+          "The system generates context-aware rewrite suggestions that transform non-compliant entries into clear, defensible billing records — reducing manual correction effort by over 80%.",
+      },
+      {
+        title: "Firm-Wide Billing Transparency",
+        description:
+          "An intuitive dashboard gives partners real-time visibility into billing quality across the firm, with actionable insights that continuously raise the standard of timekeeper input.",
+      },
+    ],
+  },
+  results: [
+    { value: "15%", label: "Revenue Recovered", context: "Previously written-down revenue identified and corrected, delivering strong ROI" },
+    { value: "80%+", label: "Reduction in Manual Review", context: "Automated platform saved thousands of partner and staff hours" },
+    { value: "100%", label: "Non-Compliant Submissions Eliminated", context: "All billing submissions adhered to strict standards, disputes reduced to zero" },
+    { value: "↑", label: "Client Trust & Transparency", context: "Improved billing clarity strengthened client relationships firm-wide" },
+  ],
+  techStack: [
+    { name: "Python", icon: "Code" },
+    { name: "FastAPI", icon: "Zap" },
+    { name: "Custom NLP", icon: "Search" },
+    { name: "Next.js", icon: "Globe" },
+    { name: "Docker", icon: "Box" },
+    { name: "PostgreSQL", icon: "Database" },
+    { name: "Rule Engine", icon: "Shield" },
+    { name: "AWS", icon: "Cloud" },
+  ],
+  aiHighlight: {
+    title: "From Revenue Leakage to Billing Confidence: AI That Reads Like a Senior Partner",
+    description:
+      "Every vague time entry is a potential write-down. BillClear's AI reads each narrative the way an experienced billing partner would — spotting ambiguity, block billing, and task code mismatches instantly — then rewrites them into defensible records before they ever reach a client invoice.",
+    beforeImage: "/case studies/case 5.webp",
+    afterImage: "/case studies/case 5.webp",
+    beforeLabel: "Before: Vague Entry",
+    afterLabel: "After: Compliant Record",
+  },
+  testimonial: {
+    quote:
+      "Revenue leakage from billing is a silent killer of profitability. Evren AI's BillClear platform has been a game-changer. It not only plugged the leaks in our revenue cycle but also gave our clients a new level of confidence in our operations. It is one of the best investments in operational technology we have ever made.",
+    name: "Managing Partner",
+    title: "Managing Partner",
+    company: "National Law Firm",
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  CASE STUDY 6 — IntelliBots AI Agent Platform
+// ═══════════════════════════════════════════════════════════════════════
+
+export const INTELLIBOTS_DATA: CaseStudy = {
+  client: "IntelliBots",
+  industry: "Enterprise Software & Logistics",
+  headline: "From Chatbot to Command Center: Empowering Enterprise with an AI Agent Deployment Platform",
+  subheadline:
+    "We delivered a platform enabling our client to build and deploy their own RAG-powered chatbots for internal support, reducing IT help desk tickets and improving employee self-service.",
+  timeline: "8 Months",
+  teamSize: "6 Specialists",
+  hardMetric: "70% Fewer Support Queries",
+  heroImage: "/case studies/case 6.webp",
+  challenge: {
+    title: "Democratize AI Creation Across the Enterprise, Without Losing Control",
+    description:
+      "A global logistics enterprise needed to move beyond simple, single-purpose chatbots. Their goal was to empower internal teams to create, manage, and deploy multiple sophisticated AI assistants — for use cases ranging from IT support to customer service — without a massive development overhead for each new bot. They partnered with Evren AI to build IntelliBots, a centralized platform for deploying and managing autonomous, RAG-powered AI agents at scale.",
+    painPoints: [
+      "Every new chatbot required a full development cycle, making it impossible to scale conversational AI across the enterprise cost-effectively",
+      "Existing bots gave generic, inaccurate answers — not grounded in internal documentation, causing user distrust and low adoption",
+      "No centralized way to manage, monitor, or govern AI performance across multiple business units and use cases",
+      "Embedding AI agents into websites and internal apps required complex, one-off engineering work for each deployment",
+    ],
+  },
+  approach: {
+    title: "Building a Scalable AI Agent Factory",
+    description:
+      "We designed IntelliBots as a multi-tenant platform where each business unit gets its own isolated agent environment — with a shared infrastructure that keeps costs low and governance centralized.",
+    steps: [
+      {
+        step: "Modular Multi-Tenant Core",
+        detail:
+          "Built a robust FastAPI backend managing multiple isolated chatbot instances with strict data segregation, ensuring each business unit's knowledge base and conversations remain private.",
+      },
+      {
+        step: "RAG & Indexing Engine",
+        detail:
+          "Integrated RAG with Elasticsearch to create a searchable, always-current knowledge base from uploaded documents and live websites — grounding every AI response in verified internal data.",
+      },
+      {
+        step: "Dual Interface Design",
+        detail:
+          "Created two Next.js interfaces: an admin dashboard for non-developers to build and manage bots, and a responsive embeddable chat UI that drops into any web app with a single script tag.",
+      },
+      {
+        step: "AWS High-Availability Infrastructure",
+        detail:
+          "Containerized the platform and hosted on AWS with load balancing and autoscaling, ensuring consistent performance and reliability as agent usage grows across the enterprise.",
+      },
+    ],
+  },
+  solution: {
+    solutionImage: "/case studies/case 6.webp",
+    features: [
+      {
+        title: "No-Code Agent Builder",
+        description:
+          "A user-friendly admin interface allows business users — not just developers — to create, configure, and manage AI agents by uploading documents or pointing to websites as their knowledge source.",
+      },
+      {
+        title: "RAG-Powered Accuracy Engine",
+        description:
+          "Retrieval-Augmented Generation with Elasticsearch ensures every agent response is grounded in the client's own verified documentation, eliminating AI hallucinations and building user trust.",
+      },
+      {
+        title: "One-Line Embeddable Chat UI",
+        description:
+          "A production-ready, responsive chat widget embeds into any website or internal app with minimal code, making enterprise-wide AI deployment a matter of hours, not months.",
+      },
+    ],
+  },
+  results: [
+    { value: "70%", label: "Fewer Repetitive Support Queries", context: "First IT help desk agent automated common queries, freeing the team for complex issues" },
+    { value: "Hours", label: "New Agent Deployment Time", context: "Reduced from months of dev work to self-service in hours" },
+    { value: "100%", label: "Verifiable, Source-Based Responses", context: "RAG architecture ensured all answers grounded in client's own knowledge documents" },
+    { value: "1", label: "Centralized AI Governance Platform", context: "Unified hub to manage strategy, monitor performance, and ensure quality across all agents" },
+  ],
+  techStack: [
+    { name: "FastAPI", icon: "Zap" },
+    { name: "Next.js", icon: "Globe" },
+    { name: "RAG", icon: "Search" },
+    { name: "Elasticsearch", icon: "Database" },
+    { name: "Docker", icon: "Box" },
+    { name: "AWS", icon: "Cloud" },
+    { name: "Python", icon: "Code" },
+    { name: "Multi-Tenancy", icon: "Server" },
+  ],
+  aiHighlight: {
+    title: "RAG: AI That Answers From Your Knowledge, Not the Internet",
+    description:
+      "The difference between a chatbot people trust and one they abandon is grounding. IntelliBots' RAG engine retrieves the exact relevant passages from your internal documentation before generating any response — meaning every answer is verifiable, accurate, and aligned with your organization's actual policies and data.",
+    beforeImage: "/case studies/case 6.webp",
+    afterImage: "/case studies/case 6.webp",
+    beforeLabel: "Before: Generic Chatbots",
+    afterLabel: "After: RAG-Powered Agents",
+  },
+  testimonial: {
+    quote:
+      "IntelliBots has transformed our approach to internal AI. Instead of commissioning one-off projects, we now have a platform that empowers our own teams to build the solutions they need. Evren AI delivered a scalable, secure, and remarkably intuitive system that is driving efficiency across our entire organization.",
+    name: "Chief Digital Officer",
+    title: "Chief Digital Officer",
+    company: "Global Logistics Enterprise",
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  CASE STUDY 7 — TrackRec Sales Hiring AI
+// ═══════════════════════════════════════════════════════════════════════
+
+export const TRACKREC_DATA: CaseStudy = {
+  client: "TrackRec",
+  industry: "HR Tech / Sales Ops",
+  headline: "Improving Sales Team Performance by Hiring the Right Reps, Faster",
+  subheadline:
+    "For a leading sales recruitment agency, we engineered an AI-powered platform that analyzes candidates against 11 KPIs to generate a Sales Fit Score, reducing bias and improving hiring accuracy.",
+  timeline: "6 Months",
+  teamSize: "5 Specialists",
+  hardMetric: "25% Higher Quota Attainment",
+  heroImage: "/case studies/case 7.webp",
+  challenge: {
+    title: "Replace Gut Feel with Data-Driven Sales Hiring Intelligence",
+    description:
+      "A premier sales recruitment agency recognized a costly inefficiency in the market: traditional hiring based on resumes and interviews was failing to consistently identify top-performing sales candidates. This led to high turnover and missed revenue targets for their clients. They partnered with Evren AI to build TrackRec — an AI-driven platform that moves beyond resumes to generate a data-backed Sales Fit Score, revolutionizing how sales talent is assessed and placed.",
+    painPoints: [
+      "Resume-based hiring failed to predict on-the-job sales performance, leading to expensive mis-hires and high first-year turnover",
+      "Subjective interview processes introduced unconscious bias, excluding high-potential candidates who didn't interview well",
+      "No standardized, data-driven framework for evaluating candidates against the specific KPIs that predict success in a given role",
+      "Manual candidate research and profile enrichment was time-consuming, slowing the hiring cycle and frustrating clients",
+    ],
+  },
+  approach: {
+    title: "Engineering a Predictive Talent Assessment Engine",
+    description:
+      "We built TrackRec's scoring system by first working with the agency's top recruiters to identify the 11 KPIs that historically correlated with high sales performance, then engineering a model to assess every candidate against them.",
+    steps: [
+      {
+        step: "Multi-Factor AI Scoring System",
+        detail:
+          "Developed the AI-powered Sales Fit Score by blending machine learning models and OpenAI to generate a reliable, explainable score based on 11 key performance metrics including deal size, industry experience, and tenure.",
+      },
+      {
+        step: "High-Performance Scalable Backend",
+        detail:
+          "Architected a microservices platform with FastAPI and Celery to handle large candidate datasets and complex scoring operations asynchronously, hosted on secure AWS infrastructure.",
+      },
+      {
+        step: "Third-Party Data Enrichment",
+        detail:
+          "Integrated the Apollo.io API to automatically enrich candidate profiles with external, industry-specific data — improving scoring accuracy and eliminating hours of manual research per candidate.",
+      },
+      {
+        step: "Seamless Recruiter Interface",
+        detail:
+          "Designed TrackRec's frontend with Next.js and React.js to deliver a fast, modern, and intuitive interface that integrates with existing recruiter workflows with minimal friction.",
+      },
+    ],
+  },
+  solution: {
+    solutionImage: "/case studies/case 7.webp",
+    features: [
+      {
+        title: "AI-Powered Sales Fit Score",
+        description:
+          "A machine learning model evaluates every candidate against 11 data-driven KPIs — from deal size history to industry tenure — generating an explainable score that predicts on-the-job performance.",
+      },
+      {
+        title: "Customizable Scoring Framework",
+        description:
+          "Recruiters can adjust the weight of each KPI to match the specific requirements of a role or client, making the platform a flexible asset for any sales position across any industry.",
+      },
+      {
+        title: "Automated Profile Enrichment",
+        description:
+          "Apollo.io integration automatically enriches candidate profiles with real-time, industry-specific data — eliminating manual research and ensuring the AI scores on the most current information available.",
+      },
+    ],
+  },
+  results: [
+    { value: "25%", label: "Increase in First-Year Quota Attainment", context: "Accurate candidate-role matching directly improved new hire revenue performance" },
+    { value: "50%", label: "Faster Time-to-Hire", context: "Streamlined recruitment process reduced hiring cycle by half" },
+    { value: "~0", label: "Subjective Hiring Bias", context: "Data-driven Sales Fit Score focused purely on performance indicators" },
+    { value: "∞", label: "Flexible for Any Sales Role", context: "Customizable scoring system adapts to any role as a core strategic asset" },
+  ],
+  techStack: [
+    { name: "Python", icon: "Code" },
+    { name: "FastAPI", icon: "Zap" },
+    { name: "OpenAI", icon: "Cpu" },
+    { name: "Celery", icon: "Server" },
+    { name: "Next.js", icon: "Globe" },
+    { name: "Apollo.io API", icon: "Search" },
+    { name: "AWS", icon: "Cloud" },
+    { name: "PostgreSQL", icon: "Database" },
+  ],
+  aiHighlight: {
+    title: "11 KPIs. One Score. Zero Gut Feel.",
+    description:
+      "TrackRec's Sales Fit Score takes the subjectivity out of hiring entirely. Instead of relying on interview impressions, recruiters get a single, data-backed number that tells them exactly how well a candidate's track record maps to the performance profile of a top rep in that specific role — before a single conversation takes place.",
+    beforeImage: "/case studies/case 7.webp",
+    afterImage: "/case studies/case 7.webp",
+    beforeLabel: "Before: Resume Screening",
+    afterLabel: "After: Sales Fit Score",
+  },
+  testimonial: {
+    quote:
+      "TrackRec has fundamentally changed the way we operate. We are no longer just matching resumes to job descriptions, we are matching sales DNA to business needs. Our clients are seeing higher quota attainment from the candidates we place, and our own efficiency has skyrocketed. Evren AI understood our business problem perfectly.",
+    name: "CEO",
+    title: "Chief Executive Officer",
+    company: "Premier Sales Recruitment Agency",
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  WORK LISTING CARDS — ALL 7 (shown on /work page)
+// ═══════════════════════════════════════════════════════════════════════
+
+export const WORK_CASE_STUDIES: CaseStudyCard[] = [
   {
-    slug: "nova-commerce",
-    client: "Nova Commerce",
-    industry: "E-Commerce",
-    headline: "Hyper-Personalization Revenue Engine",
-    subheadline:
-      "AI-powered product recommendation and dynamic pricing platform that lifted conversion rates by 34% and average order value by 22%.",
-    thumbnailImage: "/hero-dashboard.png",
-    heroImage: "/hero-dashboard.png",
-    hardMetric: "34% Conversion Lift",
-    timeline: "4 Months",
-    teamSize: "5 Specialists",
-
-    challenge: {
-      title: "The Challenge",
-      description:
-        "Nova Commerce served 2M+ monthly active users but suffered from generic product recommendations and static pricing. Cart abandonment was at 74%, and the marketing team had no visibility into real-time customer intent signals. Revenue per session had stagnated for 3 consecutive quarters.",
-      painPoints: [
-        "74% cart abandonment rate with generic recommendation engine",
-        "Static pricing unable to respond to demand signals",
-        "Marketing team blind to real-time customer intent",
-        "Revenue per session stagnant for 3 consecutive quarters",
-      ],
-    },
-
-    approach: {
-      title: "Our Approach",
-      description:
-        "We instrumented every user touchpoint to build real-time behavioral profiles, then engineered a recommender system and dynamic pricing engine that responds to individual user intent.",
-      steps: [
-        {
-          step: "Behavioral Instrumentation",
-          detail:
-            "Deployed event tracking across 400+ user touchpoints for real-time intent profiling.",
-        },
-        {
-          step: "Recommendation Engine",
-          detail:
-            "Built collaborative filtering + content-based hybrid model trained on 18M historical interactions.",
-        },
-        {
-          step: "Dynamic Pricing",
-          detail:
-            "Engineered price optimization that adjusts in real-time based on demand, inventory, and user segment.",
-        },
-        {
-          step: "A/B Testing Framework",
-          detail:
-            "Built automated experimentation pipeline to continuously optimize algorithms.",
-        },
-      ],
-    },
-
-    solution: {
-      description:
-        "A hyper-personalization engine that combines real-time behavioral profiling with AI-powered recommendations and dynamic pricing to maximize revenue per session.",
-      features: [
-        {
-          title: "Real-time Personalization",
-          description:
-            "Individual product recommendations based on live behavioral signals, not just historical data.",
-        },
-        {
-          title: "Dynamic Pricing Engine",
-          description:
-            "Automated price optimization that responds to demand, inventory, and competitive signals.",
-        },
-        {
-          title: "Intent Analytics Dashboard",
-          description:
-            "Real-time visibility into customer journey stages, enabling targeted marketing interventions.",
-        },
-      ],
-      solutionImage: "/hero-dashboard.png",
-    },
-
-    results: [
-      {
-        value: "34%",
-        label: "Conversion Lift",
-        context: "across all product categories",
-      },
-      {
-        value: "22%",
-        label: "AOV Increase",
-        context: "average order value through personalization",
-      },
-      {
-        value: "74→52%",
-        label: "Cart Abandonment",
-        context: "reduced through intent-driven interventions",
-      },
-      {
-        value: "3.2x",
-        label: "Revenue per Session",
-        context: "increase within first quarter",
-      },
-    ],
-
-    techStack: [
-      { name: "Next.js", icon: "Globe" },
-      { name: "Python", icon: "Code" },
-      { name: "TensorFlow", icon: "Cpu" },
-      { name: "Redis", icon: "Database" },
-      { name: "Elasticsearch", icon: "Search" },
-      { name: "Kafka", icon: "Zap" },
-      { name: "AWS", icon: "Cloud" },
-      { name: "Docker", icon: "Box" },
-    ],
-
-    aiHighlight: {
-      title: "The AI-Native Difference",
-      description:
-        "Before Evren, Nova's recommendation engine used simple 'customers also bought' rules—one-size-fits-all. Our AI processes 400+ real-time behavioral signals per user to build individual intent profiles, serving hyper-relevant recommendations within 50ms. The dynamic pricing layer then optimizes conversion probability per user segment—something no manual team could replicate at scale.",
-      beforeImage: "/images/before-ui.png",
-      afterImage: "/images/after-ui.png",
-      beforeLabel: "Before: Generic Rule-Based Recommendations",
-      afterLabel: "After: AI Hyper-Personalization Engine",
-    },
-
-    testimonial: {
-      quote:
-        "The personalization engine feels like having a dedicated shopping assistant for every single user. Our conversion numbers speak for themselves.",
-      name: "Priya Sharma",
-      title: "Chief Product Officer",
-      company: "Nova Commerce",
-    },
+    metric: "90%",
+    metricLabel: "Faster Report Analysis",
+    client: "Revolutionizing Healthcare Access: An AI-Powered Virtual Consultation Platform",
+    description:
+      "Global telehealth innovator iSeedoc partnered with Evren AI to architect an end-to-end, HIPAA-compliant telehealth platform that automates workflows, streamlines consultations, and leverages AI to deliver intelligent, accessible, and secure healthcare.",
+    tags: ["Healthcare"],
+    image: "/case studies/case 1.webp",
+    href: "/case-studies/iseedoc-telehealth",
+  },
+  {
+    metric: "$7.5M+",
+    metricLabel: "Annual Losses Prevented",
+    client: "Mitigating Multi-Million Dollar Cyber Risk with Proactive AI Threat Detection",
+    description:
+      "For a high-growth FinTech, we deployed a real-time LLM-based detection engine that analyzes and neutralizes sophisticated phishing attacks before they breach enterprise security.",
+    tags: ["Cybersecurity"],
+    image: "/case studies/case 2.webp",
+    href: "/case-studies/verifiedx-cybersecurity",
+  },
+  {
+    metric: "40%",
+    metricLabel: "Reduction in On-Site Incidents",
+    client: "Slashing On-Site Incidents by 40% with AI-Powered Safety Monitoring",
+    description:
+      "Our edge-deployed computer vision system autonomously monitors for PPE compliance and structural hazards in real-time, providing instant alerts to prevent accidents and ensure OSHA compliance.",
+    tags: ["Construction & Real Estate"],
+    image: "/case studies/case 3.webp",
+    href: "/case-studies/ai-construction-safety",
+  },
+  {
+    metric: "< 90s",
+    metricLabel: "Audio to Actionable Insight",
+    client: "Delivering Actionable Market Alpha with Real-Time Earnings Call Intelligence",
+    description:
+      "We built a microservices-based platform that transcribes, summarizes, and analyzes earnings calls in real-time, giving financial advisors and investors an information edge.",
+    tags: ["Finance & Investing"],
+    image: "/case studies/case 4.webp",
+    href: "/case-studies/marketpulse-financial-ai",
+  },
+  {
+    metric: "15%",
+    metricLabel: "Revenue Recovered",
+    client: "Recovering Lost Revenue & Ensuring Billing Compliance for Law Firms",
+    description:
+      "We developed an AI-powered analyzer that automatically reviews and corrects timekeeper narratives, transforming vague entries into compliant, billable records that withstand client scrutiny.",
+    tags: ["Legal Tech"],
+    image: "/case studies/case 5.webp",
+    href: "/case-studies/billclear-legal-tech",
+  },
+  {
+    metric: "70%",
+    metricLabel: "Fewer Repetitive Support Queries",
+    client: "Empowering a Global Logistics Firm to Deploy Autonomous Support Agents",
+    description:
+      "We delivered a platform enabling our client to build and deploy their own RAG-powered chatbots for internal support, reducing IT help desk tickets and improving employee self-service.",
+    tags: ["Autonomous Agents"],
+    image: "/case studies/case 6.webp",
+    href: "/case-studies/intellibots-ai-agent-platform",
+  },
+  {
+    metric: "25%",
+    metricLabel: "Higher First-Year Quota Attainment",
+    client: "Improving Sales Team Performance by Hiring the Right Reps, Faster",
+    description:
+      "For a leading sales recruitment agency, we engineered an AI-powered platform that analyzes candidates against 11 KPIs to generate a Sales Fit Score, reducing bias and improving hiring accuracy.",
+    tags: ["HR Tech / Sales Ops"],
+    image: "/case studies/case 7.webp",
+    href: "/case-studies/trackrec-sales-hiring",
   },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════
-//  HELPER FUNCTIONS
+//  CASE STUDY ROUTING HELPERS
 // ═══════════════════════════════════════════════════════════════════════
 
-export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
-  return CASE_STUDIES.find((cs) => cs.slug === slug);
-}
+const CASE_STUDIES_MAP: Record<string, CaseStudy> = {
+  "iseedoc-telehealth": ISEEDOC_DATA,
+  "verifiedx-cybersecurity": VERIFIEDX_DATA,
+  "ai-construction-safety": CONSTRUCTION_SAFETY_DATA,
+  "marketpulse-financial-ai": MARKETPULSE_DATA,
+  "billclear-legal-tech": BILLCLEAR_DATA,
+  "intellibots-ai-agent-platform": INTELLIBOTS_DATA,
+  "trackrec-sales-hiring": TRACKREC_DATA,
+};
 
 export function getAllSlugs(): string[] {
-  return CASE_STUDIES.map((cs) => cs.slug);
+  return Object.keys(CASE_STUDIES_MAP);
 }
 
-export function getIndustries(): Industry[] {
-  return [...new Set(CASE_STUDIES.map((cs) => cs.industry))];
+export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
+  return CASE_STUDIES_MAP[slug];
 }

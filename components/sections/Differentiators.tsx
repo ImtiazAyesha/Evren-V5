@@ -42,8 +42,7 @@ const bentoCell: Variants = {
 
 function SectionLabel({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-evren-peach font-mono">
-      <span className="w-1.5 h-1.5 rounded-full bg-evren-peach animate-pulse" />
+    <span className="block text-[11px] font-heading font-semibold uppercase tracking-[0.2em] text-evren-peach/90 mb-3">
       {text}
     </span>
   );
@@ -86,7 +85,7 @@ export default function Differentiators() {
     <section
       ref={sectionRef}
       id="why-evren"
-      className="relative w-full bg-evren-warm-white py-16 sm:py-24 lg:py-32 overflow-hidden"
+      className="relative w-full bg-evren-warm-white py-12 sm:py-16 lg:py-20 overflow-hidden"
     >
       {/* Decorative gradient orbs */}
       <div
@@ -124,7 +123,7 @@ export default function Differentiators() {
             </span>
           </h2>
           <p className="mt-4 text-evren-medium-gray font-body text-[15px] leading-relaxed max-w-xl">
-            Three principles that set us apart — each one woven into every project, every decision, every line of code.
+            Three principles that set us apart each one woven into every project, every decision, every line of code.
           </p>
         </motion.div>
 
@@ -144,7 +143,7 @@ export default function Differentiators() {
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             className="md:col-span-7 md:row-span-1 group relative rounded-[24px] overflow-hidden
                        bg-evren-navy p-8 lg:p-10 flex flex-col justify-between
-                       border border-evren-navy-light/30
+                       border border-evren-navy-light/30 cursor-pointer
                        transition-shadow duration-300
                        hover:shadow-[0_20px_60px_rgba(27,42,74,0.25)]"
           >
@@ -155,29 +154,15 @@ export default function Differentiators() {
 
             <div className="relative z-10">
               <SectionLabel text="CORE ARCHITECTURE" />
-              <h3 className="text-2xl lg:text-3xl font-heading font-bold text-white mt-4 mb-3 leading-tight">
+              <h3 className="text-2xl lg:text-3xl font-heading font-bold text-white mt-2 mb-3 leading-tight">
                 AI-Native by Design
               </h3>
-              <p className="text-white/60 font-body text-[15px] leading-relaxed max-w-md">
+              <p className="text-white/70 font-body text-[15px] leading-relaxed max-w-md">
                 AI isn&apos;t a feature we bolt on at the end. It is woven into our
                 architecture from day one, making your product fundamentally smarter.
               </p>
-
-              {/* Stat chips */}
-              <div className="flex gap-3 mt-6 flex-wrap">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-evren-peach animate-pulse" />
-                  <span className="text-xs font-bold text-white/80 font-mono tracking-wider">
-                    {projectCount}+ PROJECTS
-                  </span>
-                </div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/10">
-                  <span className="text-xs font-bold text-white/80 font-mono tracking-wider">
-                    {satisfactionRate}% SATISFACTION
-                  </span>
-                </div>
-              </div>
             </div>
+
           </motion.div>
 
           {/* ── CARD 2: Partnership (5 cols — matches hero height) */}
@@ -186,31 +171,27 @@ export default function Differentiators() {
             whileHover={{ y: -4 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             className="md:col-span-5 md:row-span-1 group relative rounded-[24px] overflow-hidden
-                       bg-white p-7 lg:p-8 flex flex-col justify-between
-                       border border-evren-light-gray/40
+                       bg-white p-8 lg:p-10 flex flex-col justify-between
+                       border border-evren-light-gray/40 cursor-pointer
                        shadow-warm transition-all duration-300
-                       hover:shadow-warm-hover hover:border-evren-peach/20"
+                       hover:shadow-warm-hover hover:border-evren-peach/30"
           >
             {/* Background Icon */}
-            <div className="absolute -top-12 -right-12 transform -rotate-12 opacity-[0.03] group-hover:opacity-[0.05] group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none">
+            <div className="absolute -top-12 -right-12 transform -rotate-12 opacity-[0.03] group-hover:opacity-[0.06] group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none">
               <Users size={240} strokeWidth={0.8} className="text-evren-navy" />
             </div>
 
             <div className="relative z-10">
               <SectionLabel text="PARTNERSHIP" />
-              <h3 className="text-xl lg:text-2xl font-heading font-bold text-evren-navy mt-3 mb-2 leading-tight">
+              <h3 className="text-2xl lg:text-3xl font-heading font-bold text-evren-navy mt-2 mb-3 leading-tight">
                 True Partnership
               </h3>
-              <p className="text-evren-medium-gray font-body text-[14px] leading-relaxed">
+              <p className="text-evren-charcoal/80 font-body text-[15px] leading-relaxed max-w-sm">
                 We don&apos;t just take orders. We embed in your vision, challenge
                 assumptions, and build alongside your team as true collaborators — not vendors.
               </p>
             </div>
 
-            {/* Accent bar below content */}
-            <div className="relative z-10 mt-4">
-              <div className="h-[2px] w-12 rounded-full bg-gradient-to-r from-evren-peach to-evren-gold opacity-50 group-hover:w-20 group-hover:opacity-100 transition-all duration-500" />
-            </div>
           </motion.div>
 
           {/* ═══ ROW 2 ═══════════════════════════════════════════ */}
@@ -221,31 +202,28 @@ export default function Differentiators() {
             whileHover={{ y: -4 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             className="md:col-span-12 group relative rounded-[24px] overflow-hidden
-                       bg-gradient-to-br from-evren-peach-light/60 via-white to-white
-                       p-7 lg:p-10
-                       border border-evren-peach/10
+                       bg-gradient-to-br from-evren-peach-light/40 via-white to-white
+                       p-8 lg:p-10 cursor-pointer
+                       border border-evren-peach/20
                        transition-all duration-300
-                       hover:shadow-[0_15px_40px_rgba(244,168,154,0.12)] hover:border-evren-peach/25"
+                       hover:shadow-[0_15px_40px_rgba(244,168,154,0.18)] hover:border-evren-peach/40"
           >
             {/* Background Icon */}
-            <div className="absolute top-1/2 -translate-y-1/2 -right-12 md:right-8 transform -rotate-[5deg] opacity-20 group-hover:opacity-[0.25] group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none">
-              <Shield size={220} strokeWidth={0.7} className="text-evren-peach" />
+            <div className="absolute top-1/2 -translate-y-1/2 -right-12 md:right-16 transform -rotate-[5deg] opacity-[0.15] group-hover:opacity-[0.25] group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none">
+              <Shield size={260} strokeWidth={0.7} className="text-evren-peach" />
             </div>
 
             <div className="relative z-10">
               <SectionLabel text="SUSTAINABILITY" />
-              <h3 className="text-xl lg:text-2xl font-heading font-bold text-evren-navy mt-3 mb-2 leading-tight">
+              <h3 className="text-2xl lg:text-3xl font-heading font-bold text-evren-navy mt-2 mb-3 leading-tight">
                 Built to Last
               </h3>
-              <p className="text-evren-medium-gray font-body text-[14px] leading-relaxed md:max-w-lg">
+              <p className="text-evren-charcoal/80 font-body text-[15px] leading-relaxed md:max-w-xl">
                 Our goal is your independence. We ensure complete knowledge transfer
                 so your team can own, scale, and evolve what we create — long after the engagement ends.
               </p>
-              {/* Accent bar */}
-              <div className="mt-4">
-                <div className="h-[2px] w-12 rounded-full bg-gradient-to-r from-evren-rose to-evren-gold opacity-50 group-hover:w-20 group-hover:opacity-100 transition-all duration-500" />
-              </div>
             </div>
+
           </motion.div>
         </motion.div>
       </div>

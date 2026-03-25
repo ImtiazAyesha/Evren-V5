@@ -18,6 +18,7 @@ const PHASES = [
       "We immerse ourselves in your world. Through technical discovery and data modeling, we blueprint how AI will fundamentally improve your product.",
     icon: Search,
     tag: "Phase 1",
+    video: "/Illustrations/Intelligence.mp4",
   },
   {
     id: "02",
@@ -27,6 +28,7 @@ const PHASES = [
       "Agile, two-week sprints. You see working code immediately. Intelligence and ML models are woven into the architecture from sprint one.",
     icon: Code,
     tag: "Phase 2",
+    video: "/Illustrations/Partnership.mp4",
   },
   {
     id: "03",
@@ -36,6 +38,7 @@ const PHASES = [
       "Our success is measured by your independence. We deploy the product, optimize performance, and transfer all knowledge to your internal team.",
     icon: Rocket,
     tag: "Phase 3",
+    video: "/Illustrations/Knowledge.mp4",
   },
 ];
 
@@ -103,10 +106,10 @@ function StepListItem({
   return (
     <motion.button
       onClick={onClick}
-      className={`w-full text-left group relative flex items-center gap-4 px-5 py-4
-                  rounded-xl transition-all duration-300 cursor-pointer border
+      className={`w-full h-full text-left group relative flex items-center gap-4 lg:gap-6 px-4 py-3 sm:px-5 sm:py-4 lg:px-6 lg:py-8
+                  rounded-xl lg:rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer border
                   ${isActive
-          ? "bg-white border-evren-peach/30 shadow-[0_4px_24px_rgba(244,168,154,0.12)]"
+          ? "bg-white border-evren-peach/30 shadow-[0_4px_16px_rgba(244,168,154,0.12)]"
           : "bg-transparent border-transparent hover:bg-white/60 hover:border-evren-navy/10"
         }`}
       whileTap={{ scale: 0.985 }}
@@ -114,7 +117,7 @@ function StepListItem({
       {/* Auto-progress bar on active item */}
       {isActive && (
         <motion.div
-          className="absolute bottom-0 left-0 h-[2px] rounded-b-xl bg-gradient-to-r from-evren-peach to-evren-peach-light"
+          className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-evren-peach to-evren-peach-light"
           initial={{ width: "0%" }}
           animate={{ width: `${progress * 100}%` }}
           transition={{ duration: 0.05, ease: "linear" }}
@@ -123,41 +126,31 @@ function StepListItem({
 
       {/* Icon */}
       <motion.div
-        className={`relative flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center
+        className={`relative flex-shrink-0 w-10 h-10 lg:w-14 lg:h-14 rounded-lg lg:rounded-2xl flex items-center justify-center
                     transition-all duration-300
-                    ${isActive ? "bg-evren-peach shadow-[0_4px_16px_rgba(244,168,154,0.3)]" : "bg-white border border-evren-navy/5"}`}
+                    ${isActive ? "bg-evren-peach shadow-[0_4px_12px_rgba(244,168,154,0.3)]" : "bg-white border border-evren-navy/5"}`}
         animate={isActive ? { scale: 1.05 } : { scale: 1 }}
       >
-        <Icon size={18} className={isActive ? "text-evren-navy" : "text-evren-medium-gray"} />
+        <Icon className={`w-4 h-4 lg:w-6 lg:h-6 ${isActive ? "text-evren-navy" : "text-evren-medium-gray"}`} />
       </motion.div>
 
       {/* Text */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-0.5">
+        <div className="flex items-center gap-2 mb-0.5 lg:mb-1">
           <span
-            className={`font-mono text-[10px] font-bold tracking-widest
+            className={`font-mono text-[10px] lg:text-[11px] font-bold tracking-widest
                         ${isActive ? "text-evren-peach" : "text-evren-medium-gray"}`}
           >
             {step.id}
           </span>
-          {isActive && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-[9px] font-bold tracking-widest uppercase px-1.5 py-0.5
-                         bg-evren-peach/10 text-evren-navy rounded-full"
-            >
-              {step.tag}
-            </motion.span>
-          )}
         </div>
         <p
-          className={`font-heading font-bold text-sm transition-colors duration-200
+          className={`font-heading font-bold text-sm lg:text-base transition-colors duration-200
                       ${isActive ? "text-evren-navy" : "text-evren-charcoal"}`}
         >
           {step.title}
         </p>
-        <p className="font-body text-xs text-evren-medium-gray mt-0.5 truncate">
+        <p className="font-body text-[11px] lg:text-[13px] text-evren-medium-gray mt-0.5 lg:mt-1 truncate hidden sm:block">
           {step.shortDesc}
         </p>
       </div>
@@ -176,8 +169,26 @@ function StepListItem({
 //  RIGHT DETAIL PANEL
 // ═══════════════════════════════════════════════════════════════════════
 
-function DetailPanel({ step, index }: { step: (typeof PHASES)[0]; index: number }) {
+function DetailPanel({ 
+  step, 
+  index,
+  onDotClick
+}: { 
+  step: (typeof PHASES)[0]; 
+  index: number;
+  onDotClick: (index: number) => void;
+}) {
   const Icon = step.icon;
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Play from the start on every step activation.
+  // Using [step.video] so this re-fires each time the active phase changes.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = 0;
+    video.play().catch(() => { });
+  }, [step.video]);
 
   return (
     <AnimatePresence mode="wait">
@@ -189,51 +200,24 @@ function DetailPanel({ step, index }: { step: (typeof PHASES)[0]; index: number 
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         className="h-full flex flex-col"
       >
-        {/* Icon showcase area — white rounded card */}
+        {/* Video showcase area */}
         <motion.div
-          className="relative w-full h-[160px] rounded-2xl bg-white flex items-center justify-center mb-6 overflow-hidden"
+          className="relative w-full rounded-2xl bg-white overflow-hidden mb-6"
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.08 }}
         >
-          {/* Subtle grid pattern inside the white card */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.04]"
-            style={{
-              backgroundSize: "28px 28px",
-              backgroundImage:
-                "linear-gradient(to right, rgba(27, 42, 74, 1) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 1) 1px, transparent 1px)",
-            }}
+          <video
+            ref={videoRef}
+            src={step.video}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full object-cover"
+            style={{ display: "block", aspectRatio: "16/9" }}
           />
 
-          {/* Decorative soft glow behind icon */}
-          <div
-            className="absolute w-[180px] h-[180px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(244, 168, 154, 0.15) 0%, transparent 70%)",
-              filter: "blur(30px)",
-            }}
-          />
-
-          {/* Large centered icon */}
-          <motion.div
-            initial={{ scale: 0.6, rotate: -12 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.15 }}
-          >
-            <Icon size={44} strokeWidth={1.2} className="text-evren-navy" />
-          </motion.div>
-
-          {/* Phase badge inside the icon card */}
-          <motion.span
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="absolute top-4 right-4 text-[10px] font-heading font-bold uppercase tracking-widest
-                       text-evren-navy/50 bg-evren-peach-light/60 border border-evren-peach/20 px-3 py-1 rounded-full"
-          >
-            {step.tag}
-          </motion.span>
         </motion.div>
 
         {/* Title */}
@@ -241,7 +225,7 @@ function DetailPanel({ step, index }: { step: (typeof PHASES)[0]; index: number 
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.12, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="font-heading text-3xl md:text-[2.25rem] font-bold text-white mb-3 leading-tight"
+          className="font-heading text-2xl md:text-3xl font-bold text-white mb-2 leading-tight"
         >
           {step.title}
         </motion.h3>
@@ -251,7 +235,7 @@ function DetailPanel({ step, index }: { step: (typeof PHASES)[0]; index: number 
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.18, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="font-body text-white/60 text-base leading-relaxed mb-8 max-w-md"
+          className="font-body text-white/60 text-sm leading-relaxed mb-5 max-w-md"
         >
           {step.description}
         </motion.p>
@@ -262,13 +246,15 @@ function DetailPanel({ step, index }: { step: (typeof PHASES)[0]; index: number 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="flex items-center gap-2 pt-6 border-t border-white/10"
+          className="flex items-center gap-2.5 pt-4 border-t border-white/10"
         >
-          {PHASES.map((s) => (
-            <div
+          {PHASES.map((s, idx) => (
+            <button
               key={s.id}
-              className={`h-1.5 rounded-full transition-all duration-500
-                          ${s.id === step.id ? "w-8 bg-evren-peach" : "w-3 bg-white/15"}`}
+              onClick={() => onDotClick(idx)}
+              aria-label={`Go to phase ${idx + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer
+                          ${s.id === step.id ? "w-8 bg-evren-peach hover:bg-evren-peach-light" : "w-4 bg-white/20 hover:bg-white/40"}`}
             />
           ))}
           <span className="ml-auto font-mono text-[11px] text-white/40 tracking-wider">
@@ -287,7 +273,7 @@ function DetailPanel({ step, index }: { step: (typeof PHASES)[0]; index: number 
 export default function ProcessSnapshot() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
-  const AUTO_ADVANCE_MS = 4000;
+  const AUTO_ADVANCE_MS = 2500;
   const TICK_MS = 50;
 
   const sectionRef = useRef(null);
@@ -322,7 +308,7 @@ export default function ProcessSnapshot() {
       ref={sectionRef}
       id="process"
       aria-label="How we work"
-      className="relative w-full py-16 sm:py-24 lg:py-32 overflow-hidden bg-evren-warm-white"
+      className="relative w-full py-8 sm:py-10 lg:py-16 overflow-hidden bg-evren-warm-white"
     >
       {/* ── Decorative Orb — bottom-left ──────────────────────────── */}
       <div
@@ -336,10 +322,10 @@ export default function ProcessSnapshot() {
 
       <div className="mx-auto max-w-6xl relative z-10 px-4 sm:px-6 lg:px-8">
         {/* ── Section Header ─────────────────────────────────────── */}
-        <div className="mb-16 text-center">
+        <div className="mb-10 text-center">
           <AnimatedHeadline />
           <motion.p
-            className="max-w-2xl mx-auto text-base sm:text-lg text-evren-charcoal font-body"
+            className="max-w-2xl mx-auto text-sm sm:text-base text-evren-charcoal font-body"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -360,10 +346,11 @@ export default function ProcessSnapshot() {
                      shadow-warm overflow-hidden"
         >
           {/* LEFT: Step list */}
-          <div className="p-4 lg:p-6 flex flex-col gap-2 lg:border-r border-evren-navy/10">
+          <div className="p-4 sm:p-5 lg:p-10 flex flex-col justify-center gap-2 sm:gap-3 lg:gap-5 lg:border-r border-evren-navy/10 h-full">
             {PHASES.map((step, index) => (
               <motion.div
                 key={step.id}
+                className="flex w-full"
                 initial={{ opacity: 0, x: -20 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.4 + index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -380,14 +367,19 @@ export default function ProcessSnapshot() {
           </div>
 
           {/* RIGHT: Detail panel — dark card */}
-          <div className="p-5 sm:p-6 lg:p-10 bg-evren-navy rounded-2xl lg:rounded-none lg:rounded-r-3xl min-h-[380px] sm:min-h-[420px] lg:min-h-0">
-            <DetailPanel step={PHASES[activeIndex]} index={activeIndex} />
+          <div className="p-4 sm:p-5 lg:p-7 bg-evren-navy rounded-2xl lg:rounded-none lg:rounded-r-3xl min-h-[320px] sm:min-h-[360px] lg:min-h-0">
+            <DetailPanel 
+              key={activeIndex} 
+              step={PHASES[activeIndex]} 
+              index={activeIndex} 
+              onDotClick={handleStepClick}
+            />
           </div>
         </motion.div>
 
         {/* ── Global CTA ────────────────────────────────────────── */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-8 sm:mt-12 flex justify-center w-full"
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
@@ -396,6 +388,7 @@ export default function ProcessSnapshot() {
             href="/approach"
             variant="outline"
             size="lg"
+            className="w-full sm:w-auto justify-between sm:justify-center text-[14px] sm:text-base whitespace-nowrap sm:whitespace-normal"
           >
             Explore Our Full Approach
           </ArrowButton>

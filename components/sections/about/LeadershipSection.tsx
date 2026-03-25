@@ -1,103 +1,204 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView, type Variants } from "framer-motion";
-import FounderCard from "./FounderCard";
-
-// ─── MOTION ─────────────────────────────────────────────────────────
-const SPRING = { type: "spring" as const, stiffness: 100, damping: 20 };
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { ...SPRING } },
-};
-
-// ─── FOUNDER DATA ───────────────────────────────────────────────────
-const founders = [
-  {
-    name: "Moazzam Arif",
-    role: "Chief Executive Officer",
-    bio: "A visionary operator who architects growth at the intersection of AI innovation and enterprise scale. Moazzam leads Evren's global strategy, ensuring every engagement delivers measurable transformation.",
-    imageSrc: "/images/about/founder-moazzam.png",
-    linkedInUrl: "https://www.linkedin.com/in/moazzam-arif",
-  },
-  {
-    name: "Hassan Ali",
-    role: "Chief Technology Officer",
-    bio: "The engineering mind behind Evren's technical backbone. Hassan oversees product architecture, AI pipelines, and the systems that power our clients' most complex transformations.",
-    imageSrc: "/images/about/founder-hassan.png",
-    linkedInUrl: "https://www.linkedin.com/in/hassan-ali",
-  },
-  {
-    name: "Sakib Ahmed",
-    role: "Chief Design Officer",
-    bio: "Sakib ensures that every pixel we ship serves a purpose. From design systems to user flows, he champions the belief that great design is the ultimate competitive advantage.",
-    imageSrc: "/images/about/founder-sakib.png",
-    linkedInUrl: "https://www.linkedin.com/in/sakib-ahmed",
-  },
-];
+import { Linkedin, Quote } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════════════════
-//  LEADERSHIP — 3-column founder card grid
+//  MOTION VARIANTS
+// ═══════════════════════════════════════════════════════════════════════
+
+const SPRING = { type: "spring" as const, stiffness: 100, damping: 20 };
+
+const staggerContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.08 },
+  },
+};
+
+const fadeSlideUp: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { ...SPRING, duration: 0.8 },
+  },
+};
+
+const imageReveal: Variants = {
+  hidden: { opacity: 0, scale: 0.95, filter: "blur(10px)" },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  LEADERSHIP — Single CEO Statement Layout
 // ═══════════════════════════════════════════════════════════════════════
 
 export default function LeadershipSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const headRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(headRef, { once: true, amount: 0.4 });
+  const isInView = useInView(headRef, { once: true, amount: 0.2 });
 
   return (
     <section
+      ref={sectionRef}
       id="leadership"
-      className="relative w-full bg-evren-warm-white py-24 lg:py-32"
+      className="relative w-full overflow-hidden bg-evren-warm-white py-24 lg:py-32"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* ── Section header ──────────────────────────────────────── */}
+      {/* ── Background Elements ──────────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Soft radial gradients for depth */}
+        <div
+          className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(244, 168, 154, 0.08) 0%, transparent 70%)",
+            filter: "blur(60px)",
+            transform: "translate(30%, -30%)",
+          }}
+        />
+        <div
+          className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(212, 165, 116, 0.06) 0%, transparent 70%)",
+            filter: "blur(60px)",
+            transform: "translate(-30%, 30%)",
+          }}
+        />
+        
+        {/* Architectural grid lines */}
+        <div className="absolute inset-0 opacity-[0.03]"
+             style={{
+               backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)',
+               backgroundSize: '120px 120px'
+             }}
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+        
         <motion.div
           ref={headRef}
-          className="text-center mb-16 lg:mb-20"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.1 } },
-          }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-20 items-center"
         >
-          <motion.div
-            variants={fadeUp}
-            className="inline-flex items-center gap-2 rounded-full bg-evren-peach-light px-4 py-2 mb-5"
-          >
-            <span className="text-[12px] font-heading font-semibold text-evren-navy tracking-widest uppercase">
-              Leadership
-            </span>
+          {/* ── Left side: CEO Portrait ─────────────────────────────── */}
+          <motion.div variants={imageReveal} className="relative group perspective-1000">
+            {/* Decorative backing plate */}
+            <div className="absolute inset-0 bg-evren-peach/10 transform translate-x-4 translate-y-4 rounded-2xl md:translate-x-6 md:translate-y-6 transition-transform duration-700 ease-out group-hover:translate-x-8 group-hover:translate-y-8" />
+            
+            <div className="relative aspect-[3/4] md:aspect-[4/5] w-full rounded-2xl overflow-hidden shadow-2xl shadow-evren-navy/10 border border-white/40 bg-white">
+              <Image
+                src="/CEO_files/CEO.png"
+                alt="Tariq Mehmood, CEO & Founder of Evren AI"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-105"
+                quality={100}
+                priority
+              />
+              {/* Refined gradient overlay for portrait depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-evren-navy/80 via-evren-navy/20 to-transparent opacity-60 mix-blend-multiply" />
+              
+              {/* In-image label (optional detail) */}
+              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none hidden md:flex">
+                 <div className="h-px bg-white/30 flex-grow mr-4"></div>
+                 <span className="text-white/80 font-heading text-xs tracking-[0.2em] uppercase">Evren AI Leadership</span>
+              </div>
+            </div>
+            
+            {/* Floating accent badge */}
+            <div className="absolute -bottom-6 -left-6 md:-bottom-8 md:-left-8 bg-evren-navy text-white p-6 rounded-2xl shadow-xl w-48 shadow-evren-navy/20 border border-white/10 hidden md:block z-20">
+              {/* <div className="flex items-center gap-3 mb-2">
+                <div className="h-2 w-2 rounded-full bg-evren-peach animate-pulse" />
+                <span className="text-[10px] font-heading font-semibold tracking-widest uppercase text-evren-peach-light">Status</span>
+              </div> */}
+              <p className="font-heading font-bold text-lg leading-tight">Partner in Transformation</p>
+            </div>
           </motion.div>
 
-          <motion.h2
-            variants={fadeUp}
-            className="font-heading font-extrabold text-evren-navy text-3xl sm:text-4xl lg:text-5xl leading-[1.1] -tracking-tight mb-5"
-          >
-            The minds behind the mission.
-          </motion.h2>
+          {/* ── Right side: Statement & Signature ───────────────────── */}
+          <div className="relative flex flex-col justify-center">
+            
+            {/* Section Tag */}
+            <motion.div
+              variants={fadeSlideUp}
+              className="inline-flex items-center gap-2.5 rounded-full
+                         bg-evren-peach-light/60 border border-evren-peach/20
+                         px-5 py-2 mb-10 w-fit"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
+              </span>
+              <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
+                A Message Addressed To You
+              </span>
+            </motion.div>
 
-          <motion.p
-            variants={fadeUp}
-            className="font-body text-evren-medium-gray text-lg max-w-xl mx-auto leading-relaxed"
-          >
-            Three founders. One shared obsession: building technology that
-            genuinely serves the humans who use it.
-          </motion.p>
+            {/* Quote Icon */}
+            <motion.div variants={fadeSlideUp} className="mb-8">
+              <Quote className="w-14 h-14 text-evren-peach/30 rotate-180" />
+            </motion.div>
+
+            {/* Editorial Statement */}
+            <motion.div variants={staggerContainer} className="space-y-8">
+              <motion.p
+                variants={fadeSlideUp}
+                className="font-heading text-evren-navy text-2xl sm:text-3xl lg:text-[2rem] leading-[1.4] -tracking-[0.01em] font-medium"
+              >
+                "The promise of AI is immense, but the path to ROI is fraught with risk. I founded Evren AI to be the partner I wish I had as an executive: <span className="text-transparent bg-clip-text bg-gradient-to-r from-evren-peach to-evren-rose font-semibold">one that speaks the language of the balance sheet</span>, prioritizes risk mitigation as much as innovation, and measures success not in algorithms deployed, but in tangible enterprise value created."
+              </motion.p>
+              
+              <motion.p
+                variants={fadeSlideUp}
+                className="font-body text-evren-charcoal/80 text-lg md:text-xl leading-relaxed"
+              >
+                Our commitment to you is simple: We will serve as your trusted guides through the complexity of AI, ensuring your investment translates into a measurable, sustainable competitive advantage. We succeed only when you do.
+              </motion.p>
+            </motion.div>
+
+            {/* Signature Area */}
+            <motion.div variants={fadeSlideUp} className="mt-12 pt-8 border-t border-evren-charcoal/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div>
+                <h3 className="font-heading font-extrabold text-evren-navy text-2xl tracking-tight mb-1">
+                  TARIQ MEHMOOD
+                </h3>
+                <p className="font-heading font-semibold text-evren-peach text-sm uppercase tracking-widest">
+                  CEO & Founder
+                </p>
+              </div>
+              
+              <a
+                href="https://www.linkedin.com/in/tariq-mehmood-a5b78b5"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Connect with Tariq Mehmood on LinkedIn"
+                className="inline-flex items-center gap-2.5 
+                           rounded-full bg-white border border-evren-peach/20 px-6 py-3
+                           text-evren-navy text-xs font-heading font-semibold tracking-wide
+                           transition-all duration-300 ease-out
+                           hover:bg-evren-warm-white hover:border-evren-peach/50 hover:shadow-lg hover:shadow-evren-peach/10
+                           hover:-translate-y-0.5 w-fit"
+              >
+                <Linkedin size={16} className="text-evren-navy" />
+                <span>Connect on LinkedIn</span>
+              </a>
+            </motion.div>
+          </div>
         </motion.div>
-
-        {/* ── 3-column founder grid ───────────────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-          {founders.map((founder, i) => (
-            <FounderCard
-              key={founder.name}
-              {...founder}
-              delay={i * 0.12}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );
 }
+

@@ -34,7 +34,15 @@ export default function ArticleCTA() {
         {/* Content */}
         <div className="relative z-10">
           <h2 className="font-heading font-bold text-evren-navy text-2xl md:text-3xl lg:text-4xl tracking-tight mb-4">
-            Building something?
+            Building <span className="relative inline-block">
+              <span className="relative z-10">something?</span>
+              <svg className="absolute -bottom-1 left-0 w-full h-[8px] md:h-[10px]" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                <g>
+                  <animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="3s" repeatCount="indefinite" />
+                  <path d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6" stroke="#F4A89A" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.7" />
+                </g>
+              </svg>
+            </span>
           </h2>
           <p className="font-body text-evren-charcoal/70 text-base md:text-lg leading-relaxed max-w-lg mx-auto mb-8">
             We would love to hear about it. Let&apos;s discuss how Evren AI can

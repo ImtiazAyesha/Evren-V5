@@ -127,7 +127,7 @@ export default function FeaturedWorkSection() {
   return (
     <section
       id="featured-work"
-      className="relative w-full py-16 sm:py-24 md:py-32 bg-evren-warm-white overflow-hidden"
+      className="relative w-full py-12 sm:py-16 md:py-20 bg-evren-warm-white overflow-hidden"
     >
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Section Header ─── */}

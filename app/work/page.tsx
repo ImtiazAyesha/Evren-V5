@@ -1,7 +1,7 @@
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WorkGallery from "@/components/sections/work/WorkGallery";
+import WorkCaseStudies from "@/components/sections/work/WorkCaseStudies";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,8 +20,8 @@ export default function WorkPage() {
   return (
     <SmoothScroll>
       <Navbar />
-      <main className="flex flex-col min-h-screen">
-        <WorkGallery />
+      <main className="flex flex-col min-h-screen bg-evren-warm-white">
+        <WorkCaseStudies />
       </main>
       <Footer />
     </SmoothScroll>

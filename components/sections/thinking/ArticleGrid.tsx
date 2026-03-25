@@ -126,8 +126,8 @@ function ArticleCard({
         href={`/thinking/${article.slug}`}
         id={`article-card-${article.slug}`}
         className="block bg-white rounded-2xl border border-evren-light-gray/60 overflow-hidden
-                   transition-all duration-400 ease-out
-                   hover:border-evren-navy/15 hover:shadow-warm-hover hover:-translate-y-1"
+                   transition-all duration-500 ease-out
+                   hover:border-evren-peach/50 hover:shadow-[0_20px_40px_-15px_rgba(27,42,74,0.1)] hover:-translate-y-1"
       >
         {/* ── Abstract Geometry Header ── */}
         <div className="relative h-40 bg-evren-warm-white overflow-hidden">

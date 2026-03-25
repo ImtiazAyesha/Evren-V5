@@ -119,10 +119,6 @@ export default function LeadershipSection() {
             
             {/* Floating accent badge */}
             <div className="absolute -bottom-6 -left-6 md:-bottom-8 md:-left-8 bg-evren-navy text-white p-6 rounded-2xl shadow-xl w-48 shadow-evren-navy/20 border border-white/10 hidden md:block z-20">
-              {/* <div className="flex items-center gap-3 mb-2">
-                <div className="h-2 w-2 rounded-full bg-evren-peach animate-pulse" />
-                <span className="text-[10px] font-heading font-semibold tracking-widest uppercase text-evren-peach-light">Status</span>
-              </div> */}
               <p className="font-heading font-bold text-lg leading-tight">Partner in Transformation</p>
             </div>
           </motion.div>
@@ -130,26 +126,13 @@ export default function LeadershipSection() {
           {/* ── Right side: Statement & Signature ───────────────────── */}
           <div className="relative flex flex-col justify-center">
             
-            {/* Section Tag */}
-            <motion.div
+            {/* Section Tag (Matches Differentiators.tsx) */}
+            <motion.p
               variants={fadeSlideUp}
-              className="inline-flex items-center gap-2.5 rounded-full
-                         bg-evren-peach-light/60 border border-evren-peach/20
-                         px-5 py-2 mb-10 w-fit"
+              className="text-sm uppercase tracking-widest text-evren-peach font-heading font-bold mb-8"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
-              </span>
-              <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
-                A Message Addressed To You
-              </span>
-            </motion.div>
-
-            {/* Quote Icon */}
-            <motion.div variants={fadeSlideUp} className="mb-8">
-              <Quote className="w-14 h-14 text-evren-peach/30 rotate-180" />
-            </motion.div>
+              A Message Addressed To You
+            </motion.p>
 
             {/* Editorial Statement */}
             <motion.div variants={staggerContainer} className="space-y-8">
@@ -157,14 +140,9 @@ export default function LeadershipSection() {
                 variants={fadeSlideUp}
                 className="font-heading text-evren-navy text-2xl sm:text-3xl lg:text-[2rem] leading-[1.4] -tracking-[0.01em] font-medium"
               >
-                "The promise of AI is immense, but the path to ROI is fraught with risk. I founded Evren AI to be the partner I wish I had as an executive: <span className="text-transparent bg-clip-text bg-gradient-to-r from-evren-peach to-evren-rose font-semibold">one that speaks the language of the balance sheet</span>, prioritizes risk mitigation as much as innovation, and measures success not in algorithms deployed, but in tangible enterprise value created."
-              </motion.p>
-              
-              <motion.p
-                variants={fadeSlideUp}
-                className="font-body text-evren-charcoal/80 text-lg md:text-xl leading-relaxed"
-              >
-                Our commitment to you is simple: We will serve as your trusted guides through the complexity of AI, ensuring your investment translates into a measurable, sustainable competitive advantage. We succeed only when you do.
+                <Quote className="inline-block w-8 h-8 md:w-10 md:h-10 text-evren-peach/60 rotate-180 -mt-6 mr-3 align-text-top" />
+                The promise of AI is immense, but the path to ROI is fraught with risk. I founded Evren AI to be the partner I wish I had as an executive: <span className="text-transparent bg-clip-text bg-gradient-to-r from-evren-peach to-evren-rose font-semibold">one that speaks the language of the balance sheet</span>, prioritizes risk mitigation as much as innovation, and measures success not in algorithms deployed, but in tangible enterprise value created.
+                <Quote className="inline-block w-8 h-8 md:w-10 md:h-10 text-evren-peach/60 ml-2" />
               </motion.p>
             </motion.div>
 

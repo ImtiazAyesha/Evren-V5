@@ -86,10 +86,20 @@ export default function CoreValuesSection() {
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
 
   const [current, setCurrent] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  
   // One ref slot per card (null for non-video cards)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([null, null, null, null, null]);
 
   const goTo = (idx: number) => setCurrent((idx + values.length) % values.length);
+
+  // Resize listener for responsive values
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Play active card's video; pause all others
   useEffect(() => {
@@ -134,20 +144,13 @@ export default function CoreValuesSection() {
         >
           {/* ══ HEADER — centered ═══════════════════════════════ */}
           <div className="text-center mb-10 flex flex-col items-center gap-5">
-            {/* Badge */}
-            <motion.div
+            {/* Section Tag */}
+            <motion.p
               variants={fadeSlideUp}
-              className="inline-flex items-center gap-2.5 rounded-full
-                         bg-evren-peach-light/60 border border-evren-peach/20 px-5 py-2"
+              className="text-sm uppercase tracking-widest text-evren-peach font-heading font-bold mb-2"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
-              </span>
-              <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
-                What We Stand For
-              </span>
-            </motion.div>
+              What We Stand For
+            </motion.p>
 
             {/* Dynamic headline */}
             <motion.div variants={fadeSlideUp} className="pb-3">
@@ -165,22 +168,34 @@ export default function CoreValuesSection() {
                   {active.title.split(" ").map((word, wi, arr) =>
                     wi === arr.length - 1 ? (
                       <span key={wi} className="relative inline-block">
-                        {word}
+                        <span className="relative z-10">{word}</span>
                         <svg
-                          className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[8px] md:h-[12px]"
-                          viewBox="0 0 120 12"
-                          fill="none"
+                          className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-[10px] md:h-[14px] text-evren-peach pointer-events-none z-0"
+                          viewBox="0 0 200 12"
                           preserveAspectRatio="none"
                           aria-hidden="true"
                         >
-                          <path
-                            d="M0 6 Q 10 0, 20 6 T 40 6 T 60 6 T 80 6 T 100 6 T 120 6"
-                            stroke="#F4A89A"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            fill="none"
-                            opacity="0.6"
-                          />
+                          <motion.g
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.4, duration: 0.8 }}
+                          >
+                            <animateTransform 
+                              attributeName="transform" 
+                              type="translate" 
+                              from="-64 0" 
+                              to="0 0" 
+                              dur="3s" 
+                              repeatCount="indefinite" 
+                            />
+                            <path
+                              d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"
+                              stroke="currentColor"
+                              strokeWidth="3.5"
+                              strokeLinecap="round"
+                              fill="none"
+                            />
+                          </motion.g>
                         </svg>
                       </span>
                     ) : (
@@ -214,10 +229,10 @@ export default function CoreValuesSection() {
           {/* ══════════════════════════════════════════════════════
               RIGHT — Coverflow carousel
           ══════════════════════════════════════════════════════ */}
-          <motion.div variants={fadeSlideUp}>
+          <motion.div variants={fadeSlideUp} className="w-full">
             <div
-              className="relative flex items-center justify-center"
-              style={{ height: "420px" }}
+              className="relative flex items-center justify-center w-full"
+              style={{ height: isMobile ? "320px" : "420px" }}
             >
               {values.map((value, i) => {
                 const Icon = value.icon;
@@ -236,9 +251,9 @@ export default function CoreValuesSection() {
                 if (!isVisible) return null;
 
                 // Position & style based on distance from center
-                const xOffset = wrapped * 155;
+                const xOffset = wrapped * (isMobile ? 100 : 155);
                 const scale = isActive ? 1 : 1 - Math.abs(wrapped) * 0.1;
-                const opacity = isActive ? 1 : 1 - Math.abs(wrapped) * 0.3;
+                const opacity = isActive ? 1 : 1 - Math.abs(wrapped) * (isMobile ? 0.5 : 0.3);
                 const zIndex = 10 - Math.abs(wrapped);
                 // Outermost cards (±2) mirror the active navy scheme; ±1 use peach
                 const colors = isActive || Math.abs(wrapped) === 2 ? ACTIVE : INACTIVE;
@@ -259,9 +274,9 @@ export default function CoreValuesSection() {
                     {isActive ? (
                       /* ── Active: full expanded card ── */
                       <div
-                        className="rounded-3xl overflow-hidden"
+                        className="rounded-2xl lg:rounded-3xl overflow-hidden"
                         style={{
-                          width: "240px",
+                          width: isMobile ? "200px" : "240px",
                           background: ACTIVE.bg,
                           boxShadow: "0 32px 80px -12px rgba(0,0,0,0.3)",
                         }}
@@ -318,9 +333,9 @@ export default function CoreValuesSection() {
                     ) : (
                       /* ── Inactive: real card, scaled+faded by parent ── */
                       <div
-                        className="rounded-3xl overflow-hidden"
+                        className="rounded-[1.25rem] lg:rounded-3xl overflow-hidden"
                         style={{
-                          width: "200px",
+                          width: isMobile ? "160px" : "200px",
                           background: colors.bg,
                           boxShadow: "0 10px 30px -8px rgba(0,0,0,0.18)",
                         }}

@@ -188,7 +188,7 @@ export default function Differentiators() {
               </h3>
               <p className="text-evren-charcoal/80 font-body text-[15px] leading-relaxed max-w-sm">
                 We don&apos;t just take orders. We embed in your vision, challenge
-                assumptions, and build alongside your team as true collaborators — not vendors.
+                assumptions, and build alongside your team as true collaborators not vendors.
               </p>
             </div>
 
@@ -220,7 +220,7 @@ export default function Differentiators() {
               </h3>
               <p className="text-evren-charcoal/80 font-body text-[15px] leading-relaxed md:max-w-xl">
                 Our goal is your independence. We ensure complete knowledge transfer
-                so your team can own, scale, and evolve what we create — long after the engagement ends.
+                so your team can own, scale, and evolve what we create long after the engagement ends.
               </p>
             </div>
 

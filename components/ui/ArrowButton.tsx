@@ -37,7 +37,7 @@ const VARIANT_STYLES: Record<Variant, { pill: string; circle: string; circleHove
   },
   outline: {
     pill: "bg-transparent border-2 border-evren-navy text-evren-navy hover:bg-evren-navy hover:text-white",
-    circle: "bg-evren-navy/10 text-evren-navy group-hover:bg-white/20 group-hover:text-white",
+    circle: "bg-evren-navy/10 text-evren-navy group-hover/btn:bg-white/20 group-hover/btn:text-white",
     circleHover: "bg-evren-navy/20",
   },
   dark: {
@@ -90,19 +90,19 @@ export default function ArrowButton({
       <span
         className={`${s.circle} rounded-full flex items-center justify-center
                     transition-all duration-200 shrink-0
-                    ${inverted ? "bg-white/15 text-white group-hover:bg-white/25" : v.circle}
-                    group-hover:scale-105`}
+                    ${inverted ? "bg-white/15 text-white group-hover/btn:bg-white/25" : v.circle}
+                    group-hover/btn:scale-105`}
       >
         <ArrowUpRight
           size={s.icon}
           strokeWidth={2.5}
-          className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          className="transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
         />
       </span>
     </>
   );
 
-  const sharedClasses = `group inline-flex items-center rounded-full will-change-transform 
+  const sharedClasses = `group/btn inline-flex items-center rounded-full will-change-transform 
                           transition-all duration-200 ${v.pill} ${s.pill} ${className}`;
 
   if (href) {

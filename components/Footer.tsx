@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { ArrowUpRight, Linkedin, Twitter, MapPin, Mail, Sparkles } from "lucide-react";
+import { ArrowUpRight, Linkedin, Twitter, MapPin, Mail, Sparkles, Zap } from "lucide-react";
 import ArrowButton from "@/components/ui/ArrowButton";
 import { useRef } from "react";
 
@@ -76,23 +76,18 @@ export default function Footer() {
                 filter: "blur(50px)",
               }}
             />
-            {/* Subtle grid overlay */}
-            <div
-              className="absolute inset-0 opacity-[0.04]"
-              style={{
-                backgroundSize: "40px 40px",
-                backgroundImage:
-                  "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-              }}
-            />
-            {/* Abstract rings */}
-            <div className="absolute top-8 right-12 w-[240px] h-[240px] rounded-full border border-white/[0.06]" />
-            <div className="absolute top-14 right-18 w-[180px] h-[180px] rounded-full border border-white/[0.04]" />
-            <div className="absolute -bottom-12 left-[20%] w-[320px] h-[320px] rounded-full border border-evren-peach/[0.08]" />
+
+
+            {/* ── Massive Background Typography (Hygraph Style) ── */}
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-[18%] md:translate-y-[15%] w-full text-center flex justify-center pointer-events-none z-0">
+              <span className="font-heading font-extrabold text-[18vw] sm:text-[16vw] md:text-[15vw] lg:text-[16rem] xl:text-[19rem] leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white/[0.1] to-transparent select-none whitespace-nowrap">
+                Evren AI
+              </span>
+            </div>
           </div>
 
           {/* ── CTA Content — Asymmetric Split ── */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-0">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-0 pb-24 sm:pb-28 md:pb-36 lg:pb-[14rem]">
             {/* Left column — Editorial headline */}
             <div className="lg:col-span-7 p-6 sm:p-10 md:p-14 lg:p-16 flex flex-col justify-center">
               {/* Pre-headline badge */}
@@ -100,13 +95,13 @@ export default function Footer() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={ctaInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="inline-flex items-center gap-2 mb-8 self-start"
+                className="inline-flex items-center gap-3.5 mb-8 self-start"
               >
-                <span className="flex items-center gap-2 sm:gap-3 rounded-full bg-white/[0.08] border border-white/[0.1] px-3.5 py-1.5 sm:px-4">
-                  <Sparkles size={13} className="text-evren-peach shrink-0" />
-                  <span className="text-[9.5px] sm:text-[11px] font-heading font-semibold text-white/70 uppercase tracking-wider text-left leading-tight">
-                    Ready to build something extraordinary?
-                  </span>
+                <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center shrink-0 transition-transform duration-300">
+                  <Zap size={16} className="text-evren-peach" strokeWidth={2.5} />
+                </div>
+                <span className="text-[10px] sm:text-[11px] font-heading font-semibold text-evren-peach/90 uppercase tracking-[0.2em] leading-tight mt-0.5">
+                  Ready to build something extraordinary?
                 </span>
               </motion.div>
 
@@ -169,16 +164,17 @@ export default function Footer() {
             </div>
 
             {/* Right column — Action zone */}
-            <div className="lg:col-span-5 flex flex-col justify-center items-start lg:items-center p-6 sm:p-10 md:p-14 lg:p-16 lg:border-l border-white/[0.06]">
+            <div className="lg:col-span-5 flex flex-col justify-center items-start lg:items-center p-5 sm:p-10 md:p-14 lg:p-16 lg:border-l border-white/[0.06] w-full max-w-full overflow-hidden">
               {/* Primary CTA — large, unmissable */}
-              <div className="w-full max-w-sm space-y-4 sm:space-y-5">
+              <div className="w-full max-w-[340px] sm:max-w-sm space-y-4 sm:space-y-5 mx-auto lg:mx-0">
                 <ArrowButton
                   href="/connect"
                   variant="primary"
                   size="lg"
-                  className="w-full justify-between text-[14px] sm:text-base whitespace-nowrap"
+                  className="w-full justify-between text-[13px] sm:text-[15px] md:text-base pr-1"
                 >
-                  Book a Free Consultation
+                  <span className="hidden sm:inline">Book a Free Consultation</span>
+                  <span className="inline sm:hidden">Book Consultation</span>
                 </ArrowButton>
 
                 {/* Secondary CTA */}
@@ -189,11 +185,11 @@ export default function Footer() {
                   transition={{ delay: 0.6, duration: 0.5 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group flex items-center justify-between gap-3 sm:gap-4 w-full border border-white/[0.12] text-white/80 hover:text-white hover:border-white/25 font-heading font-semibold text-[13px] sm:text-base px-5 sm:px-8 py-3.5 sm:py-4 rounded-full cursor-pointer transition-all duration-300"
+                  className="group flex items-center justify-between gap-2 sm:gap-4 w-full border border-white/[0.12] text-white/80 hover:text-white hover:border-white/25 font-heading font-semibold text-[13px] sm:text-base px-5 sm:px-8 py-3.5 sm:py-4 rounded-full cursor-pointer transition-all duration-300"
                 >
-                  <span className="flex items-center gap-2 sm:gap-3 whitespace-nowrap">
+                  <span className="flex items-center gap-2 sm:gap-3 truncate pr-2">
                     <Mail size={16} className="text-evren-peach/70 shrink-0" />
-                    hello@evrenai.com
+                    <span className="truncate">hello@evrenai.com</span>
                   </span>
                   <ArrowUpRight
                     size={16}

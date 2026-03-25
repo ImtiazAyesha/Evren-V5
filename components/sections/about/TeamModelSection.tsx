@@ -57,7 +57,7 @@ export default function TeamModelSection() {
     <section
       ref={sectionRef}
       id="team-model"
-      className="relative w-full overflow-hidden bg-evren-warm-white py-24 lg:py-36"
+      className="relative w-full overflow-hidden bg-evren-warm-white py-12 lg:py-20"
     >
       {/* ── Background orbs ───────────────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">

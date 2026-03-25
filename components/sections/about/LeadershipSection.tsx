@@ -93,7 +93,7 @@ export default function LeadershipSection() {
           className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-20 items-center"
         >
           {/* ── Left side: CEO Portrait ─────────────────────────────── */}
-          <motion.div variants={imageReveal} className="relative group perspective-1000">
+          <motion.div variants={imageReveal} className="relative group perspective-1000 order-2 lg:order-1 w-[85%] sm:w-[70%] max-w-[340px] lg:max-w-none lg:w-full mx-auto lg:mx-0 mt-2 lg:mt-0">
             {/* Decorative backing plate */}
             <div className="absolute inset-0 bg-evren-peach/10 transform translate-x-4 translate-y-4 rounded-2xl md:translate-x-6 md:translate-y-6 transition-transform duration-700 ease-out group-hover:translate-x-8 group-hover:translate-y-8" />
             
@@ -124,12 +124,12 @@ export default function LeadershipSection() {
           </motion.div>
 
           {/* ── Right side: Statement & Signature ───────────────────── */}
-          <div className="relative flex flex-col justify-center">
+          <div className="relative flex flex-col justify-center order-1 lg:order-2">
             
-            {/* Section Tag (Matches Differentiators.tsx) */}
+            {/* Section Tag */}
             <motion.p
               variants={fadeSlideUp}
-              className="text-sm uppercase tracking-widest text-evren-peach font-heading font-bold mb-8"
+              className="text-sm uppercase tracking-widest text-evren-peach font-heading font-bold mb-6 lg:mb-8"
             >
               A Message Addressed To You
             </motion.p>

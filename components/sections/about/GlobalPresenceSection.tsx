@@ -125,13 +125,13 @@ export default function GlobalPresenceSection() {
                       animate={isInView ? { opacity: 1 } : {}}
                       transition={{ delay: 0.8, duration: 0.8 }}
                     >
-                      <animateTransform 
-                        attributeName="transform" 
-                        type="translate" 
-                        from="-64 0" 
-                        to="0 0" 
-                        dur="3s" 
-                        repeatCount="indefinite" 
+                      <animateTransform
+                        attributeName="transform"
+                        type="translate"
+                        from="-64 0"
+                        to="0 0"
+                        dur="3s"
+                        repeatCount="indefinite"
                       />
                       <path
                         d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"
@@ -159,15 +159,15 @@ export default function GlobalPresenceSection() {
             </div>
 
             {/* Right — Map */}
-            <div className="flex flex-col w-full relative mt-8 lg:mt-0 lg:min-h-full">
+            <div className="flex flex-col w-full relative -mt-4 lg:mt-0 lg:min-h-full">
               <motion.div
                 variants={fadeSlideUp}
-                className="relative lg:absolute w-full lg:w-auto left-0 lg:-top-16 lg:-bottom-16 lg:-right-16 lg:-left-8 flex items-center justify-center lg:justify-end pointer-events-none"
+                className="relative w-full lg:absolute lg:w-auto left-0 lg:-top-16 lg:-bottom-16 lg:-right-16 lg:-left-8 h-[250px] lg:h-auto flex lg:items-center lg:justify-end pointer-events-none"
               >
                 <svg
                   viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
                   preserveAspectRatio="xMidYMid slice"
-                  className="w-[145%] sm:w-[125%] lg:w-full h-auto lg:h-full max-w-none relative z-10 opacity-90"
+                  className="absolute left-1/2 top-1/2 -translate-y-[55%] sm:-translate-y-1/2 -translate-x-[38%] md:-translate-x-1/2 lg:relative lg:translate-x-0 lg:translate-y-0 lg:left-0 lg:top-0 w-[160%] sm:w-[130%] lg:w-full h-auto lg:h-full max-w-none z-10 opacity-90 transition-all duration-500 ease-in-out"
                 >
                   {/* Base map points */}
                   {mapData.points.map((pt, i) => (
@@ -180,7 +180,7 @@ export default function GlobalPresenceSection() {
                       opacity={0.15}
                     />
                   ))}
-                  
+
                   {/* Office Markers */}
                   {officeMarkers.map((marker, i) => {
                     const labelText = offices[i].label;

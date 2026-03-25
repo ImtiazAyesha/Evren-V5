@@ -222,8 +222,6 @@ export default function CoreValuesSection() {
                 </motion.p>
               </AnimatePresence>
             </motion.div>
-
-
           </div>
 
           {/* ══════════════════════════════════════════════════════
@@ -232,7 +230,7 @@ export default function CoreValuesSection() {
           <motion.div variants={fadeSlideUp} className="w-full">
             <div
               className="relative flex items-center justify-center w-full"
-              style={{ height: isMobile ? "320px" : "420px" }}
+              style={{ height: isMobile ? "380px" : "460px" }}
             >
               {values.map((value, i) => {
                 const Icon = value.icon;
@@ -386,7 +384,7 @@ export default function CoreValuesSection() {
           </motion.div>
 
           {/* Dot pagination — below carousel */}
-          <motion.div variants={fadeSlideUp} className="flex items-center justify-center gap-2.5 mt-8">
+          <motion.div variants={fadeSlideUp} className="flex items-center justify-center gap-3 mt-8 sm:mt-12 lg:mt-8 relative z-20">
             {values.map((_, i) => (
               <button
                 key={i}

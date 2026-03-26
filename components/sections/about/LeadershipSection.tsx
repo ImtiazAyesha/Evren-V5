@@ -92,18 +92,72 @@ export default function LeadershipSection() {
           variants={staggerContainer}
           className="flex flex-col"
         >
-          {/* Main Section Title */}
-          <motion.h2
-            variants={fadeSlideUp}
-            className="text-3xl md:text-4xl lg:text-5xl font-heading font-medium text-evren-navy mb-4 lg:mb-6 text-left"
-          >
-            A Message <span className="text-evren-peach">Addressed To You</span>
-          </motion.h2>
+          {/* Main Section Title (Mobile) */}
+          <motion.div variants={fadeSlideUp} className="mb-8 text-left block lg:hidden">
+            <h2 className="relative inline-block text-3xl md:text-4xl lg:text-5xl font-heading font-medium text-evren-navy">
+              A{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10">Message</span>
+                {/* Animated wavy underline — peach */}
+                <svg
+                  className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-[8px] md:h-[12px]"
+                  viewBox="0 0 200 12"
+                  fill="none"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <g>
+                    <animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="3s" repeatCount="indefinite" />
+                    <path
+                      d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"
+                      stroke="#F4A89A"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      fill="none"
+                      opacity="0.8"
+                    />
+                  </g>
+                </svg>
+              </span>{" "}
+              Addressed To You
+            </h2>
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            {/* ── Left side: Statement & Signature ───────────────────── */}
-            <div className="relative flex flex-col justify-center order-2 lg:order-1">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            {/* ── Left side / Text (Now on the right) ───────────────────── */}
+            <div className="relative flex flex-col justify-start order-2 mt-4">
               
+              {/* Main Section Title (Desktop) */}
+              <motion.div variants={fadeSlideUp} className="mb-6 lg:mb-8 text-left hidden lg:block">
+                <h2 className="relative inline-block text-3xl md:text-4xl lg:text-5xl font-heading font-medium text-evren-navy">
+                  A{" "}
+                  <span className="relative inline-block">
+                    <span className="relative z-10">Message</span>
+                    {/* Animated wavy underline — peach */}
+                    <svg
+                      className="absolute -bottom-2 md:-bottom-3 left-0 w-full h-[8px] md:h-[12px]"
+                      viewBox="0 0 200 12"
+                      fill="none"
+                      preserveAspectRatio="none"
+                      aria-hidden="true"
+                    >
+                      <g>
+                        <animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="3s" repeatCount="indefinite" />
+                        <path
+                          d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"
+                          stroke="#F4A89A"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          fill="none"
+                          opacity="0.8"
+                        />
+                      </g>
+                    </svg>
+                  </span>{" "}
+                  Addressed To You
+                </h2>
+              </motion.div>
+
               {/* Editorial Statement */}
               <motion.p
                 variants={fadeSlideUp}
@@ -111,26 +165,36 @@ export default function LeadershipSection() {
               >
                 “The promise of AI is immense, but the path to ROI is fraught with risk. I founded Evren AI to be the partner I wish I had as an executive: <span className="text-transparent bg-clip-text bg-gradient-to-r from-evren-peach to-evren-rose font-semibold">one that speaks the language of the balance sheet</span>, prioritizes risk mitigation as much as innovation, and measures success not in algorithms deployed, but in tangible enterprise value created.”
               </motion.p>
-              {/* Signature Area has been moved exclusively below the portrait */}
+              
+              {/* Signature Area (md+ screens) */}
+              <motion.div variants={fadeSlideUp} className="hidden md:block mt-8">
+                <h3 className="font-heading text-evren-charcoal font-bold text-xl tracking-tight mb-1">
+                  Tariq Mehmood
+                </h3>
+                <p className="font-sans text-evren-charcoal/70 text-sm">
+                  Founder & CEO of Evren AI
+                </p>
+              </motion.div>
             </div>
 
-            {/* ── Right side: CEO Portrait ─────────────────────────────── */}
-            <motion.div variants={imageReveal} className="relative group w-full max-w-[400px] lg:max-w-[480px] mx-auto order-1 lg:order-2">
+            {/* ── Right side / Image (Now on the left) ───────────────── */}
+            <motion.div variants={imageReveal} className="relative group w-full max-w-[400px] lg:max-w-[480px] mx-auto order-1">
               {/* Image Card */}
-              <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-2xl shadow-evren-navy/10 border-4 border-evren-peach/10 bg-evren-peach">
+              <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl shadow-evren-navy/10 border-4 border-evren-peach/10 bg-evren-peach">
                 <Image
                   src="/CEO_files/CEO.png"
                   alt="Tariq Mehmood, CEO & Founder of Evren AI"
-                  fill
+                  width={600}
+                  height={800}
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-105"
+                  className="w-full h-auto object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-105"
                   quality={100}
                   priority
                 />
               </div>
 
-              {/* Text below image */}
-              <div className="mt-6 text-center">
+              {/* Text below image (mobile only) */}
+              <div className="mt-6 text-center md:hidden">
                 <h3 className="font-heading text-evren-charcoal font-bold text-xl tracking-tight mb-1">
                   Tariq Mehmood
                 </h3>

@@ -63,7 +63,7 @@ const CASE_STUDIES: CaseStudy[] = [
       "For a high-growth fintech, we deployed a real-time LLM-based detection engine that analyzes and neutralizes sophisticated phishing attacks before they breach enterprise security.",
     tags: ["Cybersecurity", "Python", "LLMs"],
     image: "/case studies/case 2.webp",
-    href: "/case-studies/cybersecurity-threat-detection",
+    href: "/case-studies/verifiedx-cybersecurity",
   },
 ];
 

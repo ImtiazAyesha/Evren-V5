@@ -122,7 +122,7 @@ export default function CoreValuesSection() {
     <section
       ref={sectionRef}
       id="core-values"
-      className="relative w-full overflow-hidden bg-evren-warm-white py-8 lg:py-12"
+      className="relative w-full overflow-hidden bg-white py-8 lg:py-12"
     >
       {/* ── Background orb ──────────────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">

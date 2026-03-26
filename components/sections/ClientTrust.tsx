@@ -156,7 +156,7 @@ export default function ClientTrust() {
     <section
       ref={sectionRef}
       id="client-trust"
-      className="relative bg-evren-warm-white py-10 sm:py-16 lg:py-20 overflow-hidden"
+      className="relative bg-evren-peach/5 py-10 sm:py-16 lg:py-20 overflow-hidden"
     >
       <div className="mx-auto max-w-6xl relative z-10 px-4 sm:px-6 lg:px-8">
         {/* ── Section Header ─────────────────────────────────────── */}

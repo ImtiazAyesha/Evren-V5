@@ -206,7 +206,7 @@ export default function Hero() {
       >
         {/* ── Circular Blueprint Interactive Grid ── */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[200vh] h-[200vh] md:w-[120vw] md:h-[120vw] max-w-none md:max-w-[1400px] md:max-h-[1400px] pointer-events-none z-[-1]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] min-h-[800px] pointer-events-none z-[-1]"
         >
           <div ref={gridRef} className="absolute inset-0">
             {/* 1. Base Navy Grid */}
@@ -217,9 +217,9 @@ export default function Hero() {
                 backgroundImage:
                   "linear-gradient(to right, rgba(27, 42, 74, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.18) 1px, transparent 1px)",
                 maskImage:
-                  "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
+                  "radial-gradient(circle at center, transparent 150px, rgba(0,0,0,0.4) 250px, black 350px, black 75%, transparent 100%)",
                 WebkitMaskImage:
-                  "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
+                  "radial-gradient(circle at center, transparent 150px, rgba(0,0,0,0.4) 250px, black 350px, black 75%, transparent 100%)",
               }}
             />
 

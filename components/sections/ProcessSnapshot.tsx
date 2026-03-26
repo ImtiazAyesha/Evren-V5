@@ -308,7 +308,7 @@ export default function ProcessSnapshot() {
       ref={sectionRef}
       id="process"
       aria-label="How we work"
-      className="relative w-full py-8 sm:py-10 lg:py-16 overflow-hidden bg-evren-warm-white"
+      className="relative w-full py-8 sm:py-10 lg:py-16 overflow-hidden bg-white"
     >
       {/* ── Decorative Orb — bottom-left ──────────────────────────── */}
       <div

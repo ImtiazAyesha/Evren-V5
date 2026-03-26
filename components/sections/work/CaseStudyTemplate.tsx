@@ -12,6 +12,8 @@ import {
 import { ArrowRight, CheckCircle2, Globe, Link as LinkIcon, Database, Cloud, Code, Zap, Server, Cpu, Box, Search, Shield, Lock,
 } from "lucide-react";
 import type { CaseStudy } from "@/lib/case-studies-data";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 // ═══════════════════════════════════════════════════════════════════════
 //  ICON MAP — resolves string icon names from data to Lucide components
@@ -850,6 +852,7 @@ function CaseStudyCTA() {
 export default function CaseStudyTemplate({ data }: { data: CaseStudy }) {
   return (
     <article>
+      <Navbar/>
       <HeroSection data={data} />
       <ChallengeSection data={data} />
       <ApproachSection data={data} />
@@ -858,6 +861,7 @@ export default function CaseStudyTemplate({ data }: { data: CaseStudy }) {
       <TechStackSection data={data} />
       <AIHighlightSection data={data} />
       <TestimonialSection data={data} />
+      <Footer/>
     </article>
   );
 }

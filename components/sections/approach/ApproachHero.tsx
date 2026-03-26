@@ -139,7 +139,7 @@ export default function ApproachHero() {
           {FLOATING_ICONS.map((item, idx) => (
             <motion.div
               key={idx}
-              className="absolute bg-white/60 backdrop-blur-md border border-white shadow-[0_8px_32px_rgba(27,42,74,0.06)] rounded-2xl flex items-center justify-center text-evren-navy/80"
+              className="absolute bg-white/60 backdrop-blur-md border border-white shadow-[0_8px_32px_rgba(244,168,154,0.35)] rounded-2xl flex items-center justify-center text-evren-navy/80"
               style={{
                 top: item.top,
                 bottom: item.bottom,

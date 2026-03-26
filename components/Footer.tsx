@@ -42,14 +42,15 @@ const SOCIALS = [
 //  COMPONENT
 // ═══════════════════════════════════════════════════════════════════════
 
-export default function Footer() {
+export default function Footer({ hideCTA = false }: { hideCTA?: boolean }) {
   const ctaRef = useRef<HTMLDivElement>(null);
   const ctaInView = useInView(ctaRef, { once: true, margin: "-80px" });
 
   return (
     <footer>
       {/* ─── Part A: Immersive Asymmetric CTA ─── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-28">
+      {!hideCTA && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 mb-20 sm:mb-28">
         <motion.div
           ref={ctaRef}
           initial={{ scale: 0.94, opacity: 0, y: 40 }}
@@ -200,7 +201,8 @@ export default function Footer() {
             </div>
           </div>
         </motion.div>
-      </div>
+        </div>
+      )}
 
       {/* ─── Part B: Main Footer ─── */}
       <div className="bg-evren-warm-white border-t border-evren-navy/10 pt-16 sm:pt-24 pb-6 sm:pb-8 px-4 sm:px-6">

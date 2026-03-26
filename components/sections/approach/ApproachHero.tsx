@@ -8,7 +8,8 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { Layers, Workflow, Target, Gauge } from "lucide-react";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 // ═══════════════════════════════════════════════════════════════════════
 //  MOTION VARIANTS
@@ -48,20 +49,25 @@ const wordReveal: Variants = {
 // ═══════════════════════════════════════════════════════════════════════
 
 const HEADLINE_LINES: {
-  words: { text: string; decorated?: boolean; secondary?: boolean }[];
+  words: { text: string; decorated?: boolean; secondary?: boolean; light?: boolean }[];
 }[] = [
   {
     words: [{ text: "Built to Scale. " }],
   },
   {
     words: [
-      { text: "Designed to ", secondary: true },
-      { text: "Think.", decorated: true, secondary: true },
+      { text: "Designed to ", light: true },
+      { text: "Think.", decorated: true, light: true },
     ],
   },
 ];
 
-
+const FLOATING_ICONS = [
+  { icon: Layers, top: "18%", left: "2%", delay: 0, scale: 1.05, initRotate: -8, moveX: 0, moveY: -20 },
+  { icon: Target, top: "25%", right: "0%", delay: 1.5, scale: 1.25, initRotate: 10, moveX: -15, moveY: -15 },
+  { icon: Workflow, bottom: "28%", left: "4%", delay: 0.8, scale: 0.95, initRotate: 6, moveX: 20, moveY: 0 },
+  { icon: Gauge, bottom: "20%", right: "5%", delay: 2.2, scale: 1.15, initRotate: -10, moveX: -15, moveY: 15 },
+];
 
 // ═══════════════════════════════════════════════════════════════════════
 //  APPROACH HERO
@@ -85,17 +91,16 @@ export default function ApproachHero() {
       ref={sectionRef}
       id="approach-hero"
       aria-label="Our Approach"
-      className="relative w-full overflow-hidden bg-evren-warm-white"
-      style={{ minHeight: "600px" }}
+      className="relative w-full overflow-hidden bg-evren-warm-white min-h-[100svh] md:min-h-[600px] flex flex-col justify-center"
     >
-      {/* ── Animated gradient mesh blobs (4-blob system) ──────────── */}
+      {/* ── Animated gradient mesh blobs ──────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Peach blob — top-left */}
         <div
           className="absolute -top-[10%] -left-[8%] w-[700px] h-[700px] rounded-full mesh-blob"
           style={{
             background:
-              "radial-gradient(circle, rgba(244, 168, 154, 0.22) 0%, rgba(244, 168, 154, 0.07) 40%, transparent 70%)",
+              "radial-gradient(circle, rgba(244, 168, 154, 0.35) 0%, rgba(244, 168, 154, 0.12) 40%, transparent 70%)",
             filter: "blur(40px)",
           }}
         />
@@ -104,7 +109,7 @@ export default function ApproachHero() {
           className="absolute top-[0%] -right-[5%] w-[600px] h-[600px] rounded-full mesh-blob-2"
           style={{
             background:
-              "radial-gradient(circle, rgba(232, 150, 126, 0.18) 0%, rgba(232, 150, 126, 0.05) 45%, transparent 70%)",
+              "radial-gradient(circle, rgba(232, 150, 126, 0.25) 0%, rgba(232, 150, 126, 0.08) 45%, transparent 70%)",
             filter: "blur(35px)",
           }}
         />
@@ -113,7 +118,7 @@ export default function ApproachHero() {
           className="absolute -bottom-[8%] left-[15%] w-[650px] h-[650px] rounded-full mesh-blob"
           style={{
             background:
-              "radial-gradient(circle, rgba(212, 165, 116, 0.16) 0%, rgba(212, 165, 116, 0.04) 40%, transparent 70%)",
+              "radial-gradient(circle, rgba(212, 165, 116, 0.2) 0%, rgba(212, 165, 116, 0.06) 40%, transparent 70%)",
             filter: "blur(45px)",
             animationDelay: "-6s",
           }}
@@ -123,60 +128,70 @@ export default function ApproachHero() {
           className="absolute top-[25%] right-[10%] w-[500px] h-[500px] rounded-full mesh-blob-2"
           style={{
             background:
-              "radial-gradient(circle, rgba(27, 42, 74, 0.05) 0%, rgba(27, 42, 74, 0.01) 50%, transparent 70%)",
+              "radial-gradient(circle, rgba(27, 42, 74, 0.06) 0%, rgba(27, 42, 74, 0.02) 50%, transparent 70%)",
             filter: "blur(30px)",
             animationDelay: "-10s",
           }}
         />
+
+        {/* ── Contextual Glassmorphic Floating Icons ── */}
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-[1060px] z-[1] pointer-events-none hidden lg:block">
+          {FLOATING_ICONS.map((item, idx) => (
+            <motion.div
+              key={idx}
+              className="absolute bg-white/60 backdrop-blur-md border border-white shadow-[0_8px_32px_rgba(27,42,74,0.06)] rounded-2xl flex items-center justify-center text-evren-navy/80"
+              style={{
+                top: item.top,
+                bottom: item.bottom,
+                left: item.left,
+                right: item.right,
+                width: 60 * item.scale,
+                height: 60 * item.scale,
+                rotate: item.initRotate,
+              }}
+              animate={{
+                x: [0, item.moveX, 0],
+                y: [0, item.moveY, 0],
+                rotate: [item.initRotate, item.initRotate + 6, item.initRotate - 6, item.initRotate],
+              }}
+              transition={{
+                duration: 8 + (idx % 2) * 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: item.delay,
+              }}
+            >
+              <item.icon size={26 * item.scale} strokeWidth={1.5} />
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* ────────────────────────────────────────────────────────────
-          CONTENT — Centered layout (matching Hero.tsx)
+          CONTENT — Centered layout (matching AboutHero.tsx)
       ──────────────────────────────────────────────────────────── */}
       <motion.div
         ref={contentRef}
-        className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32 flex flex-col items-center text-center group"
+        className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-12 pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-10 sm:pb-16 lg:pb-20 flex flex-col items-center text-center group"
         style={{ y: contentY }}
         variants={staggerContainer}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        {/* ── Circular Blueprint grid surrounding content ── */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[120vw] h-[120vw] max-w-[1400px] max-h-[1400px] pointer-events-none z-[-1] transition-opacity duration-700 opacity-60 group-hover:opacity-90">
-          <div
-            className="absolute inset-0 transition-transform duration-1000 group-hover:scale-[1.03]"
-            style={{
-              backgroundSize: "40px 40px",
-              backgroundImage:
-                "linear-gradient(to right, rgba(27, 42, 74, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.18) 1px, transparent 1px)",
-              maskImage:
-                "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
-              WebkitMaskImage:
-                "radial-gradient(circle at center, transparent 15%, rgba(0,0,0,0.4) 25%, black 35%, black 50%, transparent 65%)",
-            }}
-          />
-        </div>
 
-        {/* 1. BADGE — with live pulse (matching Hero & AboutHero) */}
+        {/* 1. BADGE (Text Only) */}
         <motion.div
           variants={fadeSlideUp}
-          className="mb-8 inline-flex items-center gap-2.5
-                     rounded-full bg-evren-peach-light/60 border border-evren-peach/20
-                     px-5 py-2"
+          className="mb-4 px-4 sm:px-0"
         >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-evren-rose opacity-50" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-evren-rose" />
-          </span>
-          <span className="text-[11px] font-heading font-semibold text-evren-navy tracking-wide uppercase">
-            The Methodology
+          <span className="block text-[10px] sm:text-[11px] font-heading font-bold text-evren-navy/50 tracking-[0.1em] sm:tracking-[0.25em] uppercase text-center">
+            Our Approach
           </span>
         </motion.div>
 
-        {/* 2. HEADLINE — word-by-word stagger reveal */}
+        {/* 2. HEADLINE */}
         <motion.h1
-          className="font-heading font-extrabold text-evren-navy
-                     text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] -tracking-tight max-w-4xl"
+          className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] max-w-4xl px-2 sm:px-0"
           variants={{
             hidden: {},
             visible: {
@@ -186,11 +201,14 @@ export default function ApproachHero() {
         >
           {HEADLINE_LINES.map((line, lineIdx) => (
             <span key={lineIdx} className="block">
-              {line.words.map((word) =>
-                word.decorated ? (
+              {line.words.map((word) => {
+                const textStyle = word.light
+                  ? "font-light text-evren-medium-gray/90 tracking-normal"
+                  : "font-extrabold text-evren-navy tracking-tight";
+                return word.decorated ? (
                   <motion.span
                     key={word.text}
-                    className={`relative inline-block ${word.secondary ? 'text-evren-medium-gray' : ''}`}
+                    className={`relative inline-block ${textStyle}`}
                     variants={wordReveal}
                   >
                     <span className="relative z-10">{word.text}</span>
@@ -218,13 +236,13 @@ export default function ApproachHero() {
                 ) : (
                   <motion.span
                     key={word.text}
-                    className={`inline-block whitespace-pre ${word.secondary ? 'text-evren-medium-gray' : ''}`}
+                    className={`inline-block whitespace-pre ${textStyle}`}
                     variants={wordReveal}
                   >
                     {word.text}
                   </motion.span>
-                )
-              )}
+                );
+              })}
             </span>
           ))}
           <span className="sr-only">
@@ -245,47 +263,28 @@ export default function ApproachHero() {
         </motion.div>
 
         {/* 4. CTA BUTTONS */}
-        <motion.div
-          variants={fadeSlideUp}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
-        >
-          <motion.a
+        <motion.div variants={fadeSlideUp} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto px-4 sm:px-0">
+          <ArrowButton
             href="/connect"
             id="approach-hero-cta"
-            aria-label="Book a strategy call with Evren AI"
-            className="inline-flex items-center justify-center gap-2
-                       rounded-full bg-evren-peach text-evren-navy font-heading font-semibold
-                       px-8 py-4 text-sm w-full sm:w-auto will-change-transform
-                       transition-all duration-200"
-            whileHover={{
-              scale: 1.04,
-              boxShadow: "0 16px 40px -8px rgba(244, 168, 154, 0.4)",
-            }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            ariaLabel="Book a strategy call with Evren AI"
+            variant="primary"
+            size="lg"
+            className="w-full sm:w-auto justify-between sm:justify-center text-[14px] sm:text-base whitespace-nowrap"
           >
             Book a Strategy Call
-            <ArrowUpRight
-              size={16}
-              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
-            />
-          </motion.a>
+          </ArrowButton>
 
-          <motion.a
+          <ArrowButton
             href="/work"
             id="approach-hero-cta-secondary"
-            aria-label="See our work"
-            className="inline-flex items-center justify-center gap-2
-                       rounded-full border-2 border-evren-navy-light text-evren-navy
-                       font-heading font-semibold px-8 py-4 text-sm w-full sm:w-auto
-                       will-change-transform transition-all duration-200
-                       hover:bg-evren-navy-light hover:text-white"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+            ariaLabel="See our work"
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto justify-between sm:justify-center text-[14px] sm:text-base whitespace-nowrap"
           >
             See Our Work
-          </motion.a>
+          </ArrowButton>
         </motion.div>
       </motion.div>
 

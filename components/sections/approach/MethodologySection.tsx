@@ -139,7 +139,81 @@ const PHASES: Phase[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════
-//  METHODOLOGY SECTION — Interactive Tab Panel
+//  PHASE CONTENT COMPONENT
+// ═══════════════════════════════════════════════════════════════════════
+
+function PhaseContent({ active }: { active: Phase }) {
+  const ActiveIcon = active.icon;
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 md:items-center">
+      {/* ── Left Side (Text & Mobile Video) ── */}
+      <div>
+        {/* Title with fully rounded Icon directly */}
+        <div className="flex items-center gap-4 mb-6 md:mb-8">
+          <div className="w-12 h-12 rounded-full bg-evren-peach-light flex items-center justify-center shrink-0">
+            <ActiveIcon
+              size={22}
+              strokeWidth={1.5}
+              className="text-evren-navy"
+            />
+          </div>
+          <div className="flex flex-col gap-1 md:gap-0">
+            {/* Mobile Only: Phase Number aligned above title */}
+            <p className="md:hidden text-[10px] font-mono text-evren-charcoal/70 uppercase tracking-[0.2em]">
+              Phase {active.number}
+            </p>
+            <h3 className="text-3xl md:text-4xl font-heading font-bold text-evren-navy leading-tight">
+              {active.title}
+            </h3>
+          </div>
+        </div>
+
+        {/* ── Video Side (MOBILE ONLY) ── */}
+        <div className="md:hidden w-full mb-8">
+          <PhaseVideo src={active.video} />
+        </div>
+
+        {/* Body */}
+        <p className="text-evren-charcoal font-body leading-relaxed text-base md:text-[17px] mb-6">
+          {active.body}
+        </p>
+
+        {/* Deliverables */}
+        <div className="flex flex-col gap-2.5 mb-6">
+          {active.deliverables.map((d) => (
+            <div key={d} className="flex items-start gap-2.5">
+              <CheckCircle2
+                size={16}
+                className="text-evren-peach mt-0.5 shrink-0"
+              />
+              <span className="text-sm text-evren-charcoal font-body">
+                {d}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Callout box (Scale phase only) */}
+        {active.callout && (
+          <div className="bg-evren-peach-light rounded-[16px] p-6 border-l-4 border-evren-peach">
+            <p className="text-evren-navy font-heading font-bold text-base md:text-lg leading-snug">
+              &ldquo;{active.callout.text}&rdquo;
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* ── Video Side (DESKTOP ONLY) ── */}
+      <div className="hidden md:block">
+        <PhaseVideo src={active.video} />
+      </div>
+    </div>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════
+//  METHODOLOGY SECTION
 // ═══════════════════════════════════════════════════════════════════════
 
 export default function MethodologySection() {
@@ -147,15 +221,22 @@ export default function MethodologySection() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [activePhase, setActivePhase] = useState(0);
 
+  // Auto-play loop for tabs & mobile slider
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActivePhase((current) => (current + 1) % PHASES.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [activePhase]);
+
   const active = PHASES[activePhase];
-  const ActiveIcon = active.icon;
 
   return (
     <section
       ref={sectionRef}
       id="methodology"
       aria-label="Our methodology"
-      className="relative w-full bg-evren-warm-white py-24 lg:py-32 overflow-hidden"
+      className="relative w-full bg-evren-warm-white py-12 lg:py-16 overflow-hidden"
     >
       {/* ── Decorative Orb ──────────────────────────────────────── */}
       <div
@@ -217,9 +298,9 @@ export default function MethodologySection() {
           </p>
         </motion.div>
 
-        {/* ── Tab Selector ──────────────────────────────────────── */}
+        {/* ── Tab Selector (Desktop/Tablet Only) ─────────────────── */}
         <motion.div
-          className="mb-10"
+          className="mb-10 hidden md:block"
           variants={fadeSlideUp}
           initial="hidden"
           whileInView="visible"
@@ -249,7 +330,7 @@ export default function MethodologySection() {
 
                   {/* Icon */}
                   <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-300
+                    className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-colors duration-300
                                ${isActive
                         ? "bg-evren-peach"
                         : "bg-evren-peach-light/50 group-hover:bg-evren-peach-light"
@@ -277,12 +358,13 @@ export default function MethodologySection() {
           </div>
         </motion.div>
 
-        {/* ── Active Phase Content Panel ────────────────────────── */}
+        {/* ── Active Phase Content Panel (All Screens) ──────────────── */}
         <motion.div
           variants={fadeSlideUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
+          className="w-full"
         >
           <div className="bg-white/60 backdrop-blur-sm rounded-3xl border border-evren-light-gray/60 p-6 sm:p-8 lg:p-10 shadow-warm overflow-hidden">
             <AnimatePresence mode="wait">
@@ -292,67 +374,27 @@ export default function MethodologySection() {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center"
               >
-                {/* ── Text Side ─────────────────────────────────── */}
-                <div>
-                  {/* Phase badge */}
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-11 h-11 rounded-xl bg-evren-peach-light flex items-center justify-center">
-                      <ActiveIcon
-                        size={20}
-                        strokeWidth={1.5}
-                        className="text-evren-navy"
-                      />
-                    </div>
-                    <p className="text-[10px] font-mono text-evren-medium-gray uppercase tracking-[0.2em]">
-                      Phase {active.number}
-                    </p>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-3xl md:text-4xl font-heading font-bold text-evren-navy mb-5 leading-tight">
-                    {active.title}
-                  </h3>
-
-                  {/* Body */}
-                  <p className="text-evren-charcoal font-body leading-relaxed text-base md:text-[17px] mb-6">
-                    {active.body}
-                  </p>
-
-                  {/* Deliverables */}
-                  <div className="flex flex-col gap-2.5 mb-6">
-                    {active.deliverables.map((d) => (
-                      <div key={d} className="flex items-start gap-2.5">
-                        <CheckCircle2
-                          size={16}
-                          className="text-evren-peach mt-0.5 shrink-0"
-                        />
-                        <span className="text-sm text-evren-charcoal font-body">
-                          {d}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Callout box (Scale phase only) */}
-                  {active.callout && (
-                    <div className="bg-evren-peach-light rounded-[16px] p-6 border-l-4 border-evren-peach">
-                      <p className="text-evren-navy font-heading font-bold text-base md:text-lg leading-snug">
-                        &ldquo;{active.callout.text}&rdquo;
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* ── Video Side ────────────────────────────────── */}
-                <div>
-                  <PhaseVideo src={active.video} />
-                </div>
+                <PhaseContent active={active} />
               </motion.div>
             </AnimatePresence>
+
+            {/* ── Carousel Slider Navigation (Mobile Only) ── */}
+            <div className="md:hidden flex items-center justify-center gap-2 mt-8 pt-4 border-t border-evren-light-gray/40">
+              {PHASES.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActivePhase(idx)}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    activePhase === idx ? "w-8 bg-evren-peach" : "w-2.5 bg-evren-peach-light"
+                  }`}
+                  aria-label={`Go to phase ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
+
       </div>
     </section>
   );

@@ -171,7 +171,7 @@ export default function ClientTrust() {
             Client Trust
           </span>
           <h2 className="font-heading font-bold text-evren-navy text-[2.25rem] sm:text-4xl md:text-5xl lg:text-[2.75rem] leading-[1.15] tracking-tight max-w-4xl">
-            Trusted by Visionary Leaders.
+            Trusted by <span className="text-evren-peach">Visionary Leaders.</span>
           </h2>
         </motion.div>
 

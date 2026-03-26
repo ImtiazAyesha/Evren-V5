@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView, type Variants } from "framer-motion";
+import { BrainCircuit, Workflow } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════════════════
 //  MOTION CONFIG
@@ -80,7 +81,7 @@ function VisualVision() {
       
       {/* Moving Targeting Reticle */}
       <motion.div
-         className="absolute w-[40%] h-[50%] border-2 border-evren-peach/70 rounded-md backdrop-blur-[2px] bg-evren-peach/5"
+         className="absolute w-[40%] h-[50%] border-[3px] border-evren-peach rounded-md backdrop-blur-[2px] bg-evren-peach/30 shadow-[0_0_15px_rgba(244,168,154,0.4)]"
          animate={{ 
             left: ["10%", "50%", "40%", "10%"],
             top: ["10%", "20%", "40%", "10%"],
@@ -189,6 +190,7 @@ const PILLARS = [
     title: "LLM Integration",
     body: "We architect production-grade LLM pipelines — from prompt engineering and RAG architectures to fine-tuning domain-specific models that deliver reliable, context-aware outputs at scale.",
     Visual: VisualLLM,
+    bgIcon: BrainCircuit,
   },
   {
     title: "Computer Vision",
@@ -204,6 +206,7 @@ const PILLARS = [
     title: "Workflow Automation",
     body: "End-to-end intelligent automation — from document processing and data extraction to decision routing and compliance enforcement. Your ops team, amplified by AI agents.",
     Visual: VisualWorkflow,
+    bgIcon: Workflow,
   },
 ];
 
@@ -213,14 +216,22 @@ const PILLARS = [
 
 function PillarCard({ pillar, isWide = false }: { pillar: typeof PILLARS[0]; isWide?: boolean }) {
   const Visual = pillar.Visual;
+  const BgIcon = pillar.bgIcon;
   return (
     <motion.article
       variants={fadeUp}
       className={`group relative bg-white rounded-[2rem] p-6 lg:p-8 border border-evren-light-gray/60
-                 transition-all duration-500 ease-out flex flex-col justify-center
+                 transition-all duration-500 ease-out flex flex-col justify-center cursor-pointer
                  hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(27,42,74,0.1)] hover:border-evren-peach/60
                  overflow-hidden w-full h-full ${isWide ? 'md:col-span-2' : 'md:col-span-1'}`}
     >
+      {/* Background Icon */}
+      {BgIcon && (
+        <div className="absolute -top-12 -right-12 transform -rotate-12 opacity-[0.03] group-hover:opacity-[0.06] group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none">
+          <BgIcon size={240} strokeWidth={0.8} className="text-evren-navy" />
+        </div>
+      )}
+
       {/* (Hover accent gradient explicitly removed) */}
 
       <div className={`relative z-10 w-full h-full flex ${isWide ? 'flex-col md:flex-row items-stretch md:items-center gap-6 lg:gap-10' : 'flex-col items-stretch gap-6 lg:gap-8'}`}>
@@ -258,7 +269,7 @@ export default function AINativeDifference() {
       ref={sectionRef}
       id="ai-native-difference"
       aria-label="The AI-Native Difference"
-      className="relative w-full bg-evren-warm-white py-24 lg:py-32 overflow-hidden"
+      className="relative w-full bg-evren-warm-white py-12 lg:py-16 overflow-hidden"
     >
       {/* ── Decorative Orbs ─────────────────────────────────────── */}
       <div
@@ -315,7 +326,7 @@ export default function AINativeDifference() {
               &ldquo;Can we add AI to this?&rdquo;
             </em>{" "}
             At Evren, we start with AI. Intelligence isn&apos;t a feature we
-            retrofit — it&apos;s the foundation we build on.
+            retrofit it&apos;s the foundation we build on.
           </motion.p>
         </motion.div>
 

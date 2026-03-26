@@ -143,7 +143,7 @@ export default function EnterpriseStack() {
       ref={sectionRef}
       id="enterprise-stack"
       aria-label="The enterprise stack"
-      className="relative w-full bg-evren-warm-white py-24 lg:py-32 overflow-hidden"
+      className="relative w-full bg-evren-warm-white py-12 lg:py-16 overflow-hidden"
     >
       {/* ── Decorative Orb ──────────────────────────────────────── */}
       <div

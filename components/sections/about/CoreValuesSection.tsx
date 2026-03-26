@@ -87,7 +87,7 @@ export default function CoreValuesSection() {
 
   const [current, setCurrent] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  
+
   // One ref slot per card (null for non-video cards)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([null, null, null, null, null]);
 
@@ -122,7 +122,7 @@ export default function CoreValuesSection() {
     <section
       ref={sectionRef}
       id="core-values"
-      className="relative w-full overflow-hidden bg-evren-warm-white py-16 lg:py-24"
+      className="relative w-full overflow-hidden bg-evren-warm-white py-8 lg:py-12"
     >
       {/* ── Background orb ──────────────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -180,13 +180,13 @@ export default function CoreValuesSection() {
                             animate={isInView ? { opacity: 1 } : {}}
                             transition={{ delay: 0.4, duration: 0.8 }}
                           >
-                            <animateTransform 
-                              attributeName="transform" 
-                              type="translate" 
-                              from="-64 0" 
-                              to="0 0" 
-                              dur="3s" 
-                              repeatCount="indefinite" 
+                            <animateTransform
+                              attributeName="transform"
+                              type="translate"
+                              from="-64 0"
+                              to="0 0"
+                              dur="3s"
+                              repeatCount="indefinite"
                             />
                             <path
                               d="M -64 6 Q -48 0, -32 6 T 0 6 T 32 6 T 64 6 T 96 6 T 128 6 T 160 6 T 192 6 T 224 6 T 256 6 T 288 6"

@@ -28,7 +28,7 @@ export default function ConnectPage() {
       <main className="flex flex-col min-h-screen bg-evren-warm-white">
         <ConnectSection />
       </main>
-      <Footer />
+      <Footer hideCTA />
     </SmoothScroll>
   );
 }

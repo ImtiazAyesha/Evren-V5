@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import ArrowButton from "@/components/ui/ArrowButton";
@@ -52,6 +53,7 @@ const mobileLinkVariants: Variants = {
 // ═══════════════════════════════════════════════════════════════════════
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -100,18 +102,23 @@ export default function Navbar() {
             <nav id="desktop-nav" className="flex items-center">
               {/* Nav links pill — subtle inner container */}
               <div className="flex items-center gap-1 bg-evren-warm-gray/40 rounded-full px-1.5 py-1">
-                {NAV_LINKS.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    id={`nav-link-${link.label.toLowerCase()}`}
-                    className="relative font-body text-sm font-medium text-evren-charcoal 
-                                 hover:text-evren-navy transition-all duration-300 
-                                 px-4 py-2 rounded-full hover:bg-evren-peach-light"
-                  >
-                    {link.label}
-                  </a>
-                ))}
+                {NAV_LINKS.map((link) => {
+                  const isActive = pathname === link.href || (pathname?.startsWith(link.href) && link.href !== '/');
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      id={`nav-link-${link.label.toLowerCase()}`}
+                      className={`relative font-body text-sm font-medium transition-all duration-300 px-4 py-2 rounded-full
+                                   ${isActive 
+                                     ? "bg-white text-evren-navy font-bold shadow-sm" 
+                                     : "text-evren-charcoal hover:text-evren-navy hover:bg-evren-peach-light"
+                                   }`}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                })}
               </div>
             </nav>
 
@@ -149,29 +156,33 @@ export default function Navbar() {
             exit="exit"
             className="fixed inset-0 z-40 bg-evren-warm-white/95 backdrop-blur-xl flex flex-col"
           >
-            {/* Content — centered links */}
-            <div className="flex-1 flex flex-col items-center justify-center px-8 pt-[72px]">
-              <nav className="flex flex-col items-center gap-3 w-full max-w-sm">
-                {NAV_LINKS.map((link, idx) => (
-                  <motion.a
-                    key={link.label}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    custom={idx}
-                    variants={mobileLinkVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="font-heading text-3xl font-bold tracking-tight text-evren-navy 
-                               py-3 w-full text-center border-b border-evren-light-gray/50 
-                               transition-colors duration-200 hover:text-evren-peach"
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
+            {/* Content — top & center aligned links */}
+            <div className="flex-1 flex flex-col items-center justify-start px-8 pt-[120px] w-full max-w-sm mx-auto">
+              <nav className="flex flex-col items-center w-full">
+                {NAV_LINKS.map((link, idx) => {
+                  const isActive = pathname === link.href || (pathname?.startsWith(link.href) && link.href !== '/');
+                  return (
+                    <motion.a
+                      key={link.label}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      custom={idx}
+                      variants={mobileLinkVariants}
+                      initial="hidden"
+                      animate="visible"
+                      className={`font-heading text-3xl tracking-tight py-5 w-full text-center border-b border-evren-light-gray/40 transition-colors duration-200 block
+                                 ${isActive
+                                   ? "font-extrabold text-evren-peach"
+                                   : "font-bold text-evren-navy hover:text-evren-peach"}`}
+                    >
+                      {link.label}
+                    </motion.a>
+                  );
+                })}
               </nav>
 
               {/* Mobile CTA */}
-              <div className="mt-10 w-full max-w-sm">
+              <div className="mt-12 w-full">
                 <ArrowButton
                   href="/connect"
                   variant="primary"

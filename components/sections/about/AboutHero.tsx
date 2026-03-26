@@ -8,6 +8,7 @@ import {
   useTransform,
   type Variants,
 } from "framer-motion";
+import { Globe, Users, Sparkles, Compass } from "lucide-react";
 import ArrowButton from "@/components/ui/ArrowButton";
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -45,6 +46,13 @@ const HEADLINE_LINES: { words: { text: string; decorated?: boolean; secondary?: 
   { words: [{ text: "Evren ", decorated: true }, { text: " means " }, { text: "Universe." }] },
   { words: [{ text: "The ", light: true }, { text: "Universe ", light: true }, { text: "Is ", light: true }, { text: "Always ", light: true }] },
   { words: [{ text: "Expanding. ", light: true }, { text: "So ", light: true }, { text: "Are ", light: true }, { text: "We.", light: true }] },
+];
+
+const FLOATING_ICONS = [
+  { icon: Globe, top: "18%", left: "2%", delay: 0, scale: 1.05, initRotate: -8, moveX: 0, moveY: -20 },
+  { icon: Users, top: "25%", right: "0%", delay: 1.5, scale: 1.25, initRotate: 10, moveX: -15, moveY: -15 },
+  { icon: Sparkles, bottom: "28%", left: "4%", delay: 0.8, scale: 0.95, initRotate: 6, moveX: 20, moveY: 0 },
+  { icon: Compass, bottom: "20%", right: "5%", delay: 2.2, scale: 1.15, initRotate: -10, moveX: -15, moveY: 15 },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -110,6 +118,38 @@ export default function AboutHero() {
             animationDelay: "-10s",
           }}
         />
+
+        {/* ── Contextual Glassmorphic Floating Icons ── */}
+        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-[1280px] z-[1] pointer-events-none hidden lg:block">
+          {FLOATING_ICONS.map((item, idx) => (
+            <motion.div
+              key={idx}
+              className="absolute bg-white/60 backdrop-blur-md border border-white shadow-[0_8px_32px_rgba(27,42,74,0.06)] rounded-2xl flex items-center justify-center text-evren-navy/80"
+              style={{
+                top: item.top,
+                bottom: item.bottom,
+                left: item.left,
+                right: item.right,
+                width: 60 * item.scale,
+                height: 60 * item.scale,
+                rotate: item.initRotate,
+              }}
+              animate={{
+                x: [0, item.moveX, 0],
+                y: [0, item.moveY, 0],
+                rotate: [item.initRotate, item.initRotate + 6, item.initRotate - 6, item.initRotate],
+              }}
+              transition={{
+                duration: 8 + (idx % 2) * 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: item.delay,
+              }}
+            >
+              <item.icon size={26 * item.scale} strokeWidth={1.5} />
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* ────────────────────────────────────────────────────────────

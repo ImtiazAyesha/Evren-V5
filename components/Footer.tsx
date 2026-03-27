@@ -10,11 +10,12 @@ import { useRef } from "react";
 // ═══════════════════════════════════════════════════════════════════════
 
 const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Approach", href: "#approach" },
-  { label: "Work", href: "#work" },
-  { label: "Thinking", href: "#thinking" },
-  { label: "Business Transformation", href: "#transformation" },
+  { label: "About", href: "/about" },
+  { label: "Approach", href: "/approach" },
+  { label: "Work", href: "/work" },
+  { label: "Thinking", href: "/thinking" },
+  { label: "Business Transformation", href: "/business-transformation" },
+  { label: "Careers", href: "/careers" },
 ];
 
 const OFFICES = [
@@ -34,8 +35,6 @@ const SOCIALS = [
     icon: Twitter,
   },
 ];
-
-
 
 
 // ═══════════════════════════════════════════════════════════════════════

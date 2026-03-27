@@ -74,13 +74,13 @@ const LAYERS: Layer[] = [
   {
     id: "frontend",
     category: "LAYER 01",
-    label: "Client Frontend",
-    sublabel: "Next.js / React Native / Flutter",
-    technologies: ["TypeScript", "Tailwind", "WebSocket"],
-    borderColor: "border-evren-peach/40",
+    label: "Interfaces that Move",
+    sublabel: "Web, mobile, and cross-platform experiences built for speed, accessibility, and the kind of responsiveness users now expect as standard.",
+    technologies: ["Web", "Mobile", "Cross-Platform"],
+    borderColor: "border-evren-navy/10",
     bgColor: "bg-white",
-    iconBg: "bg-evren-peach-light",
-    iconColor: "text-evren-peach",
+    iconBg: "bg-evren-navy/5",
+    iconColor: "text-evren-navy",
     dotColor: "bg-evren-peach",
     icon: Monitor,
     animDelay: 0,
@@ -88,45 +88,44 @@ const LAYERS: Layer[] = [
   {
     id: "backend",
     category: "LAYER 02",
-    label: "Backend APIs",
-    sublabel: "Node.js / Python / Go Microservices",
-    technologies: ["REST", "GraphQL", "gRPC"],
-    borderColor: "border-blue-200",
+    label: "Logic That Scales",
+    sublabel: "API architecture designed for the load you have today and the load you'll have in two years. Flexible enough to extend, solid enough to trust.",
+    technologies: ["APIs", "Microservices", "Real-Time"],
+    borderColor: "border-evren-navy/10",
     bgColor: "bg-white",
-    iconBg: "bg-blue-50",
-    iconColor: "text-blue-500",
-    dotColor: "bg-blue-400",
+    iconBg: "bg-evren-navy/5",
+    iconColor: "text-evren-navy",
+    dotColor: "bg-evren-peach",
     icon: Server,
     animDelay: 0.12,
   },
   {
     id: "cloud",
     category: "LAYER 03",
-    label: "Cloud Infrastructure",
-    sublabel: "AWS / GCP / Azure",
-    technologies: ["K8s", "Terraform", "CI/CD"],
-    borderColor: "border-amber-200",
+    label: "Infrastructure That Doesn't Flinch",
+    sublabel: "Multi-cloud deployment pipelines with automated scaling, monitoring, and rollback — so your product stays live while your team sleeps.",
+    technologies: ["Multi-Cloud", "Auto-Scaling", "Zero-Downtime"],
+    borderColor: "border-evren-navy/10",
     bgColor: "bg-white",
-    iconBg: "bg-amber-50",
-    iconColor: "text-amber-500",
-    dotColor: "bg-amber-400",
+    iconBg: "bg-evren-navy/5",
+    iconColor: "text-evren-navy",
+    dotColor: "bg-evren-peach",
     icon: Cloud,
     animDelay: 0.24,
   },
   {
     id: "ai",
     category: "LAYER 04",
-    label: "LLM / Vector DB",
-    sublabel: "OpenAI / Anthropic / Pinecone / Weaviate",
-    technologies: ["RAG", "Embeddings", "Fine-Tuning"],
-    borderColor: "border-evren-navy/30",
-    bgColor: "bg-evren-navy",
-    iconBg: "bg-white/10",
-    iconColor: "text-evren-peach",
+    label: "Intelligence at the Core",
+    sublabel: "Model-agnostic AI integration built around your data, your domain, and your users — not around whichever model happens to be trending.",
+    technologies: ["Model-Agnostic", "Context-Aware", "Domain-Trained"],
+    borderColor: "border-evren-navy/10",
+    bgColor: "bg-white",
+    iconBg: "bg-evren-navy/5",
+    iconColor: "text-evren-navy",
     dotColor: "bg-evren-peach",
     icon: Brain,
     animDelay: 0.36,
-    dark: true,
   },
 ];
 
@@ -141,9 +140,9 @@ export default function EnterpriseStack() {
   return (
     <section
       ref={sectionRef}
-      id="enterprise-stack"
-      aria-label="The enterprise stack"
-      className="relative w-full bg-evren-warm-white py-12 lg:py-16 overflow-hidden"
+      id="production-stack"
+      aria-label="The production stack"
+      className="relative w-full bg-evren-warm-white pt-12 pb-24 lg:pt-16 lg:pb-48 overflow-hidden"
     >
       {/* ── Decorative Orb ──────────────────────────────────────── */}
       <div
@@ -179,7 +178,7 @@ export default function EnterpriseStack() {
             className="text-3xl md:text-4xl lg:text-[2.5rem] xl:text-5xl text-evren-navy font-heading font-bold mb-6 leading-tight"
           >
             The <span className="relative inline-block">
-              <span className="relative z-10">Enterprise</span>
+              <span className="relative z-10">Production</span>
               <svg className="absolute -bottom-1 lg:-bottom-2 left-0 w-full h-[10px] md:h-[14px]" viewBox="0 0 200 12" fill="none" preserveAspectRatio="none" aria-hidden="true">
                 <g>
                   <animateTransform attributeName="transform" type="translate" from="-64 0" to="0 0" dur="3s" repeatCount="indefinite" />
@@ -194,19 +193,18 @@ export default function EnterpriseStack() {
             variants={fadeUp}
             className="text-base lg:text-lg text-evren-charcoal font-body leading-relaxed mb-8"
           >
-            Clean, architectural, and secure. A transparent view into the
-            production-grade infrastructure powering every Evren-built product.
+            Built to the standard your product needs — from MVP to regulated enterprise. Every layer is chosen for reliability, security, and long-term scalability.
           </motion.p>
 
           {/* Decorative divider */}
-          <motion.div
+          {/* <motion.div
             variants={fadeUp}
             className="w-16 h-[3px] rounded-full mx-auto mb-8"
             style={{
               background:
                 "linear-gradient(90deg, rgba(244, 168, 154, 0.7), rgba(232, 150, 126, 0.3))",
             }}
-          />
+          /> */}
 
           {/* Compliance badges */}
           <motion.div
@@ -214,10 +212,10 @@ export default function EnterpriseStack() {
             className="flex flex-wrap justify-center gap-x-5 gap-y-3"
           >
             {[
-              "SOC 2 Type II",
-              "HIPAA Compliant",
-              "GDPR Ready",
-              "ISO 27001",
+              "Security-First Architecture",
+              "Privacy by Design",
+              "Compliance-Adaptable Infrastructure",
+              "Audit-Ready by Default",
             ].map((badge) => (
               <div key={badge} className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-evren-peach" />
@@ -254,7 +252,7 @@ export default function EnterpriseStack() {
           </div>
 
           {/* ── Desktop: Zigzag Absolute Layout ───────────────── */}
-          <div className="hidden md:block relative" style={{ paddingBottom: "40%" }}>
+          <div className="hidden md:block relative" style={{ paddingBottom: "35%" }}>
 
             {/* ── SVG Dashed Connector Lines ──────────────────── */}
             <svg
@@ -266,7 +264,7 @@ export default function EnterpriseStack() {
             >
               {/* Connector 1: Card 0 (top-left) ──→ Card 1 (bottom-center-left) */}
               <motion.path
-                d="M 220 120 C 240 120, 240 260, 260 260"
+                d="M 220 120 C 240 120, 240 220, 260 220"
                 stroke="rgba(27, 42, 74, 0.15)"
                 strokeWidth="2"
                 strokeDasharray="10 8"
@@ -276,7 +274,7 @@ export default function EnterpriseStack() {
 
               {/* Connector 2: Card 1 (bottom-center-left) ──→ Card 2 (top-center-right) */}
               <motion.path
-                d="M 480 260 C 500 260, 500 120, 520 120"
+                d="M 480 220 C 500 220, 500 120, 520 120"
                 stroke="rgba(27, 42, 74, 0.15)"
                 strokeWidth="2"
                 strokeDasharray="10 8"
@@ -286,7 +284,7 @@ export default function EnterpriseStack() {
 
               {/* Connector 3: Card 2 (top-center-right) ──→ Card 3 (bottom-right) */}
               <motion.path
-                d="M 740 120 C 760 120, 760 260, 780 260"
+                d="M 740 120 C 760 120, 760 220, 780 220"
                 stroke="rgba(27, 42, 74, 0.15)"
                 strokeWidth="2"
                 strokeDasharray="10 8"
@@ -308,7 +306,7 @@ export default function EnterpriseStack() {
             <motion.div
               variants={cardPop(LAYERS[1].animDelay)}
               className="absolute z-10"
-              style={{ top: "35%", left: "26%", width: "22%" }}
+              style={{ top: "25%", left: "26%", width: "22%" }}
             >
               <FlowCard layer={LAYERS[1]} LayerIcon={LAYERS[1].icon} />
             </motion.div>
@@ -326,7 +324,7 @@ export default function EnterpriseStack() {
             <motion.div
               variants={cardPop(LAYERS[3].animDelay)}
               className="absolute z-10"
-              style={{ top: "35%", left: "78%", width: "22%" }}
+              style={{ top: "25%", left: "78%", width: "22%" }}
             >
               <FlowCard layer={LAYERS[3]} LayerIcon={LAYERS[3].icon} />
             </motion.div>
@@ -350,83 +348,78 @@ function FlowCard({
 }) {
   return (
     <div
-      className={`group relative rounded-2xl p-5 lg:p-6 border-2 border-dashed ${layer.borderColor} ${layer.bgColor}
-                  transition-all duration-300 hover:-translate-y-1
-                  hover:shadow-[0_12px_36px_-8px_rgba(0,0,0,0.08)] hover:border-solid`}
+      className={`group relative rounded-2xl p-6 border border-solid ${layer.borderColor} ${layer.bgColor}
+                  transition-all duration-500 ease-out hover:-translate-y-2
+                  hover:border-evren-peach hover:shadow-[0_20px_40px_-12px_rgba(27,42,74,0.15)] overflow-hidden cursor-default`}
     >
-      {/* Icon + Category */}
-      <div className="flex items-center gap-3 mb-4">
-        <div
-          className={`w-10 h-10 rounded-xl ${layer.iconBg} flex items-center justify-center`}
-        >
-          <LayerIcon
-            size={18}
-            strokeWidth={1.5}
-            className={layer.iconColor}
-          />
-        </div>
-        <span
-          className={`text-[10px] font-mono uppercase tracking-[0.2em] ${
-            layer.dark ? "text-white/50" : "text-evren-medium-gray"
-          }`}
-          style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-        >
-          {layer.category}
-        </span>
-      </div>
+      {/* Decorative Glow on Hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-evren-peach/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out pointer-events-none" />
 
-      {/* Label */}
-      <h3
-        className={`text-lg font-heading font-bold mb-1 ${
-          layer.dark ? "text-white" : "text-evren-navy"
-        }`}
-        style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-      >
-        {layer.label}
-      </h3>
-      <p
-        className={`text-xs mb-4 ${
-          layer.dark ? "text-white/60" : "text-evren-medium-gray"
-        }`}
-        style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-      >
-        {layer.sublabel}
-      </p>
-
-      {/* Connection status */}
-      {/* <div className="flex items-center gap-1.5 mb-3">
-        <span
-          className={`text-xs font-semibold ${
-            layer.dark ? "text-evren-peach" : "text-evren-navy/50"
-          }`}
-        >
-          →
-        </span>
-        <span
-          className={`text-[10px] font-semibold uppercase tracking-wider ${
-            layer.dark ? "text-evren-peach" : "text-evren-navy/40"
-          }`}
-          style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
-        >
-          CONNECTED
-        </span>
-      </div> */}
-
-      {/* Tech tags */}
-      <div className="flex flex-wrap gap-1.5">
-        {layer.technologies.map((tech) => (
+      {/* Top Banner: Icon + Category */}
+      <div className="flex items-center justify-between gap-3 mb-6 relative z-10 transition-transform duration-500 ease-out">
+        <div className="flex items-center gap-4">
+          <div
+            className="w-12 h-12 rounded-xl border border-evren-peach/20 bg-evren-peach flex items-center justify-center shadow-sm"
+          >
+            <LayerIcon
+              size={20}
+              strokeWidth={1.5}
+              className="text-white"
+            />
+          </div>
           <span
-            key={tech}
-            className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${
-              layer.dark
-                ? "bg-white/10 text-white/80"
-                : "bg-evren-navy/5 text-evren-navy/70"
-            }`}
+            className={`text-xs font-semibold uppercase tracking-[0.15em] ${layer.dark ? "text-evren-peach/80" : "text-evren-navy/60"
+              }`}
             style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
           >
-            {tech}
+            {layer.category}
           </span>
-        ))}
+        </div>
+
+        {/* Animated Dropdown Tab Indicator */}
+        <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-180 ${layer.dark ? 'bg-white/10' : 'bg-evren-navy/5'}`}>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={layer.dark ? 'text-evren-peach' : 'text-evren-navy'}>
+            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Content wrapper for height transition */}
+      <div className="relative z-10">
+        <h3
+          className={`text-xl font-heading font-bold mb-2 transition-colors duration-300 ${layer.dark ? "text-white" : "text-evren-navy"
+            } group-hover:text-evren-peach`}
+        >
+          {layer.label}
+        </h3>
+
+        {/* Technologies - Always visible */}
+        <div className="flex flex-wrap gap-2 mb-4 mt-3">
+          {layer.technologies.map((tech) => (
+            <span
+              key={tech}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold border ${layer.dark
+                  ? "bg-evren-peach/10 border-evren-peach/20 text-white"
+                  : "bg-evren-navy/5 border-evren-navy/10 text-evren-navy/80"
+                }`}
+              style={{ fontFamily: "'JetBrains Mono', 'Fira Code', monospace" }}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        {/* Expandable description block */}
+        <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
+          <div className="overflow-hidden">
+            <p
+              className={`text-sm leading-relaxed pb-2 pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 ${layer.dark ? "text-white/70" : "text-evren-navy/70"
+                }`}
+            >
+              {layer.sublabel}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

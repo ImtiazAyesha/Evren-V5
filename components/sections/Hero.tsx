@@ -171,6 +171,7 @@ export default function Hero() {
             filter: "blur(35px)",
           }}
         />
+
         {/* Gold blob — bottom-center */}
         <div
           className="absolute -bottom-[5%] left-[5%] w-[400px] h-[400px] md:w-[650px] md:h-[650px] rounded-full mesh-blob opacity-80 md:opacity-100"
@@ -204,37 +205,76 @@ export default function Hero() {
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        {/* ── Circular Blueprint Interactive Grid ── */}
+        {/* ── Premium Editorial Plus Grid ── */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] min-h-[800px] pointer-events-none z-[-1]"
         >
           <div ref={gridRef} className="absolute inset-0">
-            {/* 1. Base Navy Grid */}
-            <div
-              className="absolute inset-0 transition-opacity duration-700 opacity-30 group-hover/hero:opacity-50"
+            {/* Edge fade mask so the pattern tapers off beautifully at the edges */}
+            <div 
+              className="absolute inset-0"
               style={{
-                backgroundSize: "40px 40px",
-                backgroundImage:
-                  "linear-gradient(to right, rgba(27, 42, 74, 0.18) 1px, transparent 1px), linear-gradient(to bottom, rgba(27, 42, 74, 0.18) 1px, transparent 1px)",
-                maskImage:
-                  "radial-gradient(circle at center, transparent 150px, rgba(0,0,0,0.4) 250px, black 350px, black 75%, transparent 100%)",
-                WebkitMaskImage:
-                  "radial-gradient(circle at center, transparent 150px, rgba(0,0,0,0.4) 250px, black 350px, black 75%, transparent 100%)",
+                maskImage: "radial-gradient(ellipse at center, black 40%, rgba(0,0,0,0.3) 70%, transparent 100%)",
+                WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, rgba(0,0,0,0.3) 70%, transparent 100%)",
               }}
-            />
+            >
+              {/* 1. Base Navy Plus Matrix */}
+              <svg 
+                className="absolute inset-0 w-full h-full transition-opacity duration-700 opacity-[0.45] group-hover/hero:opacity-[0.60]"
+              >
+                <defs>
+                  <pattern
+                    id="base-plus-pattern"
+                    x="0"
+                    y="0"
+                    width="56"
+                    height="56"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M28 24v8M24 28h8"
+                      stroke="rgba(27, 42, 74, 0.4)"
+                      strokeWidth="1"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#base-plus-pattern)" />
+              </svg>
 
-            {/* 2. Peach Glowing Hover Grid */}
-            <div
-              className="absolute inset-0 transition-opacity duration-300"
-              style={{
-                opacity: mousePos.opacity,
-                backgroundSize: "40px 40px",
-                backgroundImage:
-                  "linear-gradient(to right, rgba(244, 168, 154, 0.9) 1px, transparent 1px), linear-gradient(to bottom, rgba(244, 168, 154, 0.9) 1px, transparent 1px)",
-                maskImage: `radial-gradient(circle 200px at ${mousePos.gridX}px ${mousePos.gridY}px, black, transparent)`,
-                WebkitMaskImage: `radial-gradient(circle 200px at ${mousePos.gridX}px ${mousePos.gridY}px, black, transparent)`,
-              }}
-            />
+              {/* 2. Interactive Glowing Peach Plus Matrix (Follows Mouse) */}
+              <div
+                className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
+                style={{
+                  opacity: mousePos.opacity,
+                  maskImage: `radial-gradient(circle 350px at ${mousePos.gridX}px ${mousePos.gridY}px, black, transparent)`,
+                  WebkitMaskImage: `radial-gradient(circle 350px at ${mousePos.gridX}px ${mousePos.gridY}px, black, transparent)`,
+                }}
+              >
+                <svg className="absolute inset-0 w-full h-full">
+                  <defs>
+                    <pattern
+                      id="glow-plus-pattern"
+                      x="0"
+                      y="0"
+                      width="56"
+                      height="56"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <path
+                        d="M28 24v8M24 28h8"
+                        stroke="#F4A89A"
+                        strokeWidth="1.5"
+                        fill="none"
+                        strokeLinecap="round"
+                      />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#glow-plus-pattern)" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 

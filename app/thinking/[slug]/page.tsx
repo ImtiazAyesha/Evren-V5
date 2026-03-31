@@ -51,7 +51,7 @@ export default async function ArticlePage({
   const primaryCategory = article.categories?.[0]?.title;
   
   const relatedArticles = allPosts
-    .filter((a: any) => a.categories?.[0]?.title === primaryCategory && a.slug.current !== resolvedParams.slug)
+    .filter((a: any) => a.categories?.[0]?.title === primaryCategory && a?.slug?.current !== resolvedParams.slug)
     .slice(0, 2);
 
   return (
